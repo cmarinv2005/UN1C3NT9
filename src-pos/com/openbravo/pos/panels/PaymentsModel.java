@@ -49,6 +49,8 @@ public class PaymentsModel {
             
     private Integer m_iPayments;
     private Double m_dPaymentsTotal;
+    private Integer m_iPayments1;         
+    private Double m_dPaymentsTotal1;
     private java.util.List<PaymentsLine> m_lpayments;
     
 // JG 9 Nov 12 
@@ -93,6 +95,8 @@ public class PaymentsModel {
         
         p.m_iPayments = 0;
         p.m_dPaymentsTotal = 0.0;
+        p.m_iPayments1 = 0;         
+        p.m_dPaymentsTotal1 = 0.0;
 // JG 16 May 2013 use diamond inference
         p.m_lpayments = new ArrayList<>();
 
@@ -203,6 +207,21 @@ public class PaymentsModel {
             p.m_dPaymentsTotal = (Double) valtickets[1];
         }  
         
+                
+// Payments Efectivo
+        Object[] valtickets1 = (Object[]) new StaticSentence(app.getSession(), "SELECT COUNT(*), SUM(PAYMENTS.TOTAL) "
+                + "FROM PAYMENTS, RECEIPTS "
+                + "WHERE PAYMENTS.RECEIPT = RECEIPTS.ID AND PAYMENT IN ('cashin', 'cashout', 'cash', 'customin', 'customout', 'cashrefund') AND RECEIPTS.MONEY = ?", SerializerWriteString.INSTANCE, new SerializerReadBasic(new Datas[]{Datas.INT, Datas.DOUBLE}))
+                .find(app.getActiveCashIndex());
+           
+        if (valtickets1 == null) {
+            p.m_iPayments1 = 0;
+            p.m_dPaymentsTotal1 = 0.0;
+        } else {
+            p.m_iPayments1 = (Integer) valtickets1[0];
+            p.m_dPaymentsTotal1 = (Double) valtickets1[1];
+        }
+        
         List l = new StaticSentence(app.getSession(),            
             "SELECT payments.PAYMENT, SUM(payments.TOTAL), payments.NOTES " +
               "FROM payments, receipts " +
@@ -210,7 +229,7 @@ public class PaymentsModel {
               "GROUP BY payments.PAYMENT, payments.NOTES"
             , SerializerWriteString.INSTANCE
             , new SerializerReadClass(PaymentsModel.PaymentsLine.class))
-            .list(app.getActiveCashIndex()); 
+            .list(app.getActiveCashIndex());  
         
         if (l == null) {
             p.m_lpayments = new ArrayList();
@@ -494,7 +513,23 @@ public class PaymentsModel {
     public String printPaymentsTotal() {
         return Formats.CURRENCY.formatValue(m_dPaymentsTotal);
     }
+    
+    /**
+     *
+     * @return
+     */
+    public String printPayments1() {
+        return Formats.INT.formatValue(m_iPayments1);
+    }
 
+    /**
+     *
+     * @return
+     */
+    public String printPaymentsTotal1() {
+        return Formats.CURRENCY.formatValue(m_dPaymentsTotal1);
+    }    
+    
     /**
      *
      * @return
