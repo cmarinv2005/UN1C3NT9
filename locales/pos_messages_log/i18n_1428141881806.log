@@ -1,0 +1,226 @@
+Loading F:\Development\unicentaopos395\locales\pos_messages.properties...
+Duplicate Key: label.LoadError=Load Error
+Duplicate Key: label.LoadError=Error trying to show this functionality (discarded)
+Duplicate Key: label.csvbad=Bad Price
+Duplicate Key: label.csvbad=Bad Data (discarded)
+Duplicate Key: label.receiptprinter=Receipt Printer
+Duplicate Key: label.receiptprinter=Collect Tip (discarded)
+3 duplicated keys are found.
+
+Scanning for unused properties...
+Loading F:\Development\unicentaopos395\locales\pos_messages_fr.properties...
+Duplicate Key: Menu.BarcodeSheet=Étiquettes: codes barre JM
+Duplicate Key: Menu.BarcodeSheet=Étiquettes: codes barre (discarded)
+Duplicate Key: button.newcustomer=CSV Importer
+Duplicate Key: button.newcustomer=Annuler (discarded)
+Duplicate Key: button.test=TEST
+Duplicate Key: button.test=Test (discarded)
+Duplicate Key: display.window=Visualiser
+Duplicate Key: display.window=Afficheur (discarded)
+Duplicate Key: label.LoadError=Une erreur s'est produite lors de l'execution de cette fonction.
+Duplicate Key: label.LoadError=L'erreur qui essaie montrer ce caractère fonctionnel (discarded)
+5 duplicated keys are found.
+
+Missing Key: Menu.BarcodeSheet_JM
+Missing Key: Menu.Import
+Missing Key: Menu.Import.Reports
+Missing Key: button.Cancel
+Missing Key: button.email
+Missing Key: button.prodhtmldisplayBold
+Missing Key: button.prodhtmldisplayBreak
+Missing Key: button.prodhtmldisplayColour
+Missing Key: button.prodhtmldisplayItalic
+Missing Key: button.prodhtmldisplayLarge
+Missing Key: button.prodhtmldisplayReset
+Missing Key: button.prodhtmldisplaySmall
+Missing Key: label.MachineDepartment
+Missing Key: label.NameIP
+Missing Key: label.StripeLiveKey
+Missing Key: label.StripeLivePublishableKey
+Missing Key: label.StripeTestKey
+Missing Key: label.StripeTestPublishableKey
+Missing Key: label.autoRefreshTableMap
+Missing Key: label.autoRefreshTableMapTimer
+Missing Key: label.autoRefreshTableMapTimerOFF
+Missing Key: label.autoRefreshTableMapTimerON
+Missing Key: label.autologoffzero
+Missing Key: label.bycategory
+Missing Key: label.cardreader
+Missing Key: label.ccatorder
+Missing Key: label.colourchooser
+Missing Key: label.configOptionKeypad
+Missing Key: label.configOptionLogOff
+Missing Key: label.configOptionRestaurant
+Missing Key: label.configOptionStartup
+Missing Key: label.imagesize
+Missing Key: label.nameIP
+Missing Key: label.printto
+Missing Key: label.prodconstant
+Missing Key: label.product
+Missing Key: label.rental
+Missing Key: label.stocktaker
+Missing Key: label.tblHeaderCol1
+Missing Key: label.tblHeaderCol2
+Missing Key: label.tblHeaderCol3
+Missing Key: label.tblHeaderCol4
+Missing Key: label.tblHeaderCol5
+Missing Key: label.tktfooter1
+Missing Key: label.tktfooter2
+Missing Key: label.tktfooter3
+Missing Key: label.tktfooter4
+Missing Key: label.tktfooter5
+Missing Key: label.tktfooter6
+Missing Key: label.tktheader1
+Missing Key: label.tktheader2
+Missing Key: label.tktheader3
+Missing Key: label.tktheader4
+Missing Key: label.tktheader5
+Missing Key: label.tktheader6
+Missing Key: label.warranty
+Missing Key: message.email
+Missing Key: message.ticketrefunded
+Missing Key: message.ticketrefundedtitle
+Missing Key: rest.label.selectcustomer
+Missing Key: rest.label.showcalendar
+Missing Key: tkt.tktfooter1
+Missing Key: tkt.tktfooter2
+Missing Key: tkt.tktfooter3
+Missing Key: tkt.tktfooter4
+Missing Key: tkt.tktfooter5
+Missing Key: tkt.tktfooter6
+Missing Key: tkt.tktheader1
+Missing Key: tkt.tktheader2
+Missing Key: tkt.tktheader3
+Missing Key: tkt.tktheader4
+Missing Key: tkt.tktheader5
+Missing Key: tkt.tktheader6
+Missing Key: tooltip.addnew
+Missing Key: tooltip.addnewticket
+Missing Key: tooltip.delete
+Missing Key: tooltip.layaway
+Missing Key: tooltip.prodhtmldisplayColourChooser
+Missing Key: tooltip.quicklogoff
+Missing Key: tooltip.save
+Missing Key: tooltip.ticketedit
+Missing Key: tooltip.ticketrefund
+Missing Key: tooltip.ticketreprint
+Missing Key: tooltip.ticketsearch
+Missing Key: tootltip.saleremoveline
+85 missing keys are found.
+
+Unknown Key: CustomersView.jButton2.toolTipText_1
+Unknown Key: CustomersView.jButton3.toolTipText
+Unknown Key: database.ScriptError
+Unknown Key: database.ScriptWarning
+Unknown Key: database.scripterror
+Unknown Key: display.Null
+6 unknown keys are found.
+
+Loading F:\Development\unicentaopos395\locales\pos_messages_fr.properties...
+Duplicate Key: Menu.BarcodeSheet=Étiquettes: codes barre JM
+Duplicate Key: Menu.BarcodeSheet=Étiquettes: codes barre (discarded)
+Duplicate Key: button.newcustomer=CSV Importer
+Duplicate Key: button.newcustomer=Annuler (discarded)
+Duplicate Key: button.test=TEST
+Duplicate Key: button.test=Test (discarded)
+Duplicate Key: display.window=Visualiser
+Duplicate Key: display.window=Afficheur (discarded)
+Duplicate Key: label.LoadError=Une erreur s'est produite lors de l'execution de cette fonction.
+Duplicate Key: label.LoadError=L'erreur qui essaie montrer ce caractère fonctionnel (discarded)
+5 duplicated keys are found.
+
+Missing Key: Menu.BarcodeSheet_JM
+Missing Key: Menu.Import
+Missing Key: Menu.Import.Reports
+Missing Key: button.Cancel
+Missing Key: button.email
+Missing Key: button.prodhtmldisplayBold
+Missing Key: button.prodhtmldisplayBreak
+Missing Key: button.prodhtmldisplayColour
+Missing Key: button.prodhtmldisplayItalic
+Missing Key: button.prodhtmldisplayLarge
+Missing Key: button.prodhtmldisplayReset
+Missing Key: button.prodhtmldisplaySmall
+Missing Key: label.MachineDepartment
+Missing Key: label.NameIP
+Missing Key: label.StripeLiveKey
+Missing Key: label.StripeLivePublishableKey
+Missing Key: label.StripeTestKey
+Missing Key: label.StripeTestPublishableKey
+Missing Key: label.autoRefreshTableMap
+Missing Key: label.autoRefreshTableMapTimer
+Missing Key: label.autoRefreshTableMapTimerOFF
+Missing Key: label.autoRefreshTableMapTimerON
+Missing Key: label.autologoffzero
+Missing Key: label.bycategory
+Missing Key: label.cardreader
+Missing Key: label.ccatorder
+Missing Key: label.colourchooser
+Missing Key: label.configOptionKeypad
+Missing Key: label.configOptionLogOff
+Missing Key: label.configOptionRestaurant
+Missing Key: label.configOptionStartup
+Missing Key: label.imagesize
+Missing Key: label.nameIP
+Missing Key: label.printto
+Missing Key: label.prodconstant
+Missing Key: label.product
+Missing Key: label.rental
+Missing Key: label.stocktaker
+Missing Key: label.tblHeaderCol1
+Missing Key: label.tblHeaderCol2
+Missing Key: label.tblHeaderCol3
+Missing Key: label.tblHeaderCol4
+Missing Key: label.tblHeaderCol5
+Missing Key: label.tktfooter1
+Missing Key: label.tktfooter2
+Missing Key: label.tktfooter3
+Missing Key: label.tktfooter4
+Missing Key: label.tktfooter5
+Missing Key: label.tktfooter6
+Missing Key: label.tktheader1
+Missing Key: label.tktheader2
+Missing Key: label.tktheader3
+Missing Key: label.tktheader4
+Missing Key: label.tktheader5
+Missing Key: label.tktheader6
+Missing Key: label.warranty
+Missing Key: message.email
+Missing Key: message.ticketrefunded
+Missing Key: message.ticketrefundedtitle
+Missing Key: rest.label.selectcustomer
+Missing Key: rest.label.showcalendar
+Missing Key: tkt.tktfooter1
+Missing Key: tkt.tktfooter2
+Missing Key: tkt.tktfooter3
+Missing Key: tkt.tktfooter4
+Missing Key: tkt.tktfooter5
+Missing Key: tkt.tktfooter6
+Missing Key: tkt.tktheader1
+Missing Key: tkt.tktheader2
+Missing Key: tkt.tktheader3
+Missing Key: tkt.tktheader4
+Missing Key: tkt.tktheader5
+Missing Key: tkt.tktheader6
+Missing Key: tooltip.addnew
+Missing Key: tooltip.addnewticket
+Missing Key: tooltip.delete
+Missing Key: tooltip.layaway
+Missing Key: tooltip.prodhtmldisplayColourChooser
+Missing Key: tooltip.quicklogoff
+Missing Key: tooltip.save
+Missing Key: tooltip.ticketedit
+Missing Key: tooltip.ticketrefund
+Missing Key: tooltip.ticketreprint
+Missing Key: tooltip.ticketsearch
+Missing Key: tootltip.saleremoveline
+85 missing keys are found.
+
+Unknown Key: CustomersView.jButton2.toolTipText_1
+Unknown Key: CustomersView.jButton3.toolTipText
+Unknown Key: database.ScriptError
+Unknown Key: database.ScriptWarning
+Unknown Key: database.scripterror
+Unknown Key: display.Null
+6 unknown keys are found.
+

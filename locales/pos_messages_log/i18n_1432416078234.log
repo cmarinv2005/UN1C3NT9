@@ -1,0 +1,51 @@
+C:\unicentaopos395\locales\pos_messages.properties does not exists.
+Loading F:\Development\unicentaopos4.x-src\locales\pos_messages.properties...
+OK
+
+Scanning for unused properties...
+Loading F:\Development\unicentaopos4.x-src\locales\pos_messages_fr.properties...
+Missing Key: button.CustomerTrans
+Missing Key: button.ProductStock
+Missing Key: button.closecashpreview
+Missing Key: button.closecashreprint
+Missing Key: button.prodhtmldisplayFont
+Missing Key: button.prodhtmldisplayImage
+Missing Key: label.csvbad
+Missing Key: label.tblProdHeaderCol1
+Missing Key: label.tblProdHeaderCol2
+Missing Key: label.tblProdHeaderCol3
+Missing Key: label.tblProdHeaderCol4
+Missing Key: message.customernotfound
+Missing Key: tooltip.btn.closecash
+Missing Key: tooltip.btn.closecashpreview
+Missing Key: tooltip.btn.partialcash
+Missing Key: tooltip.prodhtmldisplayImage
+16 missing keys are found.
+
+Unknown Key: CustomersView.jButton2.toolTipText_1
+Unknown Key: CustomersView.jButton3.toolTipText
+Unknown Key: database.ScriptError
+Unknown Key: database.ScriptWarning
+Unknown Key: database.scripterror
+Unknown Key: display.Null
+6 unknown keys are found.
+
+Loading C:\Documents and Settings\jack\unicentaopos.properties...
+OK
+
+unicentaopos.properties saved.
+
+Loading C:\Documents and Settings\jack\unicentaopos.properties...
+OK
+
+Loading F:\Development\unicentaopos4.x-src\locales\pos_messages.properties...
+OK
+
+Loading F:\Development\unicentaopos4.x-src\locales\American\locales\pos_messages_en_US.properties...
+Duplicate Key: button.newticket=New Ticket
+Duplicate Key: button.newticket=New (discarded)
+1 duplicated keys are found.
+
+Loading F:\Development\unicentaopos4.x-src\locales\pos_messages.properties...
+OK
+

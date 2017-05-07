@@ -1,0 +1,31 @@
+Loading C:\Documents and Settings\jack\unicentaopos.properties...
+OK
+
+Scanning for unused properties...
+Scanning for unused properties...
+Property Modified: till.SCRate= -----> 0
+Loading C:\unicentaopos395\locales\pos_messages.properties...
+OK
+
+pos_messages.properties saved.
+
+Loading C:\unicentaopos395\locales\pos_messages.properties...
+OK
+
+Loading F:\Development\unicentaopos395\locales\pos_messages.properties...
+OK
+
+pos_messages.properties saved.
+
+Loading F:\Development\unicentaopos395\locales\pos_messages.properties...
+OK
+
+Loading F:\Development\unicentaopos395\locales\pos_messages_fr.properties...
+Unknown Key: CustomersView.jButton2.toolTipText_1
+Unknown Key: CustomersView.jButton3.toolTipText
+Unknown Key: database.ScriptError
+Unknown Key: database.ScriptWarning
+Unknown Key: database.scripterror
+Unknown Key: display.Null
+6 unknown keys are found.
+

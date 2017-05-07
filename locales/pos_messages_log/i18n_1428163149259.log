@@ -1,0 +1,29 @@
+Loading F:\Development\unicentaopos395\locales\pos_messages.properties...
+OK
+
+Loading F:\Development\unicentaopos395\locales\pos_messages_en_US.properties...
+OK
+
+Loading F:\Development\unicentaopos395\locales\pos_messages_en_US.properties...
+OK
+
+Loading F:\Development\unicentaopos395\locales\pos_messages_fr.properties...
+Unknown Key: CustomersView.jButton2.toolTipText_1
+Unknown Key: CustomersView.jButton3.toolTipText
+Unknown Key: database.ScriptError
+Unknown Key: database.ScriptWarning
+Unknown Key: database.scripterror
+Unknown Key: display.Null
+6 unknown keys are found.
+
+Property Modified: button.refundall=Rembourser tout -----> All
+Property Modified: button.refundall=All -----> Rembourser tout
+Loading F:\Development\unicentaopos395\locales\pos_messages_fr.properties...
+Unknown Key: CustomersView.jButton2.toolTipText_1
+Unknown Key: CustomersView.jButton3.toolTipText
+Unknown Key: database.ScriptError
+Unknown Key: database.ScriptWarning
+Unknown Key: database.scripterror
+Unknown Key: display.Null
+6 unknown keys are found.
+

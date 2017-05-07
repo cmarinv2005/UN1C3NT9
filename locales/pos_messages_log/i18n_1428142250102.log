@@ -1,0 +1,18 @@
+Loading F:\Development\unicentaopos395\locales\pos_messages.properties...
+Duplicate Key: label.LoadError=Load Error
+Duplicate Key: label.LoadError=Error trying to show this functionality (discarded)
+Duplicate Key: label.csvbad=Bad Price
+Duplicate Key: label.csvbad=Bad Data (discarded)
+Duplicate Key: label.receiptprinter=Receipt Printer
+Duplicate Key: label.receiptprinter=Collect Tip (discarded)
+3 duplicated keys are found.
+
+Property Renamed: label.csvbad -----> label.csvbadPrice
+Property Deleted: tootltip.saleremoveline
+pos_messages.properties saved.
+
+pos_messages_fr.properties saved.
+
+Loading F:\Development\unicentaopos395\locales\pos_messages.properties...
+OK
+
