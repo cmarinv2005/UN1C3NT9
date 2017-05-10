@@ -903,6 +903,20 @@ INSERT INTO resources(id, name, restype, content) VALUES('74', 'Ticket.TicketLin
 INSERT INTO resources(id, name, restype, content) VALUES('75', 'Window.Logo', 1, $FILE{/com/openbravo/pos/templates/window.logo.png});
 INSERT INTO resources(id, name, restype, content) VALUES('76', 'Window.Title', 0, $FILE{/com/openbravo/pos/templates/Window.Title.txt});
 
+-- IMAGES
+INSERT INTO resources(id, name, restype, content) VALUES('100', 'coin.50pesos', 1, $FILE{/com/openbravo/pos/templates/coin.50pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('101', 'coin.100pesos', 1, $FILE{/com/openbravo/pos/templates/coin.100pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('102', 'coin.200pesos', 1, $FILE{/com/openbravo/pos/templates/coin.200pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('103', 'coin.500pesos', 1, $FILE{/com/openbravo/pos/templates/coin.500pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('104', 'coin.1000pesos', 1, $FILE{/com/openbravo/pos/templates/coin.1000pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('105', 'banknote.1000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.1000pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('106', 'banknote.2000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.2000pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('107', 'banknote.5000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.5000pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('108', 'banknote.10000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.10000pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('109', 'banknote.20000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.20000pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('110', 'banknote.50000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.50000pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('111', 'banknote.100000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.100000pesos.png});
+
 -- ADD CATEGORIES
 INSERT INTO categories(id, name) VALUES ('000', 'Category Standard');
 

@@ -458,15 +458,14 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
         String newText = m_props.getProperty("start.text");
         if (newText != null) {
             if (newText.equals("")){
-            jLabel1.setText("<html><center>uniCenta oPOS - Touch Friendly Point of Sale<br>" +
-            "Copyright \u00A9  uniCenta <br>" +
-            "http://www.unicenta.com/<br>" +
+            jLabel1.setText("<html><center>Executer oPOS - El futuro de los puntos de Venta<br>" +
+            "http://www.executerpos.com/<br>" +
             "<br>" +
-            "uniCenta oPOS is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.<br>" +
+            "Executer POS es un programa realizado con software Opensource<br>" +
             "<br>" +
-            "uniCenta oPOS is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.<br>" +
+            "Executer Pos se puede integrar con diferentes tipos de negocio<br>" +
             "<br>" +
-            "You should have received a copy of the GNU General Public License along with uniCenta oPOS.  If not, see http://www.gnu.org/licenses/<br>" +
+            "Si usted utiliza una versión original de este software en caso de soporte puede comunicarse al celular 311 211 16 87<br>" +
             "</center>");
             } else {
                 try {    
