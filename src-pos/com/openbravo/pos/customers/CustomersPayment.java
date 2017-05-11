@@ -35,6 +35,7 @@ import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.util.RoundUtils;
+import java.awt.Color;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JComponent;
@@ -479,6 +480,11 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         txtPrePay.setEnabled(false);
         txtPrePay.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         txtPrePay.setPreferredSize(new java.awt.Dimension(200, 30));
+        txtPrePay.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrePayKeyTyped(evt);
+            }
+        });
 
         txtTaxId.setEditable(false);
         txtTaxId.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -508,25 +514,24 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtCard, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtTaxId, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                                    .addComponent(txtTaxId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtCard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
+                                .addGap(12, 12, 12)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPrePay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNotes, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(txtPrePay, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNotes, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -620,9 +625,13 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 }//GEN-LAST:event_btnCustomerActionPerformed
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
-
-        paymentdialog.setPrintSelected(true);
-        
+        paymentdialog.setPrintSelected(true);         
+        double currentdebt = (customerext.getCurdebt());  
+        Formats.CURRENCY.formatValue(RoundUtils.getValue(currentdebt));           
+        if(currentdebt < 0){
+            JOptionPane.showMessageDialog(null, "El Cliente tiene un saldo a favor de "+currentdebt);   
+        }   
+        else{    
         if (paymentdialog.showDialog(customerext.getCurdebt(), null)) {
 
             // Save the ticket
@@ -674,7 +683,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                     : "Printer.CustomerPaid2",
                     ticket, c);
         }
-        
+    }
         editorcard.reset();
         editorcard.activate();
         
@@ -692,13 +701,13 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnPrePayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrePayActionPerformed
-
-        txtPrePay.setFocusable(true);
-        txtPrePay.requestFocusInWindow();
-
         if (txtPrePay.getText() != null) {
+            txtPrePay.setFocusable(true);
+            txtPrePay.requestFocusInWindow();
+            
             double prepay = Double.parseDouble(txtPrePay.getText());        
             Formats.CURRENCY.formatValue(RoundUtils.getValue(prepay));
+          
             paymentdialog.setPrintSelected(true);
         
             if (paymentdialog.showDialog(prepay, null)) {            
@@ -754,7 +763,14 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
             editorcard.reset();
             editorcard.activate();
         }
+        else{           
+           JOptionPane.showMessageDialog(null, "Por favor ingrese el saldo a favor en el campo Cantidad de prepago");           
+        }
     }//GEN-LAST:event_btnPrePayActionPerformed
+
+    private void txtPrePayKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrePayKeyTyped
+ 
+    }//GEN-LAST:event_txtPrePayKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomer;

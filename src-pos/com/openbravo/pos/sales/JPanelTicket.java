@@ -231,7 +231,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         ComboBoxValModel m_ReasonModel = new ComboBoxValModel();
         m_ReasonModel.add(AppLocal.getIntString("cboption.find"));
         m_ReasonModel.add(AppLocal.getIntString("cboption.create"));              
-        webCBCustomer.setModel(m_ReasonModel);         
+        webCBCustomer.setModel(m_ReasonModel);        
         
         stateToZero();  
         
@@ -2216,17 +2216,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
         });
 
-        webCBCustomer.setBackground(new java.awt.Color(237, 237, 237));
-        webCBCustomer.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Find", "Create" }));
+        webCBCustomer.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Buscar", "Crear" }));
         webCBCustomer.setToolTipText(AppLocal.getIntString("tooltip.salescustomer")); // NOI18N
         webCBCustomer.setExpandIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/customer.png")));
-        webCBCustomer.setFocusable(false);
         webCBCustomer.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        webCBCustomer.setOpaque(true);
-        webCBCustomer.setPreferredSize(new java.awt.Dimension(80, 45));
-        webCBCustomer.setRound(0);
-        webCBCustomer.setShadeWidth(1);
-        webCBCustomer.setWebColoredBackground(false);
         webCBCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 webCBCustomerMouseReleased(evt);
@@ -2248,8 +2241,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jButtonsLayout.setHorizontalGroup(
             m_jButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(m_jButtonsLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(webCBCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(webCBCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSplit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2260,13 +2252,14 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             m_jButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(m_jButtonsLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addGroup(m_jButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(m_jButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnSplit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnReprint1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(webCBCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(m_jButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSplit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnReprint1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(webCBCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        webCBCustomer.getAccessibleContext().setAccessibleName("Buscar");
 
         m_jOptions.add(m_jButtons, java.awt.BorderLayout.LINE_START);
 
@@ -2868,102 +2861,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     }//GEN-LAST:event_btnSplitActionPerformed
 
-    private void webCBCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webCBCustomerActionPerformed
-        if (listener  != null) { 
-            listener.stop(); 
-        }
-       
-        if(webCBCustomer.getSelectedIndex() == 0){
-
-            JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
-
-            if (m_oTicket.getCustomerId() == null) {
-                finder.setAppView(m_App);
-                finder.search(m_oTicket.getCustomer());
-                finder.executeSearch();        
-                finder.setVisible(true);
-
-                if (finder.getSelectedCustomer() != null) {
-                    try {
-                        m_oTicket.setCustomer(dlSales.loadCustomerExt
-                            (finder.getSelectedCustomer().getId()));
-                        if ("restaurant".equals(m_App.getProperties().getProperty("machine.ticketsbag"))) {
-                            restDB.setCustomerNameInTableByTicketId(dlSales.loadCustomerExt
-                                (finder.getSelectedCustomer().getId()).toString(), m_oTicket.getId());
-
-                        }
-                        
-                            checkCustomer();
-
-                        m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
-                                
-                    } catch (BasicException e) {
-                        MessageInf msg = new MessageInf(MessageInf.SGN_WARNING,
-                            AppLocal.getIntString("message.cannotfindcustomer"), e);
-                        msg.show(this);
-                    }
-                } else {
-                    restDB.setCustomerNameInTableByTicketId(null, m_oTicket.getId());
-                    m_oTicket.setCustomer(null);
-                    Notify("notify.customerremove");                    
-                }
-
-            } else {
-                if (JOptionPane.showConfirmDialog(this,
-                    AppLocal.getIntString("message.customerchange"),
-                    AppLocal.getIntString("title.editor"),
-                    JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-
-                    finder.setAppView(m_App);
-                    finder.search(m_oTicket.getCustomer());
-                    finder.executeSearch();
-                    finder.setVisible(true);
-
-                    if (finder.getSelectedCustomer() != null) {
-                        try {
-                            m_oTicket.setCustomer(dlSales.loadCustomerExt
-                               (finder.getSelectedCustomer().getId()));
-                            if ("restaurant".equals(m_App.getProperties().getProperty("machine.ticketsbag"))) {
-                                restDB.setCustomerNameInTableByTicketId(dlSales.loadCustomerExt
-                                    (finder.getSelectedCustomer().getId()).toString(), m_oTicket.getId());
-                            }
-
-                            checkCustomer();
-
-                            m_jTicketId.setText(m_oTicket.getName());
-
-                        } catch (BasicException e) {
-                            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING,
-                            AppLocal.getIntString("message.cannotfindcustomer"), e);
-                            msg.show(this);
-                        }
-                    } else {
-                        restDB.setCustomerNameInTableByTicketId(null, m_oTicket.getId());
-                            m_oTicket.setCustomer(null);
-                    }
-                }
-            }
-           
-        } else {
-            if(webCBCustomer.getSelectedIndex() == 1){
-                JDialogNewCustomer dialog = JDialogNewCustomer.getDialog(this,m_App);
-                dialog.setVisible(true);
-       
-                CustomerInfoExt m_customerInfo = dialog.getSelectedCustomer();
-                if (dialog.getSelectedCustomer()!=null){
-                    try {
-                        m_oTicket.setCustomer(dlSales.loadCustomerExt
-                                    (dialog.getSelectedCustomer().getId())); 
-                    } catch (BasicException ex) {
-                        Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }                
-            }
-        }
-            refreshTicket(); 
-        
-    }//GEN-LAST:event_webCBCustomerActionPerformed
-
     private void jCheckStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckStockActionPerformed
 
         if (listener  != null) {
@@ -3068,12 +2965,111 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jKeyFactory.requestFocus();
     }//GEN-LAST:event_m_jaddtaxActionPerformed
 
+    private void webCBCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webCBCustomerActionPerformed
+        // TODO add your handling code here:
+         if (listener  != null) { 
+            listener.stop(); 
+        }
+       
+        if(webCBCustomer.getSelectedIndex() == 0){
+
+            JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
+
+            if (m_oTicket.getCustomerId() == null) {
+                finder.setAppView(m_App);
+                finder.search(m_oTicket.getCustomer());
+                finder.executeSearch();        
+                finder.setVisible(true);
+
+                if (finder.getSelectedCustomer() != null) {
+                    try {
+                        m_oTicket.setCustomer(dlSales.loadCustomerExt
+                            (finder.getSelectedCustomer().getId()));
+                        if ("restaurant".equals(m_App.getProperties().getProperty("machine.ticketsbag"))) {
+                            restDB.setCustomerNameInTableByTicketId(dlSales.loadCustomerExt
+                                (finder.getSelectedCustomer().getId()).toString(), m_oTicket.getId());
+
+                        }
+                        
+                            checkCustomer();
+
+                        m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
+                                
+                    } catch (BasicException e) {
+                        MessageInf msg = new MessageInf(MessageInf.SGN_WARNING,
+                            AppLocal.getIntString("message.cannotfindcustomer"), e);
+                        msg.show(this);
+                    }
+                } else {
+                    restDB.setCustomerNameInTableByTicketId(null, m_oTicket.getId());
+                    m_oTicket.setCustomer(null);
+                    Notify("notify.customerremove");                    
+                }
+
+            } else {
+                if (JOptionPane.showConfirmDialog(this,
+                    AppLocal.getIntString("message.customerchange"),
+                    AppLocal.getIntString("title.editor"),
+                    JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+
+                    finder.setAppView(m_App);
+                    finder.search(m_oTicket.getCustomer());
+                    finder.executeSearch();
+                    finder.setVisible(true);
+
+                    if (finder.getSelectedCustomer() != null) {
+                        try {
+                            m_oTicket.setCustomer(dlSales.loadCustomerExt
+                               (finder.getSelectedCustomer().getId()));
+                            if ("restaurant".equals(m_App.getProperties().getProperty("machine.ticketsbag"))) {
+                                restDB.setCustomerNameInTableByTicketId(dlSales.loadCustomerExt
+                                    (finder.getSelectedCustomer().getId()).toString(), m_oTicket.getId());
+                            }
+
+                            checkCustomer();
+
+                            m_jTicketId.setText(m_oTicket.getName());
+
+                        } catch (BasicException e) {
+                            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING,
+                            AppLocal.getIntString("message.cannotfindcustomer"), e);
+                            msg.show(this);
+                        }
+                    } else {
+                        restDB.setCustomerNameInTableByTicketId(null, m_oTicket.getId());
+                            m_oTicket.setCustomer(null);
+                    }
+                }
+            }
+           
+        } else {
+            if(webCBCustomer.getSelectedIndex() == 1){
+                JDialogNewCustomer dialog = JDialogNewCustomer.getDialog(this,m_App);
+                dialog.setVisible(true);
+       
+                CustomerInfoExt m_customerInfo = dialog.getSelectedCustomer();
+                if (dialog.getSelectedCustomer()!=null){
+                    try {
+                        m_oTicket.setCustomer(dlSales.loadCustomerExt
+                                    (dialog.getSelectedCustomer().getId())); 
+                    } catch (BasicException ex) {
+                        Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }                
+            }
+        }
+            refreshTicket(); 
+        
+    }//GEN-LAST:event_webCBCustomerActionPerformed
+
     private void webCBCustomerKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_webCBCustomerKeyReleased
-            m_jKeyFactory.requestFocus();
+        // TODO add your handling code here:
+        m_jKeyFactory.requestFocus();
     }//GEN-LAST:event_webCBCustomerKeyReleased
 
     private void webCBCustomerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_webCBCustomerMouseReleased
-            m_jKeyFactory.requestFocus();
+        // TODO add your handling code here:
+        m_jKeyFactory.requestFocus();
     }//GEN-LAST:event_webCBCustomerMouseReleased
                                        
 

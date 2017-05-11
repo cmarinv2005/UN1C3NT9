@@ -570,7 +570,7 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
         m_jTicketTable.setShowVerticalLines(false);
         m_jScrollTableTicket.setViewportView(m_jTicketTable);
 
-        jPanel1.add(m_jScrollTableTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 55, 520, 200));
+        jPanel1.add(m_jScrollTableTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 55, 520, 230));
 
         jLabel9.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -625,7 +625,7 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
         m_jsalestable.setShowVerticalLines(false);
         m_jScrollSales.setViewportView(m_jsalestable);
 
-        jPanel1.add(m_jScrollSales, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 520, 190));
+        jPanel1.add(m_jScrollSales, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 520, 160));
 
         m_jSales.setEditable(false);
         m_jSales.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N

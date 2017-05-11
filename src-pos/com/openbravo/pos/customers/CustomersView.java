@@ -32,6 +32,7 @@ import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.util.StringUtils;
 import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URI;
@@ -81,6 +82,8 @@ public final class CustomersView extends javax.swing.JPanel implements EditorRec
 
         m_sentcat = dlSales.getTaxCustCategoriesList();
         m_CategoryModel = new ComboBoxValModel();
+        
+        jScrollPane3.getVerticalScrollBar().setPreferredSize(new Dimension(25,25));
         
         m_Dirty = dirty;        
         m_jTaxID.getDocument().addDocumentListener(dirty);
