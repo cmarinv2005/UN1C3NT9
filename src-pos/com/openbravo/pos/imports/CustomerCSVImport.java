@@ -39,6 +39,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.customers.DataLogicCustomers;
+import java.awt.Dimension;
 import java.util.List;
 
 
@@ -79,8 +80,14 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
     private String customerLastName;     
     private String customerEmail; 
     private String customerPhone;
-    private String customerPhone2;     
-            
+    private String customerPhone2;
+    private String customerCard;
+    private double customerMaxdebt;
+    private double customerDiscount;
+    private String customerNotes;
+    private String customerFax;
+    
+    
     private DocumentListener documentListener;
     private CustomerInfoExt custInfo;
     private String recordType = null;
@@ -124,6 +131,7 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
         m_dlSystem = new DataLogicSystem();
         m_dlSystem.init(s);
 
+        jScrollPane1.getVerticalScrollBar().setPreferredSize(new Dimension(30,30));
 
         spr = new SaveProvider(
                 m_dlSales.getCustomerUpdate(),
@@ -201,7 +209,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
             jComboLastName.addItem("");            
             jComboEmail.addItem("");
             jComboPhone.addItem("");
-            jComboPhone2.addItem("");              
+            jComboPhone2.addItem(""); 
+            jComboCard.addItem("");
+            jComboMaxdebt.addItem("");
+            jComboDiscount.addItem("");
+            jComboNotes.addItem("");
+            jComboFax.addItem("");
             
             while (i < customers.getHeaderCount()) {
                 jComboName.addItem(customers.getHeader(i));
@@ -216,7 +229,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 jComboLastName.addItem(customers.getHeader(i));                
                 jComboEmail.addItem(customers.getHeader(i));
                 jComboPhone.addItem(customers.getHeader(i));   
-                jComboPhone2.addItem(customers.getHeader(i));                  
+                jComboPhone2.addItem(customers.getHeader(i));
+                jComboCard.addItem(customers.getHeader(i));
+                jComboMaxdebt.addItem(customers.getHeader(i));
+                jComboDiscount.addItem(customers.getHeader(i));
+                jComboNotes.addItem(customers.getHeader(i));
+                jComboFax.addItem(customers.getHeader(i));
                 
                 Headers.add(customers.getHeader(i));
                 ++i;
@@ -261,7 +279,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
         jComboLastName.setEnabled(true);
         jComboEmail.setEnabled(true);
         jComboPhone.setEnabled(true);
-        jComboPhone2.setEnabled(true);        
+        jComboPhone2.setEnabled(true); 
+        jComboCard.setEnabled(true); 
+        jComboMaxdebt.setEnabled(true); 
+        jComboDiscount.setEnabled(true); 
+        jComboNotes.setEnabled(true); 
+        jComboFax.setEnabled(true); 
 
         jCheckVisible.setEnabled(true);
 
@@ -353,7 +376,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 customerLastName = customers.get((String) jComboLastName.getSelectedItem());                
                 customerEmail = customers.get((String) jComboEmail.getSelectedItem());
                 customerPhone = customers.get((String) jComboPhone.getSelectedItem());
-                customerPhone2 = customers.get((String) jComboPhone2.getSelectedItem());                              
+                customerPhone2 = customers.get((String) jComboPhone2.getSelectedItem()); 
+                customerCard = customers.get((String) jComboCard.getSelectedItem());
+                customerMaxdebt = Double.parseDouble(customers.get((String) jComboMaxdebt.getSelectedItem()));
+                customerDiscount = Double.parseDouble(customers.get((String) jComboDiscount.getSelectedItem()));
+                customerNotes = customers.get((String) jComboNotes.getSelectedItem());
+                customerFax = customers.get((String) jComboFax.getSelectedItem());
                 
                 currentRecord++; 
                 progress = currentRecord;
@@ -519,7 +547,22 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
         jComboPhone.setEnabled(false);   
         
         jComboPhone2.removeAllItems();
-        jComboPhone2.setEnabled(false);          
+        jComboPhone2.setEnabled(false);   
+        
+        jComboCard.removeAllItems();
+        jComboCard.setEnabled(false);
+        
+        jComboMaxdebt.removeAllItems();
+        jComboMaxdebt.setEnabled(false);
+        
+        jComboDiscount.removeAllItems();
+        jComboDiscount.setEnabled(false);
+        
+        jComboNotes.removeAllItems();
+        jComboNotes.setEnabled(false);
+        
+        jComboFax.removeAllItems();
+        jComboFax.setEnabled(false);
 
         jCheckVisible.setSelected(false);
         jCheckVisible.setEnabled(true);
@@ -587,8 +630,8 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
         mycust[2] = customerAccount;                                            // taxid string
         mycust[3] = customerName;                                               // name string  
         mycust[4] = null;                                                       // taxCategory string        
-        mycust[5] = null;                                                       // card string        
-        mycust[6] = 0.0;                                                        // maxdebt Double                
+        mycust[5] = customerCard;                                               // card string        
+        mycust[6] = customerMaxdebt;                                            // maxdebt Double                
         mycust[7] = customerAddress1;                                           // address1 string
         mycust[8] = customerAddress2;                                           // address2 string
         mycust[9] = customerPostal;                                             // postal string
@@ -600,14 +643,14 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
         mycust[15] = customerEmail;                                             // email string        
         mycust[16] = customerPhone;                                             // phone string
         mycust[17] = customerPhone2;                                            // phone2 string
-        mycust[18] = null;                                                      // fax string
-        mycust[19] = null;                                                      // notes string        
+        mycust[18] = customerFax;                                               // fax string
+        mycust[19] = customerNotes;                                             // notes string        
         mycust[20] = jCheckVisible.isSelected();                                // visible flag
         mycust[21] = null;                                                      // curdate string
         mycust[22] = 0.0;                                                       // curdate double    
         mycust[23] = null;                                                      // image
         mycust[24] = false;                                                     // isvip
-        mycust[25] = 0.0;                                                       // discount
+        mycust[25] = customerDiscount;                                          // discount
         
         try {
             if ("new".equals(cType)) {
@@ -708,16 +751,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
         jComboEmail = new javax.swing.JComboBox();
         jComboPhone = new javax.swing.JComboBox();
         jComboPhone2 = new javax.swing.JComboBox();
-        jCheckVisible = new javax.swing.JCheckBox();
-        jbtnReset = new javax.swing.JButton();
-        jbtnImport = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
@@ -725,6 +764,20 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
         jLabel23 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jComboCard = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jComboMaxdebt = new javax.swing.JComboBox<>();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jComboDiscount = new javax.swing.JComboBox<>();
+        jLabel15 = new javax.swing.JLabel();
+        jComboNotes = new javax.swing.JComboBox<>();
+        jLabel16 = new javax.swing.JLabel();
+        jComboFax = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        jCheckVisible = new javax.swing.JCheckBox();
+        jbtnReset = new javax.swing.JButton();
+        jbtnImport = new javax.swing.JButton();
 
         setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         setOpaque(false);
@@ -760,7 +813,7 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
             .addGroup(jFileChooserPanelLayout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jFileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnFileChoose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(120, 120, 120))
@@ -1151,30 +1204,6 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
             }
         });
 
-        jCheckVisible.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jCheckVisible.setSelected(true);
-        jCheckVisible.setEnabled(false);
-        jCheckVisible.setPreferredSize(new java.awt.Dimension(30, 30));
-
-        jbtnReset.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jbtnReset.setText(bundle.getString("button.reset")); // NOI18N
-        jbtnReset.setPreferredSize(new java.awt.Dimension(110, 45));
-        jbtnReset.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnResetActionPerformed(evt);
-            }
-        });
-
-        jbtnImport.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jbtnImport.setText(bundle.getString("label.csvimpostbtn")); // NOI18N
-        jbtnImport.setEnabled(false);
-        jbtnImport.setPreferredSize(new java.awt.Dimension(110, 45));
-        jbtnImport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnImportActionPerformed(evt);
-            }
-        });
-
         jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel3.setText(bundle.getString("label.taxid")); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -1198,11 +1227,6 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
         jLabel7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel7.setText(bundle.getString("label.city")); // NOI18N
         jLabel7.setPreferredSize(new java.awt.Dimension(100, 30));
-
-        jLabel8.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel8.setText(bundle.getString("label.visible")); // NOI18N
-        jLabel8.setPreferredSize(new java.awt.Dimension(100, 30));
 
         jLabel20.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel20.setText(bundle.getString("label.address2")); // NOI18N
@@ -1232,21 +1256,90 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
         jLabel12.setText(bundle.getString("label.lastname")); // NOI18N
         jLabel12.setPreferredSize(new java.awt.Dimension(100, 30));
 
+        jComboCard.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jComboCard.setEnabled(false);
+        jComboCard.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboCardItemStateChanged(evt);
+            }
+        });
+        jComboCard.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jComboCardFocusGained(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel2.setText("Tarjeta");
+
+        jComboMaxdebt.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jComboMaxdebt.setEnabled(false);
+        jComboMaxdebt.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboMaxdebtItemStateChanged(evt);
+            }
+        });
+        jComboMaxdebt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jComboMaxdebtFocusGained(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel13.setText("Deuda Máxima");
+
+        jLabel14.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel14.setText("Descuento");
+
+        jComboDiscount.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jComboDiscount.setEnabled(false);
+        jComboDiscount.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboDiscountItemStateChanged(evt);
+            }
+        });
+        jComboDiscount.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jComboDiscountFocusGained(evt);
+            }
+        });
+
+        jLabel15.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel15.setText("Nota");
+
+        jComboNotes.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jComboNotes.setEnabled(false);
+        jComboNotes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboNotesItemStateChanged(evt);
+            }
+        });
+        jComboNotes.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jComboNotesFocusGained(evt);
+            }
+        });
+
+        jLabel16.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel16.setText("Fax");
+
+        jComboFax.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jComboFax.setEnabled(false);
+        jComboFax.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboFaxItemStateChanged(evt);
+            }
+        });
+        jComboFax.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jComboFaxFocusGained(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckVisible, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jbtnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(jbtnImport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(93, 93, 93))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -1278,36 +1371,54 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                                 .addComponent(jComboAddress2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboPhone2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jComboFax, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboNotes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboDiscount, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jComboPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jComboEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jComboLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jComboFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jComboRegion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboPostal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                                .addComponent(jComboPostal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jComboMaxdebt, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jComboPhone2, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jComboCard, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1361,21 +1472,62 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                     .addComponent(jComboPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboPhone2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboPhone2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckVisible, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboCard, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(jComboMaxdebt))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtnImport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(74, Short.MAX_VALUE))
+                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(jComboDiscount, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(jComboNotes, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(jComboFax, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
+                .addGap(190, 190, 190))
         );
 
         jScrollPane1.setViewportView(jPanel1);
+
+        jLabel8.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel8.setText(bundle.getString("label.visible")); // NOI18N
+        jLabel8.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        jCheckVisible.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jCheckVisible.setSelected(true);
+        jCheckVisible.setEnabled(false);
+        jCheckVisible.setPreferredSize(new java.awt.Dimension(30, 30));
+
+        jbtnReset.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jbtnReset.setText(bundle.getString("button.reset")); // NOI18N
+        jbtnReset.setPreferredSize(new java.awt.Dimension(110, 45));
+        jbtnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnResetActionPerformed(evt);
+            }
+        });
+
+        jbtnImport.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jbtnImport.setText(bundle.getString("label.csvimpostbtn")); // NOI18N
+        jbtnImport.setEnabled(false);
+        jbtnImport.setPreferredSize(new java.awt.Dimension(110, 45));
+        jbtnImport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnImportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -1389,16 +1541,25 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(138, 138, 138)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(122, 122, 122)
                                 .addComponent(jbtnRead, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(webPBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(11, Short.MAX_VALUE))
+                            .addComponent(webPBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCheckVisible, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jbtnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(jbtnImport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1416,8 +1577,16 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCheckVisible, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jbtnImport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap())
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1492,7 +1661,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())                    
                 ) 
             {
 
@@ -1551,7 +1725,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
 //                & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())                    
                 ) 
             {
 
@@ -1601,7 +1780,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())                    
                 ) 
             {
 
@@ -1636,7 +1820,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())                    
                 ) 
             {
 
@@ -1671,7 +1860,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())                    
                 ) 
             {
 
@@ -1706,7 +1900,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())                    
                 ) 
             {
 
@@ -1741,7 +1940,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())                    
                 ) 
             {
 
@@ -1776,7 +1980,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())                    
                 ) 
             {
 
@@ -1811,7 +2020,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem()) 
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())
                 ) 
             {
 
@@ -1846,7 +2060,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())                    
                 ) 
             {
 
@@ -1875,7 +2094,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
 //                & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem()) 
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())                    
                 ) 
             {
 
@@ -1904,7 +2128,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
 //                & (Headers.get(i) != jComboPhone.getSelectedItem())
-                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())      
                 ) 
             {
 
@@ -1933,7 +2162,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
                 & (Headers.get(i) != jComboLastName.getSelectedItem())
                 & (Headers.get(i) != jComboEmail.getSelectedItem())
                 & (Headers.get(i) != jComboPhone.getSelectedItem())
-//                & (Headers.get(i) != jComboPhone2.getSelectedItem())                    
+//                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())                    
                 ) 
             {
 
@@ -1943,16 +2177,211 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
         }
     }//GEN-LAST:event_jComboPhone2FocusGained
 
+    private void jComboCardFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboCardFocusGained
+        jComboCard.removeAllItems();
+        int i = 1;
+        jComboCard.addItem("");
+
+        while (i < Headers.size()) {
+            if ((Headers.get(i) 
+                != jComboSearchKey.getSelectedItem())
+                & (Headers.get(i) != jComboAccountID.getSelectedItem())
+                & (Headers.get(i) != jComboName.getSelectedItem())
+                & (Headers.get(i) != jComboAddress1.getSelectedItem())
+                & (Headers.get(i) != jComboAddress2.getSelectedItem())
+                & (Headers.get(i) != jComboPostal.getSelectedItem())                    
+                & (Headers.get(i) != jComboCity.getSelectedItem())
+                & (Headers.get(i) != jComboRegion.getSelectedItem())
+                & (Headers.get(i) != jComboFirstName.getSelectedItem())
+                & (Headers.get(i) != jComboLastName.getSelectedItem())
+                & (Headers.get(i) != jComboEmail.getSelectedItem())
+                & (Headers.get(i) != jComboPhone.getSelectedItem())
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+//              & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())
+                ) 
+            {
+
+                jComboCard.addItem(Headers.get(i));
+            }
+            ++i;
+        }   
+    }//GEN-LAST:event_jComboCardFocusGained
+
+    private void jComboCardItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboCardItemStateChanged
+        checkFieldMapping();
+    }//GEN-LAST:event_jComboCardItemStateChanged
+
+    private void jComboMaxdebtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboMaxdebtFocusGained
+        jComboMaxdebt.removeAllItems();
+        int i = 1;
+        jComboMaxdebt.addItem("");
+
+        while (i < Headers.size()) {
+            if ((Headers.get(i) 
+                != jComboSearchKey.getSelectedItem())
+                & (Headers.get(i) != jComboAccountID.getSelectedItem())
+                & (Headers.get(i) != jComboName.getSelectedItem())
+                & (Headers.get(i) != jComboAddress1.getSelectedItem())
+                & (Headers.get(i) != jComboAddress2.getSelectedItem())
+                & (Headers.get(i) != jComboPostal.getSelectedItem())                    
+                & (Headers.get(i) != jComboCity.getSelectedItem())
+                & (Headers.get(i) != jComboRegion.getSelectedItem())
+                & (Headers.get(i) != jComboFirstName.getSelectedItem())
+                & (Headers.get(i) != jComboLastName.getSelectedItem())
+                & (Headers.get(i) != jComboEmail.getSelectedItem())
+                & (Headers.get(i) != jComboPhone.getSelectedItem())
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+ //             & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())
+                ) 
+            {
+
+                jComboMaxdebt.addItem(Headers.get(i));
+            }
+            ++i;
+        }          
+    }//GEN-LAST:event_jComboMaxdebtFocusGained
+
+    private void jComboMaxdebtItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboMaxdebtItemStateChanged
+        checkFieldMapping();
+    }//GEN-LAST:event_jComboMaxdebtItemStateChanged
+
+    private void jComboDiscountFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboDiscountFocusGained
+        jComboDiscount.removeAllItems();
+        int i = 1;
+        jComboDiscount.addItem("");
+
+        while (i < Headers.size()) {
+            if ((Headers.get(i) 
+                != jComboSearchKey.getSelectedItem())
+                & (Headers.get(i) != jComboAccountID.getSelectedItem())
+                & (Headers.get(i) != jComboName.getSelectedItem())
+                & (Headers.get(i) != jComboAddress1.getSelectedItem())
+                & (Headers.get(i) != jComboAddress2.getSelectedItem())
+                & (Headers.get(i) != jComboPostal.getSelectedItem())                    
+                & (Headers.get(i) != jComboCity.getSelectedItem())
+                & (Headers.get(i) != jComboRegion.getSelectedItem())
+                & (Headers.get(i) != jComboFirstName.getSelectedItem())
+                & (Headers.get(i) != jComboLastName.getSelectedItem())
+                & (Headers.get(i) != jComboEmail.getSelectedItem())
+                & (Headers.get(i) != jComboPhone.getSelectedItem())
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+ //             & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())
+                ) 
+            {
+
+                jComboDiscount.addItem(Headers.get(i));
+            }
+            ++i;
+        }  
+    }//GEN-LAST:event_jComboDiscountFocusGained
+
+    private void jComboDiscountItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboDiscountItemStateChanged
+        checkFieldMapping();
+    }//GEN-LAST:event_jComboDiscountItemStateChanged
+
+    private void jComboNotesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboNotesFocusGained
+        jComboNotes.removeAllItems();
+        int i = 1;
+        jComboNotes.addItem("");
+
+        while (i < Headers.size()) {
+            if ((Headers.get(i) 
+                != jComboSearchKey.getSelectedItem())
+                & (Headers.get(i) != jComboAccountID.getSelectedItem())
+                & (Headers.get(i) != jComboName.getSelectedItem())
+                & (Headers.get(i) != jComboAddress1.getSelectedItem())
+                & (Headers.get(i) != jComboAddress2.getSelectedItem())
+                & (Headers.get(i) != jComboPostal.getSelectedItem())                    
+                & (Headers.get(i) != jComboCity.getSelectedItem())
+                & (Headers.get(i) != jComboRegion.getSelectedItem())
+                & (Headers.get(i) != jComboFirstName.getSelectedItem())
+                & (Headers.get(i) != jComboLastName.getSelectedItem())
+                & (Headers.get(i) != jComboEmail.getSelectedItem())
+                & (Headers.get(i) != jComboPhone.getSelectedItem())
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+ //             & (Headers.get(i) != jComboNotes.getSelectedItem())
+                & (Headers.get(i) != jComboFax.getSelectedItem())
+                ) 
+            {
+
+                jComboNotes.addItem(Headers.get(i));
+            }
+            ++i;
+        } 
+    }//GEN-LAST:event_jComboNotesFocusGained
+
+    private void jComboNotesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboNotesItemStateChanged
+       checkFieldMapping(); 
+    }//GEN-LAST:event_jComboNotesItemStateChanged
+
+    private void jComboFaxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboFaxFocusGained
+        jComboFax.removeAllItems();
+        int i = 1;
+        jComboFax.addItem("");
+
+        while (i < Headers.size()) {
+            if ((Headers.get(i) 
+                != jComboSearchKey.getSelectedItem())
+                & (Headers.get(i) != jComboAccountID.getSelectedItem())
+                & (Headers.get(i) != jComboName.getSelectedItem())
+                & (Headers.get(i) != jComboAddress1.getSelectedItem())
+                & (Headers.get(i) != jComboAddress2.getSelectedItem())
+                & (Headers.get(i) != jComboPostal.getSelectedItem())                    
+                & (Headers.get(i) != jComboCity.getSelectedItem())
+                & (Headers.get(i) != jComboRegion.getSelectedItem())
+                & (Headers.get(i) != jComboFirstName.getSelectedItem())
+                & (Headers.get(i) != jComboLastName.getSelectedItem())
+                & (Headers.get(i) != jComboEmail.getSelectedItem())
+                & (Headers.get(i) != jComboPhone.getSelectedItem())
+                & (Headers.get(i) != jComboPhone2.getSelectedItem())
+                & (Headers.get(i) != jComboCard.getSelectedItem())
+                & (Headers.get(i) != jComboMaxdebt.getSelectedItem())
+                & (Headers.get(i) != jComboDiscount.getSelectedItem())
+                & (Headers.get(i) != jComboNotes.getSelectedItem())
+ //             & (Headers.get(i) != jComboFax.getSelectedItem())
+                ) 
+            {
+
+                jComboFax.addItem(Headers.get(i));
+            }
+            ++i;
+        } 
+    }//GEN-LAST:event_jComboFaxFocusGained
+
+    private void jComboFaxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboFaxItemStateChanged
+        checkFieldMapping(); 
+    }//GEN-LAST:event_jComboFaxItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jCheckVisible;
     private javax.swing.JComboBox jComboAccountID;
     private javax.swing.JComboBox jComboAddress1;
     private javax.swing.JComboBox jComboAddress2;
+    private javax.swing.JComboBox<String> jComboCard;
     private javax.swing.JComboBox jComboCity;
+    private javax.swing.JComboBox<String> jComboDiscount;
     private javax.swing.JComboBox jComboEmail;
+    private javax.swing.JComboBox<String> jComboFax;
     private javax.swing.JComboBox jComboFirstName;
     private javax.swing.JComboBox jComboLastName;
+    private javax.swing.JComboBox<String> jComboMaxdebt;
     private javax.swing.JComboBox jComboName;
+    private javax.swing.JComboBox<String> jComboNotes;
     private javax.swing.JComboBox jComboPhone;
     private javax.swing.JComboBox jComboPhone2;
     private javax.swing.JComboBox jComboPostal;
@@ -1965,7 +2394,12 @@ public class CustomerCSVImport extends JPanel implements JPanelView {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;

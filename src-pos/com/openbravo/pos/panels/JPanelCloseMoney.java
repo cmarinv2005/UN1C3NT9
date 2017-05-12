@@ -52,7 +52,7 @@ import javax.swing.table.TableColumnModel;
  *
  * @author adrianromero
  */
-public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryApp {
+public class JPanelCloseMoney extends javax.swing.JPanel implements JPanelView, BeanFactoryApp {
     
     private AppView m_App;
     private DataLogicSystem m_dlSystem;

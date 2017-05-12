@@ -29,6 +29,9 @@ import com.openbravo.pos.forms.AppView;
 import java.awt.Component;
 import java.util.Date;
 import java.util.UUID;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 
 /**
@@ -321,7 +324,7 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(m_jNotes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(93, 93, 93))
         );
 
         add(jPanel3, java.awt.BorderLayout.CENTER);
