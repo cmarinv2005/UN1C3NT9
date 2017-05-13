@@ -285,6 +285,253 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }  
         }    
     }
+    
+    private void crearCliente() {                
+                JDialogNewCustomer dialog = JDialogNewCustomer.getDialog(this,m_App);
+                dialog.setVisible(true);
+       
+                CustomerInfoExt m_customerInfo = dialog.getSelectedCustomer();
+                if (dialog.getSelectedCustomer()!=null){
+                    try {
+                        m_oTicket.setCustomer(dlSales.loadCustomerExt
+                                    (dialog.getSelectedCustomer().getId())); 
+                    } catch (BasicException ex) {
+                        Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }                   
+           refreshTicket(); 
+     }
+    
+    private void buscarCliente() {         
+         if (listener  != null) { 
+            listener.stop(); 
+         }      
+            JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
+            if (m_oTicket.getCustomerId() == null) {
+                finder.setAppView(m_App);
+                finder.search(m_oTicket.getCustomer());
+                finder.executeSearch();        
+                finder.setVisible(true);
+                if (finder.getSelectedCustomer() != null) {
+                    try {
+                        m_oTicket.setCustomer(dlSales.loadCustomerExt
+                            (finder.getSelectedCustomer().getId()));
+                        if ("restaurant".equals(m_App.getProperties().getProperty("machine.ticketsbag"))) {
+                            restDB.setCustomerNameInTableByTicketId(dlSales.loadCustomerExt
+                                (finder.getSelectedCustomer().getId()).toString(), m_oTicket.getId());
+                        }                        
+                            checkCustomer();
+                        m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
+                                
+                    } catch (BasicException e) {
+                        MessageInf msg = new MessageInf(MessageInf.SGN_WARNING,
+                            AppLocal.getIntString("message.cannotfindcustomer"), e);
+                        msg.show(this);
+                    }
+                } else {
+                    restDB.setCustomerNameInTableByTicketId(null, m_oTicket.getId());
+                    m_oTicket.setCustomer(null);
+                    Notify("notify.customerremove");                    
+                }
+            } else {
+                if (JOptionPane.showConfirmDialog(this,
+                    AppLocal.getIntString("message.customerchange"),
+                    AppLocal.getIntString("title.editor"),
+                    JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+                    finder.setAppView(m_App);
+                    finder.search(m_oTicket.getCustomer());
+                    finder.executeSearch();
+                    finder.setVisible(true);
+                    if (finder.getSelectedCustomer() != null) {
+                        try {
+                            m_oTicket.setCustomer(dlSales.loadCustomerExt
+                               (finder.getSelectedCustomer().getId()));
+                            if ("restaurant".equals(m_App.getProperties().getProperty("machine.ticketsbag"))) {
+                                restDB.setCustomerNameInTableByTicketId(dlSales.loadCustomerExt
+                                    (finder.getSelectedCustomer().getId()).toString(), m_oTicket.getId());
+                            }
+                            checkCustomer();
+                            m_jTicketId.setText(m_oTicket.getName());
+                        } catch (BasicException e) {
+                            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING,
+                            AppLocal.getIntString("message.cannotfindcustomer"), e);
+                            msg.show(this);
+                        }
+                    } else {
+                        restDB.setCustomerNameInTableByTicketId(null, m_oTicket.getId());
+                            m_oTicket.setCustomer(null);
+                    }
+                }
+            }
+        refreshTicket();
+     }
+     
+     private void dividirVenta(){       
+         if (m_oTicket.getLinesCount() > 0) {
+            ReceiptSplit splitdialog = ReceiptSplit.getDialog(this,
+                dlSystem.getResourceAsXML("Ticket.Line"), dlSales, dlCustomers, taxeslogic);
+
+            TicketInfo ticket1 = m_oTicket.copyTicket();
+            TicketInfo ticket2 = new TicketInfo();
+            ticket2.setCustomer(m_oTicket.getCustomer());
+
+            if (splitdialog.showDialog(ticket1, ticket2, m_oTicketExt)) {
+                if (closeTicket(ticket2, m_oTicketExt)) { // already checked  that number of lines > 0
+                    setActiveTicket(ticket1, m_oTicketExt);// set result ticket
+                }
+            }
+        }
+     }
+     
+     private void reimprimirTicket(){        
+         if (m_config.getProperty("lastticket.number") != null) {
+            try {
+                TicketInfo ticket = dlSales.loadTicket(
+                        Integer.parseInt((m_config.getProperty("lastticket.type"))), 
+                        Integer.parseInt((m_config.getProperty("lastticket.number"))));
+                if (ticket == null) {
+                    JFrame frame = new JFrame();
+                    JOptionPane.showMessageDialog(frame, 
+                            AppLocal.getIntString("message.notexiststicket"), 
+                            AppLocal.getIntString("message.notexiststickettitle"), 
+                            JOptionPane.WARNING_MESSAGE);
+                } else {
+                    m_ticket = ticket;
+                    m_ticketCopy = null;
+                    try {
+                        taxeslogic.calculateTaxes(m_ticket);
+                        TicketTaxInfo[] taxlist = m_ticket.getTaxLines();
+                    } catch (TaxesException ex) {
+                    }
+                    printTicket("Printer.ReprintTicket", m_ticket, null);  
+                    Notify("'Printed'");
+                }
+            } catch (BasicException e) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotloadticket"), e);
+                msg.show(this);
+            }
+        }
+     }
+     
+     private void eliminarLinea(){       
+         int i = m_ticketlines.getSelectedIndex();
+        
+        if (i < 0){
+            Toolkit.getDefaultToolkit().beep();
+        } else {               
+            removeTicketLine(i);
+            jCheckStock.setText("");
+        }     
+     }
+     
+     private void buscarProductos(){        
+         ProductInfoExt prod = JProductFinder.showMessage(JPanelTicket.this, dlSales);    
+        if (prod != null) {
+            buttonTransition(prod);
+        }
+     }
+     
+     private void editarProductos(){        
+        int i = m_ticketlines.getSelectedIndex();        
+        if (i < 0){
+            Toolkit.getDefaultToolkit().beep(); // no line selected
+        } else {
+            try {
+                TicketLineInfo newline = JProductLineEdit.showMessage(this, m_App, m_oTicket.getLine(i));
+                if (newline != null) {
+                    paintTicketLine(i, newline);
+                }
+                    
+            } catch (BasicException e) {
+                new MessageInf(e).show(this);
+            }
+        }
+     }
+     
+    private void atributosProductos(){        
+         if (listener  != null) {
+            listener.stop();
+        } 
+        int i = m_ticketlines.getSelectedIndex();
+        if (i < 0) {
+            Toolkit.getDefaultToolkit().beep(); // no line selected
+        } else {
+            try {
+                TicketLineInfo line = m_oTicket.getLine(i);
+                JProductAttEdit2 attedit = JProductAttEdit2.getAttributesEditor(this, m_App.getSession());
+                attedit.editAttributes(line.getProductAttSetId(), line.getProductAttSetInstId());
+                attedit.setVisible(true);
+                if (attedit.isOK()) {
+                    line.setProductAttSetInstId(attedit.getAttributeSetInst());
+                    line.setProductAttSetInstDesc(attedit.getAttributeSetInstDescription());
+                    paintTicketLine(i, line);
+                }
+            } catch (BasicException ex) {
+                JOptionPane.showMessageDialog(this, 
+                    AppLocal.getIntString("message.cannotfindattributes"), 
+                    AppLocal.getIntString("message.title"), 
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        if (listener  != null){           
+            listener.restart(); 
+        }
+    }
+    
+    private void consultaInventario(){        
+        if (listener  != null) {
+                listener.stop();
+            }            
+            int i = m_ticketlines.getSelectedIndex();
+            if (i < 0) {
+                Toolkit.getDefaultToolkit().beep();
+            } else {
+                try {
+                    TicketLineInfo line = m_oTicket.getLine(i);
+
+                    String pId = line.getProductID();
+                    ProductStock checkProduct;
+
+                    checkProduct = dlSales.getProductStockState(pId);
+                    
+                    Double pMin;
+                    Double pMax;
+                    
+                    if (checkProduct.getMinimum() != null) { 
+                        pMin = checkProduct.getMinimum();
+                    } else {
+                        pMin = 0.; 
+                    }
+                    if (checkProduct.getMaximum() != null) { 
+                        pMax = checkProduct.getMaximum();
+                    } else {
+                        pMax = 0.; 
+                    }                    
+
+                    String content;
+                    content = "<html>"+
+                        "<b>" + AppLocal.getIntString("label.locationplace") + 
+                            " : " + "</b>" + checkProduct.getLocation() + "<br>" +
+                        "<b>" + AppLocal.getIntString("label.maximum") + 
+                            " : " + "</b>" + pMax + "<br>" +                                        
+                        "<b>" + AppLocal.getIntString("label.minimum") + 
+                            " : " + "</b>" + pMin + "<br>";
+        
+                    JFrame frame = new JFrame();
+                        JOptionPane.showMessageDialog(frame, 
+                        content,                             
+                        "Info", 
+                        JOptionPane.INFORMATION_MESSAGE);  
+                        
+                } catch (BasicException ex) {
+                    Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }       
+       
+            if (listener  != null){           
+                listener.restart(); 
+            } 
+    }
 
     /**
      *
@@ -1208,10 +1455,56 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     } else {
 
             m_sBarcode.append(cTrans);
-
+            
+            //Aqui inicio atajos de teclado personalizados 
+            
+            if ((cTrans == '\u0051') || (cTrans == '\u0071')) {                        //Q Crear cliente
+                stateToZero();
+                crearCliente();
+            }
+            
+            if ((cTrans == '\u0057') || (cTrans == '\u0077')) {                        //'W' Buscar cliente  
+                stateToZero();
+                buscarCliente();
+            }
+            
+            if ((cTrans == '\u0045') || (cTrans == '\u0065')) {                        //'E' Dividir venta  
+                stateToZero();
+                dividirVenta();
+            }
+            
+            if ((cTrans == '\u0052') || (cTrans == '\u0072')) {                         //R Reimprmir recibo
+                stateToZero();
+                reimprimirTicket();
+            }
+            
+            if ((cTrans == '\u0041') || (cTrans == '\u0061')) {                          //A Eliminar linea
+                stateToZero();
+                eliminarLinea();
+            }
+            
+            if ((cTrans == '\u0053') || (cTrans == '\u0073')) {                           //S Buscar productos
+                stateToZero();
+                buscarProductos();
+            }
+            
+            if ((cTrans == '\u0044') || (cTrans == '\u0064')) {                          //D Edicion de productos
+                stateToZero();
+                editarProductos();
+            }
+             
+            if ((cTrans == '\u0046') || (cTrans == '\u0066')) {                          //F Atributos de productos
+                stateToZero();
+                atributosProductos();
+            }
+            
+            if ((cTrans == '\u0049') || (cTrans == '\u0069')) {                          //I Consultar Inventario
+                stateToZero(); 
+                consultaInventario();
+            }            
+             
             if (cTrans == '\u007f') { 
                 stateToZero();
-
             } else if ((cTrans == '0') && (m_iNumberStatus == NUMBER_INPUTZERO)) {
                 m_jPrice.setText(Character.toString('0'));
  
@@ -2862,7 +3155,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     }//GEN-LAST:event_btnSplitActionPerformed
 
     private void jCheckStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckStockActionPerformed
-
+        
         if (listener  != null) {
             listener.stop();
         } 
@@ -2969,97 +3262,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         // TODO add your handling code here:
          if (listener  != null) { 
             listener.stop(); 
-        }
-       
+        }       
         if(webCBCustomer.getSelectedIndex() == 0){
-
-            JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
-
-            if (m_oTicket.getCustomerId() == null) {
-                finder.setAppView(m_App);
-                finder.search(m_oTicket.getCustomer());
-                finder.executeSearch();        
-                finder.setVisible(true);
-
-                if (finder.getSelectedCustomer() != null) {
-                    try {
-                        m_oTicket.setCustomer(dlSales.loadCustomerExt
-                            (finder.getSelectedCustomer().getId()));
-                        if ("restaurant".equals(m_App.getProperties().getProperty("machine.ticketsbag"))) {
-                            restDB.setCustomerNameInTableByTicketId(dlSales.loadCustomerExt
-                                (finder.getSelectedCustomer().getId()).toString(), m_oTicket.getId());
-
-                        }
-                        
-                            checkCustomer();
-
-                        m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
-                                
-                    } catch (BasicException e) {
-                        MessageInf msg = new MessageInf(MessageInf.SGN_WARNING,
-                            AppLocal.getIntString("message.cannotfindcustomer"), e);
-                        msg.show(this);
-                    }
-                } else {
-                    restDB.setCustomerNameInTableByTicketId(null, m_oTicket.getId());
-                    m_oTicket.setCustomer(null);
-                    Notify("notify.customerremove");                    
-                }
-
-            } else {
-                if (JOptionPane.showConfirmDialog(this,
-                    AppLocal.getIntString("message.customerchange"),
-                    AppLocal.getIntString("title.editor"),
-                    JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-
-                    finder.setAppView(m_App);
-                    finder.search(m_oTicket.getCustomer());
-                    finder.executeSearch();
-                    finder.setVisible(true);
-
-                    if (finder.getSelectedCustomer() != null) {
-                        try {
-                            m_oTicket.setCustomer(dlSales.loadCustomerExt
-                               (finder.getSelectedCustomer().getId()));
-                            if ("restaurant".equals(m_App.getProperties().getProperty("machine.ticketsbag"))) {
-                                restDB.setCustomerNameInTableByTicketId(dlSales.loadCustomerExt
-                                    (finder.getSelectedCustomer().getId()).toString(), m_oTicket.getId());
-                            }
-
-                            checkCustomer();
-
-                            m_jTicketId.setText(m_oTicket.getName());
-
-                        } catch (BasicException e) {
-                            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING,
-                            AppLocal.getIntString("message.cannotfindcustomer"), e);
-                            msg.show(this);
-                        }
-                    } else {
-                        restDB.setCustomerNameInTableByTicketId(null, m_oTicket.getId());
-                            m_oTicket.setCustomer(null);
-                    }
-                }
-            }
-           
+            buscarCliente();          
         } else {
-            if(webCBCustomer.getSelectedIndex() == 1){
-                JDialogNewCustomer dialog = JDialogNewCustomer.getDialog(this,m_App);
-                dialog.setVisible(true);
-       
-                CustomerInfoExt m_customerInfo = dialog.getSelectedCustomer();
-                if (dialog.getSelectedCustomer()!=null){
-                    try {
-                        m_oTicket.setCustomer(dlSales.loadCustomerExt
-                                    (dialog.getSelectedCustomer().getId())); 
-                    } catch (BasicException ex) {
-                        Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }                
-            }
-        }
-            refreshTicket(); 
-        
+        if(webCBCustomer.getSelectedIndex() == 1){
+            crearCliente();     
+        }      
+       }  
+     refreshTicket(); 
     }//GEN-LAST:event_webCBCustomerActionPerformed
 
     private void webCBCustomerKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_webCBCustomerKeyReleased
