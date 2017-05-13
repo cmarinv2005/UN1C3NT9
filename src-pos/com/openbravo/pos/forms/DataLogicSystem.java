@@ -47,6 +47,7 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     protected SentenceList m_permissionlist;
     protected SerializerRead productIdRead;
     protected SerializerRead customerIdRead;    
+    protected SerializerRead supplierIdRead; 
     
     private SentenceFind m_rolepermissions; 
     private SentenceExec m_changepassword;    
@@ -61,11 +62,17 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     private SentenceFind m_getProductByCode;    
     private SentenceFind m_getProductByName;    
 
-    private SentenceExec m_insertCustomerCSVEntry;    
+    private SentenceExec m_insertCustomerCSVEntry;  
     private SentenceFind m_getCustomerAllFields;
     private SentenceFind m_getCustomerSearchKeyAndName;    
     private SentenceFind m_getCustomerBySearchKey;
-    private SentenceFind m_getCustomerByName;      
+    private SentenceFind m_getCustomerByName; 
+    
+    private SentenceExec m_insertSupplierCSVEntry; 
+    private SentenceFind m_getSupplierAllFields;
+    private SentenceFind m_getSupplierSearchKeyAndName;    
+    private SentenceFind m_getSupplierBySearchKey;
+    private SentenceFind m_getSupplierByName; 
     
     private SentenceFind m_resourcebytes;
     private SentenceExec m_resourcebytesinsert;
@@ -203,7 +210,47 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
 		, customerIdRead
                 );     
       
- // END OF CUSTOMER ******************************************************************      
+ // END OF CUSTOMER ****************************************************************** 
+ 
+ // START OF SUPPLIER ***********************************************************        
+        supplierIdRead =new SerializerRead() {
+            @Override
+            public String readValues(DataRead dr) throws BasicException {
+                return (                       
+                        dr.getString(1)
+                       );                
+            }};
+// duplicate this for now as will extend in future release 
+ 	m_getSupplierAllFields = new PreparedSentence(s
+		, "SELECT ID FROM suppliers WHERE SEARCHKEY=? AND NAME=? "
+		, new SerializerWriteBasic(new Datas[] {
+                    Datas.STRING, Datas.STRING})
+		, supplierIdRead
+                );
+    
+       m_getSupplierSearchKeyAndName  = new PreparedSentence(s
+		, "SELECT ID FROM suppliers WHERE SEARCHKEY=? AND NAME=? "
+		, new SerializerWriteBasic(new Datas[] {
+                    Datas.STRING, Datas.STRING})
+		, supplierIdRead
+                );      
+
+      m_getSupplierBySearchKey  = new PreparedSentence(s
+		, "SELECT ID FROM suppliers WHERE SEARCHKEY=? "
+		, SerializerWriteString.INSTANCE
+		, supplierIdRead
+                ); 
+
+      m_getSupplierByName  = new PreparedSentence(s
+		, "SELECT ID FROM suppliers WHERE NAME=? "
+		, SerializerWriteString.INSTANCE
+		, supplierIdRead
+                );     
+      
+ // END OF SUPPLIER ****************************************************************** 
+ 
+ 
+ 
        
         m_peoplevisible = new StaticSentence(s
             , "SELECT ID, NAME, APPPASSWORD, CARD, ROLE, IMAGE FROM people WHERE VISIBLE = " + s.DB.TRUE() + " ORDER BY NAME"
@@ -343,6 +390,20 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
                     Datas.STRING,
                     Datas.STRING
                 }));
+        
+//  Push Suppliers into CSVImport table      
+        m_insertSupplierCSVEntry = new StaticSentence(s
+                , "INSERT INTO csvimport ( "
+                        + "ID, ROWNUMBER, CSVERROR, SEARCHKEY, NAME) " +
+                  "VALUES (?, ?, ?, ?, ?)"
+                , new SerializerWriteBasic(new Datas[] {
+                    Datas.STRING,
+                    Datas.STRING,
+                    Datas.STRING,
+                    Datas.STRING,
+                    Datas.STRING
+                }));        
+        
         
         resetResourcesCache();        
     }
@@ -672,6 +733,16 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
         
     }    
     
+    /**
+     *
+     * @param csv
+     * @throws BasicException
+     */
+    public final void execSupplierAddCSVEntry(Object[] csv) throws BasicException {
+        m_insertSupplierCSVEntry.exec(csv);
+        
+    }    
+    
    
 // This is used by CSVimport to detect what type of product insert we are looking at, or what error occured
 
@@ -739,7 +810,35 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
         }       
        
         return "new";
+    }
+    
+     /**
+     *
+     * @param mySupplier
+     * @return
+     * @throws BasicException
+    */
+    public final String getSupplierRecordType(Object[] mySupplier) throws BasicException {
+
+        if (m_getSupplierAllFields.find(mySupplier) != null){
+            return m_getSupplierAllFields.find(mySupplier).toString();
+        } 
+
+        if (m_getSupplierSearchKeyAndName.find(mySupplier[0],mySupplier[1]) != null){
+            return "reference error";
+        }
+        
+        if (m_getSupplierBySearchKey.find(mySupplier[0]) != null){
+            return "Duplicate Search Key found.";
+        }       
+       
+        if (m_getSupplierByName.find(mySupplier[1]) != null){
+            return "Duplicate Name found.";
+        }       
+       
+        return "new";
     } 
+        
         
         
     public final SentenceList getVouchersActiveList() {

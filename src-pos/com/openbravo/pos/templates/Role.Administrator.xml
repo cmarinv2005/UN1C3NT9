@@ -164,7 +164,8 @@
 
 <class name="com.openbravo.pos.imports.JPanelCSV"/>
     <class name="com.openbravo.pos.imports.JPanelCSVImport"/>
-    <class name="com.openbravo.pos.imports.CustomerCSVImport"/>    
+    <class name="com.openbravo.pos.imports.CustomerCSVImport"/>
+    <class name="com.openbravo.pos.imports.SuppliersCSVImport"/>     
     <class name="com.openbravo.pos.imports.JPanelCSVCleardb"/>
     <class name="com.unicenta.pos.transfer.Transfer"/>    
             <class name="/com/openbravo/reports/badprice.bs"/>

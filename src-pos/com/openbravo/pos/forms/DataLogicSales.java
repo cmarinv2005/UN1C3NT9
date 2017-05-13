@@ -59,6 +59,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
     
     protected Row productsRow;
     protected Row customersRow;
+    protected Row suppliersRow;
 
     private String pName;
     private Double getTotal;
@@ -166,7 +167,32 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 new Field("IMAGE", Datas.BYTES, Formats.NULL),
                 new Field("ISVIP", Datas.BOOLEAN, Formats.BOOLEAN),
                 new Field("DISCOUNT", Datas.DOUBLE, Formats.CURRENCY)             
-        );        
+        );  
+        
+        suppliersRow = new Row(
+                new Field("ID", Datas.STRING, Formats.STRING),
+                new Field("SEARCHKEY", Datas.STRING, Formats.STRING),
+                new Field("TAXID", Datas.STRING, Formats.STRING),
+                new Field("NAME", Datas.STRING, Formats.STRING),           
+                new Field("MAXDEBT", Datas.DOUBLE, Formats.CURRENCY),
+                new Field("ADDRESS", Datas.STRING, Formats.STRING),
+                new Field("ADDRESS2", Datas.STRING, Formats.STRING),
+                new Field("POSTAL", Datas.STRING, Formats.STRING),
+                new Field("CITY", Datas.STRING, Formats.STRING),
+                new Field("REGION", Datas.STRING, Formats.STRING),
+                new Field("COUNTRY", Datas.STRING, Formats.STRING),
+                new Field("FIRSTNAME", Datas.STRING, Formats.STRING),
+                new Field("LASTNAME", Datas.STRING, Formats.STRING),
+                new Field("EMAIL", Datas.STRING, Formats.STRING),
+                new Field("PHONE", Datas.STRING, Formats.STRING),                                                     
+                new Field("PHONE2", Datas.STRING, Formats.STRING),
+                new Field("FAX", Datas.STRING, Formats.STRING),
+                new Field("NOTES", Datas.STRING, Formats.STRING),
+                new Field("VISIBLE", Datas.BOOLEAN, Formats.BOOLEAN),                
+                new Field("CURDATE", Datas.STRING, Formats.TIMESTAMP),
+                new Field("CURDEBT", Datas.DOUBLE, Formats.CURRENCY),              
+                new Field("VATID", Datas.STRING, Formats.STRING)               
+        );
         
     }
 
@@ -215,6 +241,10 @@ public class DataLogicSales extends BeanFactoryDataSingle {
     public final Row getCustomersRow() {
         return customersRow;
     }    
+    
+    public final Row getSuppliersRow() {
+        return suppliersRow;
+    } 
     
     /**
      *
@@ -1175,6 +1205,43 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "FROM customers WHERE ID = ?"
 		, SerializerWriteString.INSTANCE
 		, new CustomerExtRead()).find(id);
+    }
+    
+    
+        /**
+     *
+     * @param id
+     * @return
+     * @throws BasicException
+     */
+    public final SupplierInfoExt getSupplierInfo(String id) throws BasicException {
+	return (SupplierInfoExt) new PreparedSentence(s
+		, "SELECT "
+                + "ID, "
+                + "SEARCHKEY, "
+                + "TAXID, "
+                + "NAME, "          
+                + "MAXDEBT, "
+                + "ADDRESS, "
+                + "ADDRESS2, "
+                + "POSTAL, "                        
+                + "CITY, "
+                + "REGION, "
+                + "COUNTRY, "
+                + "FIRSTNAME, "
+                + "LASTNAME, "
+                + "EMAIL, "                          
+                + "PHONE, "
+                + "PHONE2, "
+                + "FAX, "
+                + "NOTES, "
+                + "VISIBLE, "
+                + "CURDATE, "
+                + "CURDEBT, " 
+				+ "VATID "               
+                + "FROM suppliers WHERE ID = ?"
+		, SerializerWriteString.INSTANCE
+		, new SupplierExtRead()).find(id);
     }
     
     /**
@@ -2651,6 +2718,54 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 	};
     }
 
+    public final SentenceExec getSupplierInsert() {
+	return new SentenceExecTransaction(s) {
+        @Override
+	public int execInTransaction(Object params) throws BasicException {
+            Object[] values = (Object[]) params;
+                int i = new PreparedSentence(s
+                , "INSERT INTO suppliers ("				
+		    + "ID, "
+                    + "SEARCHKEY, "
+                    + "TAXID, " 
+                    + "NAME, "
+                    + "MAXDEBT, "
+                    + "ADDRESS, "
+                    + "ADDRESS2, "
+                    + "POSTAL, "
+                    + "CITY, "
+                    + "REGION, "
+                    + "COUNTRY, "
+                    + "FIRSTNAME, "
+                    + "LASTNAME, "
+                    + "EMAIL, "
+                    + "PHONE, "
+                    + "PHONE2, "
+                    + "FAX, "
+                    + "NOTES, "
+                    + "VISIBLE, "
+                    + "CURDATE, "
+                    + "CURDEBT, "
+                    + "VATID ) "  
+                    + "VALUES ("
+                    + "?, ?, ?, ?, ?, ?, "
+                    + "?, ?, ?, ?, ?, ?, "
+                    + "?, ?, ?, ?, ?, ?, "
+                    + "?, ?, ?, ?)"
+		, new SerializerWriteBasicExt(suppliersRow.getDatas(), 
+                new int[]{0, 
+                    1, 2, 3, 4, 5, 6, 
+                    7, 8, 9, 10, 11, 12, 
+                    13, 14, 15, 16, 17, 18,
+                    19, 20, 21}))
+                    
+                    .exec(params);
+                    return i;
+	}
+	};
+    }
+
+    
     /**
      *
      * @return
@@ -2723,6 +2838,76 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             }
 	};
     }
+    
+    /**
+     *
+     * @return
+     */
+    public final SentenceExec getSupplierUpdate() {
+	return new SentenceExecTransaction(s) {
+        @Override
+        public int execInTransaction(Object params) throws BasicException {
+            Object[] values = (Object[]) params;
+		int i = new PreparedSentence(s
+                , "UPDATE suppliers SET "
+                    + "ID, "
+                    + "SEARCHKEY, "
+                    + "TAXID, " 
+                    + "NAME, "
+                    + "MAXDEBT, "
+                    + "ADDRESS, "
+                    + "ADDRESS2, "
+                    + "POSTAL, "
+                    + "CITY, "
+                    + "REGION, "
+                    + "COUNTRY, "
+                    + "FIRSTNAME, "
+                    + "LASTNAME, "
+                    + "EMAIL, "
+                    + "PHONE, "
+                    + "PHONE2, "
+                    + "FAX, "
+                    + "NOTES, "
+                    + "VISIBLE, "
+                    + "CURDATE, "
+                    + "CURDEBT, "
+                    + "VATID ) "  
+                    + "WHERE ID = ?"
+		, new SerializerWriteBasicExt(suppliersRow.getDatas(), 
+                        new int[]{0, 
+                            1, 2, 3, 4, 5, 
+                            6, 7, 8, 9, 10, 
+                            11, 12, 13, 14, 15,
+                            16, 17, 18, 19, 20, 
+                            21, 
+                            0}))
+                        .exec(params);
+
+/*                
+ * Use this block workflow as template to pump LOYALTY, MEMBERSHIP & etc
+ * updates to internal or external DB table               
+                if (i > 0) {
+                    if (((Boolean)values[n0])) {
+			if (new PreparedSentence(s
+                                , "UPDATE tablename SET FIELD = ? WHERE CUSTOMER = ?"
+                                , new SerializerWriteBasicExt(customersRow.getDatas()
+                                , new int[] {n1, 0})).exec(params) == 0) {
+                            new PreparedSentence(s
+				, "INSERT INTO other_tablename (CUSTOMER, FIELD) VALUES (?, ?)"
+                                , new SerializerWriteBasicExt(productsRow.getDatas(), new int[] {0, n1})).exec(params);
+                            }
+			} else {
+                            new PreparedSentence(s
+				, "DELETE FROM FIELD WHERE CUSTOMER = ?"
+				, new SerializerWriteBasicExt(customersRow.getDatas(), new int[] {0})).exec(params);
+			}
+		}
+*/                
+		return i;
+            }
+	};
+    }
+
 
     /**
      *
@@ -2735,6 +2920,23 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             return new PreparedSentence(s
                 , "DELETE FROM customers WHERE ID = ?"
                 , new SerializerWriteBasicExt(customersRow.getDatas(), 
+                        new int[] {0}
+                )).exec(params);
+            }
+        };
+    }  
+    
+    /**
+     *
+     * @return
+     */
+    public final SentenceExec getSupplierDelete() {
+        return new SentenceExecTransaction(s) {
+        @Override
+        public int execInTransaction(Object params) throws BasicException {
+            return new PreparedSentence(s
+                , "DELETE FROM suppliers WHERE ID = ?"
+                , new SerializerWriteBasicExt(suppliersRow.getDatas(), 
                         new int[] {0}
                 )).exec(params);
             }
