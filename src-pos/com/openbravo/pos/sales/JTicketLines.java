@@ -459,7 +459,7 @@ public class JTicketLines extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane m_jScrollTableTicket;
-    private javax.swing.JTable m_jTicketTable;
+    public javax.swing.JTable m_jTicketTable;
     // End of variables declaration//GEN-END:variables
     
 }

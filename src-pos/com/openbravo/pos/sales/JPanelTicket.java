@@ -481,7 +481,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private void consultaInventario(){        
         if (listener  != null) {
                 listener.stop();
-            }            
+            } 
+           
             int i = m_ticketlines.getSelectedIndex();
             if (i < 0) {
                 Toolkit.getDefaultToolkit().beep();
@@ -493,9 +494,16 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     ProductStock checkProduct;
 
                     checkProduct = dlSales.getProductStockState(pId);
+                    double dUnits = checkProduct.getUnits();
+                    int iUnits;
+                    iUnits = (int) dUnits;  
                     
                     Double pMin;
                     Double pMax;
+                    Double pBuy;
+                    Double pSell;
+                    pBuy = checkProduct.getPriceBuy();
+                    pSell = checkProduct.getPriceSell(); 
                     
                     if (checkProduct.getMinimum() != null) { 
                         pMin = checkProduct.getMinimum();
@@ -509,19 +517,43 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     }                    
 
                     String content;
+                    
                     content = "<html>"+
-                        "<b>" + AppLocal.getIntString("label.locationplace") + 
-                            " : " + "</b>" + checkProduct.getLocation() + "<br>" +
-                        "<b>" + AppLocal.getIntString("label.maximum") + 
-                            " : " + "</b>" + pMax + "<br>" +                                        
-                        "<b>" + AppLocal.getIntString("label.minimum") + 
-                            " : " + "</b>" + pMin + "<br>";
-        
-                    JFrame frame = new JFrame();
-                        JOptionPane.showMessageDialog(frame, 
-                        content,                             
-                        "Info", 
-                        JOptionPane.INFORMATION_MESSAGE);  
+                            
+           "<table border='3 px'>" +
+            "<caption><font color='red'>Resumen del Producto</font></caption></br>" +                
+            "<tr>" +
+                "<td><b>" + AppLocal.getIntString("label.locale") +"</b></td>" +
+                "<td><b><font color='blue'>" + checkProduct.getLocation() + "</font></td>" +                
+            "</tr>" +
+            "<tr>" +
+                "<td><b>" + AppLocal.getIntString("label.units2") + "</b></td>" +
+                "<td><b<font color='blue'>" + iUnits + "</font></td>" +                
+            "</tr>" +
+            "<tr>" +
+               "<td><b>" + AppLocal.getIntString("label.minimum") + "</b></td>" +
+                "<td><b<font color='blue'>" + pMin + "</font></td>" +                
+            "</tr>" +
+            "<tr>" +
+                "<td><b>" + AppLocal.getIntString("label.maximum") + "</b></td>" +   
+                "<td><b<font color='blue'>" + pMax + "</font></td>" +                
+            "</tr>" +
+            "<tr>" +
+                "<td><b>" + AppLocal.getIntString("label.prodvaluebuy") + "</b></td>" +
+                "<td><b<font color='blue'>" + " $ " + pBuy + "</font></td>" +                 
+            "</tr>" +
+            "<tr>" +
+                "<td><b>" + AppLocal.getIntString("label.prodvaluesell") + "</b></td>" +
+                "<td><b<font color='blue'>" + " $ " + pSell + "</font></td>" +                 
+            "</tr>"  +            
+        "</table>";  
+                                                  
+                      JFrame frame = new JFrame();                  
+                                        
+                      JOptionPane.showMessageDialog(frame, 
+                       content,                             
+                      "Info", 
+                      JOptionPane.INFORMATION_MESSAGE);    
                         
                 } catch (BasicException ex) {
                     Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
@@ -530,7 +562,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
        
             if (listener  != null){           
                 listener.restart(); 
-            } 
+            }       
     }
 
     /**
@@ -913,7 +945,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private void removeTicketLine(int i){
 
         if (executeEventAndRefresh("ticket.removeline", new ScriptArg("index", i)) == null) {
-
+        
             String ticketID = Integer.toString(m_oTicket.getTicketId());
             if (m_oTicket.getTicketId()==0){
                 ticketID="Void";
@@ -933,11 +965,14 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 m_oTicket.removeLine(i);
                 m_ticketlines.removeTicketLine(i);   
             } else {
-                if (i < 1) {
+                  int lines = m_ticketlines.m_jTicketTable.getRowCount();   //Obtengo el número de lineas en la tabla del panel de ventas
+                  if(lines == 1){
                     if (m_App.getAppUserView().getUser().hasPermission("sales.DeleteLines")) {
+                        
                         int input = JOptionPane.showConfirmDialog(this,
                             AppLocal.getIntString("message.deletelineyes")
                             ,AppLocal.getIntString("label.deleteline"), JOptionPane.YES_NO_OPTION);
+                        
                         if (input == 0) {
                             m_oTicket.removeLine(i);
                             m_ticketlines.removeTicketLine(i);
@@ -947,7 +982,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             AppLocal.getIntString("message.deletelineno")
                             ,AppLocal.getIntString("label.deleteline"), JOptionPane.WARNING_MESSAGE);
                     }
-                } else {               
+                } 
+                
+                else {               
                     m_oTicket.removeLine(i);
                     m_ticketlines.removeTicketLine(i); 
 
@@ -1501,8 +1538,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             if ((cTrans == '\u0049') || (cTrans == '\u0069')) {                          //I Consultar Inventario
                 stateToZero(); 
                 consultaInventario();
-            }            
-             
+            }      
+            
+            if ((cTrans == '\u002F') || (cTrans == '\u002F')) {                          //Arriba panel lista
+            m_ticketlines.selectionUp();
+            }
+            
             if (cTrans == '\u007f') { 
                 stateToZero();
             } else if ((cTrans == '0') && (m_iNumberStatus == NUMBER_INPUTZERO)) {
@@ -2426,12 +2467,13 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jPanContainer = new javax.swing.JPanel();
         m_jOptions = new javax.swing.JPanel();
         m_jButtons = new javax.swing.JPanel();
+        webCBCustomer = new com.alee.laf.combobox.WebComboBox();
         btnSplit = new javax.swing.JButton();
         btnReprint1 = new javax.swing.JButton();
-        webCBCustomer = new com.alee.laf.combobox.WebComboBox();
         m_jPanelScripts = new javax.swing.JPanel();
         m_jButtonsExt = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        jCheckStock = new javax.swing.JButton();
         m_jbtnScale = new javax.swing.JButton();
         jbtnMooring = new javax.swing.JButton();
         j_btnRemotePrt = new javax.swing.JButton();
@@ -2439,11 +2481,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jPanTicket = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         m_jDelete = new javax.swing.JButton();
         m_jList = new javax.swing.JButton();
         m_jEditLine = new javax.swing.JButton();
         jEditAttributes = new javax.swing.JButton();
-        jCheckStock = new javax.swing.JButton();
         m_jPanelCentral = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
@@ -2474,45 +2517,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jOptions.setLayout(new java.awt.BorderLayout());
 
-        m_jButtons.setPreferredSize(new java.awt.Dimension(267, 55));
-
-        btnSplit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/sale_split_sml.png"))); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("pos_messages"); // NOI18N
-        btnSplit.setToolTipText(bundle.getString("tooltip.salesplit")); // NOI18N
-        btnSplit.setEnabled(false);
-        btnSplit.setFocusPainted(false);
-        btnSplit.setFocusable(false);
-        btnSplit.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        btnSplit.setMaximumSize(new java.awt.Dimension(50, 40));
-        btnSplit.setMinimumSize(new java.awt.Dimension(50, 40));
-        btnSplit.setPreferredSize(new java.awt.Dimension(80, 45));
-        btnSplit.setRequestFocusEnabled(false);
-        btnSplit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSplitActionPerformed(evt);
-            }
-        });
-
-        btnReprint1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnReprint1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/reprint24.png"))); // NOI18N
-        btnReprint1.setToolTipText(bundle.getString("tooltip.reprintLastTicket")); // NOI18N
-        btnReprint1.setFocusPainted(false);
-        btnReprint1.setFocusable(false);
-        btnReprint1.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        btnReprint1.setMaximumSize(new java.awt.Dimension(50, 40));
-        btnReprint1.setMinimumSize(new java.awt.Dimension(50, 40));
-        btnReprint1.setPreferredSize(new java.awt.Dimension(80, 45));
-        btnReprint1.setRequestFocusEnabled(false);
-        btnReprint1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReprint1ActionPerformed(evt);
-            }
-        });
+        m_jButtons.setPreferredSize(new java.awt.Dimension(215, 45));
 
         webCBCustomer.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Buscar", "Crear" }));
         webCBCustomer.setToolTipText(AppLocal.getIntString("tooltip.salescustomer")); // NOI18N
         webCBCustomer.setExpandIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/customer.png")));
         webCBCustomer.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        webCBCustomer.setMaximumSize(new java.awt.Dimension(42, 36));
+        webCBCustomer.setMinimumSize(new java.awt.Dimension(42, 36));
+        webCBCustomer.setPreferredSize(new java.awt.Dimension(80, 47));
         webCBCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 webCBCustomerMouseReleased(evt);
@@ -2528,31 +2541,43 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 webCBCustomerKeyReleased(evt);
             }
         });
-
-        javax.swing.GroupLayout m_jButtonsLayout = new javax.swing.GroupLayout(m_jButtons);
-        m_jButtons.setLayout(m_jButtonsLayout);
-        m_jButtonsLayout.setHorizontalGroup(
-            m_jButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(m_jButtonsLayout.createSequentialGroup()
-                .addComponent(webCBCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSplit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnReprint1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        m_jButtonsLayout.setVerticalGroup(
-            m_jButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(m_jButtonsLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addGroup(m_jButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnSplit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnReprint1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(webCBCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
+        m_jButtons.add(webCBCustomer);
         webCBCustomer.getAccessibleContext().setAccessibleName("Buscar");
+
+        btnSplit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/sale_split_sml.png"))); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("pos_messages"); // NOI18N
+        btnSplit.setToolTipText(bundle.getString("tooltip.salesplit")); // NOI18N
+        btnSplit.setEnabled(false);
+        btnSplit.setFocusPainted(false);
+        btnSplit.setFocusable(false);
+        btnSplit.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        btnSplit.setMaximumSize(new java.awt.Dimension(42, 36));
+        btnSplit.setMinimumSize(new java.awt.Dimension(42, 36));
+        btnSplit.setPreferredSize(new java.awt.Dimension(60, 45));
+        btnSplit.setRequestFocusEnabled(false);
+        btnSplit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSplitActionPerformed(evt);
+            }
+        });
+        m_jButtons.add(btnSplit);
+
+        btnReprint1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnReprint1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/reprint24.png"))); // NOI18N
+        btnReprint1.setToolTipText(bundle.getString("tooltip.reprintLastTicket")); // NOI18N
+        btnReprint1.setFocusPainted(false);
+        btnReprint1.setFocusable(false);
+        btnReprint1.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        btnReprint1.setMaximumSize(new java.awt.Dimension(42, 36));
+        btnReprint1.setMinimumSize(new java.awt.Dimension(42, 36));
+        btnReprint1.setPreferredSize(new java.awt.Dimension(60, 45));
+        btnReprint1.setRequestFocusEnabled(false);
+        btnReprint1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReprint1ActionPerformed(evt);
+            }
+        });
+        m_jButtons.add(btnReprint1);
 
         m_jOptions.add(m_jButtons, java.awt.BorderLayout.LINE_START);
 
@@ -2561,6 +2586,31 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jButtonsExt.setLayout(new javax.swing.BoxLayout(m_jButtonsExt, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel1.setMinimumSize(new java.awt.Dimension(235, 50));
+
+        jCheckStock.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jCheckStock.setForeground(new java.awt.Color(76, 197, 237));
+        jCheckStock.setText("9999");
+        jCheckStock.setToolTipText(bundle.getString("tooltip.salecheckstock")); // NOI18N
+        jCheckStock.setFocusPainted(false);
+        jCheckStock.setFocusable(false);
+        jCheckStock.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jCheckStock.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        jCheckStock.setMaximumSize(new java.awt.Dimension(42, 36));
+        jCheckStock.setMinimumSize(new java.awt.Dimension(42, 36));
+        jCheckStock.setPreferredSize(new java.awt.Dimension(80, 45));
+        jCheckStock.setRequestFocusEnabled(false);
+        jCheckStock.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jCheckStock.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckStockMouseClicked(evt);
+            }
+        });
+        jCheckStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckStockActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jCheckStock);
 
         m_jbtnScale.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jbtnScale.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/scale.png"))); // NOI18N
@@ -2571,7 +2621,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jbtnScale.setMargin(new java.awt.Insets(8, 14, 8, 14));
         m_jbtnScale.setMaximumSize(new java.awt.Dimension(85, 44));
         m_jbtnScale.setMinimumSize(new java.awt.Dimension(85, 44));
-        m_jbtnScale.setPreferredSize(new java.awt.Dimension(85, 45));
+        m_jbtnScale.setPreferredSize(new java.awt.Dimension(60, 45));
         m_jbtnScale.setRequestFocusEnabled(false);
         m_jbtnScale.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2585,7 +2635,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         jbtnMooring.setMargin(new java.awt.Insets(8, 14, 8, 14));
         jbtnMooring.setMaximumSize(new java.awt.Dimension(80, 40));
         jbtnMooring.setMinimumSize(new java.awt.Dimension(80, 40));
-        jbtnMooring.setPreferredSize(new java.awt.Dimension(80, 45));
+        jbtnMooring.setPreferredSize(new java.awt.Dimension(60, 45));
         jbtnMooring.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnMooringActionPerformed(evt);
@@ -2600,7 +2650,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         j_btnRemotePrt.setMargin(new java.awt.Insets(0, 4, 0, 4));
         j_btnRemotePrt.setMaximumSize(new java.awt.Dimension(50, 40));
         j_btnRemotePrt.setMinimumSize(new java.awt.Dimension(50, 40));
-        j_btnRemotePrt.setPreferredSize(new java.awt.Dimension(80, 45));
+        j_btnRemotePrt.setPreferredSize(new java.awt.Dimension(60, 45));
         j_btnRemotePrt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 j_btnRemotePrtActionPerformed(evt);
@@ -2624,12 +2674,28 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jPanTicket.setLayout(new java.awt.BorderLayout());
 
         jPanel5.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jPanel5.setPreferredSize(new java.awt.Dimension(75, 270));
+        jPanel5.setPreferredSize(new java.awt.Dimension(65, 270));
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
         jPanel2.setPreferredSize(new java.awt.Dimension(70, 250));
         jPanel2.setLayout(new java.awt.GridLayout(0, 1, 5, 5));
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/1uparrow.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/1downarrow.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1);
 
         m_jDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/editdelete.png"))); // NOI18N
         m_jDelete.setToolTipText(bundle.getString("tooltip.saleremoveline")); // NOI18N
@@ -2694,30 +2760,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
         });
         jPanel2.add(jEditAttributes);
-
-        jCheckStock.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jCheckStock.setForeground(new java.awt.Color(76, 197, 237));
-        jCheckStock.setToolTipText(bundle.getString("tooltip.salecheckstock")); // NOI18N
-        jCheckStock.setFocusPainted(false);
-        jCheckStock.setFocusable(false);
-        jCheckStock.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jCheckStock.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        jCheckStock.setMaximumSize(new java.awt.Dimension(42, 36));
-        jCheckStock.setMinimumSize(new java.awt.Dimension(42, 36));
-        jCheckStock.setPreferredSize(new java.awt.Dimension(80, 45));
-        jCheckStock.setRequestFocusEnabled(false);
-        jCheckStock.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        jCheckStock.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jCheckStockMouseClicked(evt);
-            }
-        });
-        jCheckStock.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckStockActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jCheckStock);
 
         jPanel5.add(jPanel2, java.awt.BorderLayout.NORTH);
 
@@ -3154,106 +3196,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     }//GEN-LAST:event_btnSplitActionPerformed
 
-    private void jCheckStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckStockActionPerformed
-        
-        if (listener  != null) {
-            listener.stop();
-        } 
-           
-        int i = m_ticketlines.getSelectedIndex();
-        if (i < 0) {
-            Toolkit.getDefaultToolkit().beep();
-        } else {
-            try {
-                TicketLineInfo line = m_oTicket.getLine(i);
-                String pId = line.getProductID();
-               
-                ProductStock checkProduct;
-                checkProduct = dlSales.getProductStockState(pId);
-                       
-                if (checkProduct != null) {
-
-                    if (checkProduct.getUnits() <=0) {
-                        jCheckStock.setForeground(Color.magenta);
-                    } else {
-                        jCheckStock.setForeground(Color.darkGray);
-                    }
-
-                    double dUnits = checkProduct.getUnits();
-                    int iUnits;
-                    iUnits = (int) dUnits;
-                    jCheckStock.setText(Integer.toString(iUnits));
-                } else {
-                    jCheckStock.setText(null);
-                }
-            } catch (BasicException ex) {
-               Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }       
-       
-        if (listener  != null){           
-            listener.restart(); 
-        }
-    }//GEN-LAST:event_jCheckStockActionPerformed
-
-    private void jCheckStockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckStockMouseClicked
-        if (evt.getClickCount()==2) {
-            if (listener  != null) {
-                listener.stop();
-            } 
-           
-            int i = m_ticketlines.getSelectedIndex();
-            if (i < 0) {
-                Toolkit.getDefaultToolkit().beep();
-            } else {
-                try {
-                    TicketLineInfo line = m_oTicket.getLine(i);
-
-                    String pId = line.getProductID();
-                    ProductStock checkProduct;
-
-                    checkProduct = dlSales.getProductStockState(pId);
-                    
-                    Double pMin;
-                    Double pMax;
-                    
-                    if (checkProduct.getMinimum() != null) { 
-                        pMin = checkProduct.getMinimum();
-                    } else {
-                        pMin = 0.; 
-                    }
-                    if (checkProduct.getMaximum() != null) { 
-                        pMax = checkProduct.getMaximum();
-                    } else {
-                        pMax = 0.; 
-                    }                    
-
-                    String content;
-                    content = "<html>"+
-                        "<b>" + AppLocal.getIntString("label.locationplace") + 
-                            " : " + "</b>" + checkProduct.getLocation() + "<br>" +
-                        "<b>" + AppLocal.getIntString("label.maximum") + 
-                            " : " + "</b>" + pMax + "<br>" +                                        
-                        "<b>" + AppLocal.getIntString("label.minimum") + 
-                            " : " + "</b>" + pMin + "<br>";
-        
-                    JFrame frame = new JFrame();
-                        JOptionPane.showMessageDialog(frame, 
-                        content,                             
-                        "Info", 
-                        JOptionPane.INFORMATION_MESSAGE);  
-                        
-                } catch (BasicException ex) {
-                    Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }       
-       
-            if (listener  != null){           
-                listener.restart(); 
-            }       
-        }
-    }//GEN-LAST:event_jCheckStockMouseClicked
-
     private void m_jaddtaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jaddtaxActionPerformed
         m_jKeyFactory.requestFocus();
     }//GEN-LAST:event_m_jaddtaxActionPerformed
@@ -3282,6 +3224,153 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         // TODO add your handling code here:
         m_jKeyFactory.requestFocus();
     }//GEN-LAST:event_webCBCustomerMouseReleased
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        m_ticketlines.selectionUp();
+            m_jKeyFactory.setText(null);
+            stateToZero();
+            m_jKeyFactory.requestFocus();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        m_ticketlines.selectionDown();
+            m_jKeyFactory.setText(null);
+            stateToZero();
+            m_jKeyFactory.requestFocus();    
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jCheckStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckStockActionPerformed
+
+        if (listener  != null) {
+            listener.stop();
+        }
+
+        int i = m_ticketlines.getSelectedIndex();
+        if (i < 0) {
+            Toolkit.getDefaultToolkit().beep();
+        } else {
+            try {
+                TicketLineInfo line = m_oTicket.getLine(i);
+                String pId = line.getProductID();
+
+                ProductStock checkProduct;
+                checkProduct = dlSales.getProductStockState(pId);
+
+                if (checkProduct != null) {
+
+                    if (checkProduct.getUnits() <=0) {
+                        jCheckStock.setForeground(Color.magenta);
+                    } else {
+                        jCheckStock.setForeground(Color.darkGray);
+                    }
+
+                    double dUnits = checkProduct.getUnits();
+                    int iUnits;
+                    iUnits = (int) dUnits;
+                    jCheckStock.setText(Integer.toString(iUnits));
+                } else {
+                    jCheckStock.setText(null);
+                }
+            } catch (BasicException ex) {
+                Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (listener  != null){
+            listener.restart();
+        }
+    }//GEN-LAST:event_jCheckStockActionPerformed
+
+    private void jCheckStockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckStockMouseClicked
+        if (evt.getClickCount()==2) {
+            if (listener  != null) {
+                listener.stop();
+            }
+
+            int i = m_ticketlines.getSelectedIndex();
+            if (i < 0) {
+                Toolkit.getDefaultToolkit().beep();
+            } else {
+                try {
+                    TicketLineInfo line = m_oTicket.getLine(i);
+
+                    String pId = line.getProductID();
+                    ProductStock checkProduct;
+
+                    checkProduct = dlSales.getProductStockState(pId);
+                    double dUnits = checkProduct.getUnits();
+                    int iUnits;
+                    iUnits = (int) dUnits;
+
+                    Double pMin;
+                    Double pMax;
+                    Double pBuy;
+                    Double pSell;
+                    pBuy = checkProduct.getPriceBuy();
+                    pSell = checkProduct.getPriceSell();
+
+                    if (checkProduct.getMinimum() != null) {
+                        pMin = checkProduct.getMinimum();
+                    } else {
+                        pMin = 0.;
+                    }
+                    if (checkProduct.getMaximum() != null) {
+                        pMax = checkProduct.getMaximum();
+                    } else {
+                        pMax = 0.;
+                    }
+
+                    String content;
+
+                    content = "<html>"+
+
+                    "<table border='3 px'>" +
+                    "<caption><font color='red'>Resumen del Producto</font></caption></br>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.locale") +"</b></td>" +
+                    "<td><b><font color='blue'>" + checkProduct.getLocation() + "</font></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.units2") + "</b></td>" +
+                    "<td><b<font color='blue'>" + iUnits + "</font></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.minimum") + "</b></td>" +
+                    "<td><b<font color='blue'>" + pMin + "</font></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.maximum") + "</b></td>" +
+                    "<td><b<font color='blue'>" + pMax + "</font></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.prodvaluebuy") + "</b></td>" +
+                    "<td><b<font color='blue'>" + " $ " + pBuy + "</font></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.prodvaluesell") + "</b></td>" +
+                    "<td><b<font color='blue'>" + " $ " + pSell + "</font></td>" +
+                    "</tr>"  +
+                    "</table>";
+
+                    JFrame frame = new JFrame();
+
+                    JOptionPane.showMessageDialog(frame,
+                        content,
+                        "Info",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (BasicException ex) {
+                    Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (listener  != null){
+                listener.restart();
+            }
+        }
+    }//GEN-LAST:event_jCheckStockMouseClicked
                                        
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -3289,6 +3378,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private javax.swing.JButton btnSplit;
     private javax.swing.JPanel catcontainer;
     private javax.swing.Box.Filler filler2;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jCheckStock;
     private javax.swing.JButton jEditAttributes;
     private javax.swing.JPanel jPanel1;

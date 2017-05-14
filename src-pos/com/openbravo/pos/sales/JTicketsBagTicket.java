@@ -336,7 +336,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         jButton2.setMargin(new java.awt.Insets(0, 4, 0, 4));
         jButton2.setMaximumSize(new java.awt.Dimension(50, 40));
         jButton2.setMinimumSize(new java.awt.Dimension(50, 40));
-        jButton2.setPreferredSize(new java.awt.Dimension(80, 45));
+        jButton2.setPreferredSize(new java.awt.Dimension(60, 45));
         jButton2.setRequestFocusEnabled(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -352,7 +352,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jEdit.setMargin(new java.awt.Insets(0, 4, 0, 4));
         m_jEdit.setMaximumSize(new java.awt.Dimension(50, 40));
         m_jEdit.setMinimumSize(new java.awt.Dimension(50, 40));
-        m_jEdit.setPreferredSize(new java.awt.Dimension(80, 45));
+        m_jEdit.setPreferredSize(new java.awt.Dimension(60, 45));
         m_jEdit.setRequestFocusEnabled(false);
         m_jEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -368,7 +368,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jRefund.setMargin(new java.awt.Insets(0, 4, 0, 4));
         m_jRefund.setMaximumSize(new java.awt.Dimension(50, 40));
         m_jRefund.setMinimumSize(new java.awt.Dimension(50, 40));
-        m_jRefund.setPreferredSize(new java.awt.Dimension(80, 45));
+        m_jRefund.setPreferredSize(new java.awt.Dimension(60, 45));
         m_jRefund.setRequestFocusEnabled(false);
         m_jRefund.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -384,7 +384,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jPrint.setMargin(new java.awt.Insets(0, 4, 0, 4));
         m_jPrint.setMaximumSize(new java.awt.Dimension(50, 40));
         m_jPrint.setMinimumSize(new java.awt.Dimension(50, 40));
-        m_jPrint.setPreferredSize(new java.awt.Dimension(80, 45));
+        m_jPrint.setPreferredSize(new java.awt.Dimension(60, 45));
         m_jPrint.setRequestFocusEnabled(false);
         m_jPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

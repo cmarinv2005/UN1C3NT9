@@ -24,6 +24,7 @@ import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppUser;
 import com.openbravo.pos.util.ThumbNailBuilder;
 import java.awt.Component;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -67,9 +68,8 @@ public class JPanelButtons extends javax.swing.JPanel {
     public JPanelButtons(String sConfigKey, JPanelTicket panelticket) {
         initComponents();
         
-        // Load categories default thumbnail
-        tnbmacro = new ThumbNailBuilder(42, 36, "com/openbravo/images/run_script.png");               
-        
+        // Load categories default thumbnail               
+        tnbmacro = new ThumbNailBuilder(23, 23, "com/openbravo/images/run_script.png");
         this.panelticket = panelticket;
         
         props = new Properties();
@@ -197,7 +197,7 @@ public class JPanelButtons extends javax.swing.JPanel {
         @Override
         public void characters(char[] ch, int start, int length) throws SAXException {}
     }  
-        
+           
     private class JButtonFunc extends JButton {
        
         public JButtonFunc(String sKey, String sImage, String title) {
