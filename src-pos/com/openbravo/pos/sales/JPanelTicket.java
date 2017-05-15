@@ -31,6 +31,7 @@ import com.openbravo.data.gui.ComboBoxValModel;
 import com.openbravo.data.gui.ListKeyed;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.loader.SentenceList;
+import com.openbravo.pos.catalog.JCatalog;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.customers.CustomerInfoGlobal;
 import com.openbravo.pos.customers.DataLogicCustomers;
@@ -46,6 +47,7 @@ import com.openbravo.pos.payment.JPaymentSelectRefund;
 import com.openbravo.pos.printer.TicketParser;
 import com.openbravo.pos.printer.TicketPrinterException;
 import com.openbravo.pos.sales.restaurant.RestaurantDBUtils;
+import com.openbravo.pos.sales.shared.JTicketsBagShared;
 import com.openbravo.pos.scale.ScaleException;
 import com.openbravo.pos.scripting.ScriptEngine;
 import com.openbravo.pos.scripting.ScriptException;
@@ -564,6 +566,23 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 listener.restart(); 
             }       
     }
+    
+    private void impresionRemota(){
+        String rScript = (dlSystem.getResourceAsText("script.SendOrder"));
+
+            Interpreter i = new Interpreter(); 
+        try {                       
+            i.set("ticket", m_oTicket);  
+            i.set("place",  m_oTicketExt);             
+            i.set("user", m_App.getAppUserView().getUser());
+            i.set("sales", this);
+            i.set("pickupid", m_oTicket.getPickupId());
+            Object result;
+            result = i.eval(rScript);
+        } catch (EvalError ex) {
+            Logger.getLogger(JPanelTicket.class.getName()).log(Level.ALL, null, ex);
+        }    
+    }
 
     /**
      *
@@ -626,9 +645,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             m_jTax.setVisible(false);
             m_jaddtax.setVisible(false);            
         }
-
-        m_jDelete.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
-        m_jNumberKeys.setMinusEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
+        
+        // Authorization for buttons
+        
+        btnSplit.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.Total"));
+        m_jEditLine.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
+        m_jDelete.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.DeleteLines"));      
+        m_jNumberKeys.setMinusEnabled(m_App.getAppUserView().getUser().hasPermission("sales.DeleteLines"));
+//        m_jNumberKeys.setMinusEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
+         
         m_jNumberKeys.setEqualsEnabled(m_App.getAppUserView().getUser().hasPermission("sales.Total"));
         m_jbtnconfig.setPermissions(m_App.getAppUserView().getUser());  
                
@@ -1495,6 +1520,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             
             //Aqui inicio atajos de teclado personalizados 
             
+            if (cTrans == '\u001B') {                                                  //Esc Cambio rápido de Usuario
+                stateToZero();
+                deactivate();
+                ((JRootApp)m_App).closeAppView();
+            }                     
+            
             if ((cTrans == '\u0051') || (cTrans == '\u0071')) {                        //Q Crear cliente
                 stateToZero();
                 crearCliente();
@@ -1506,18 +1537,57 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
             
             if ((cTrans == '\u0045') || (cTrans == '\u0065')) {                        //'E' Dividir venta  
-                stateToZero();
-                dividirVenta();
+                if(btnSplit.isEnabled()==true){
+                 stateToZero();
+                 dividirVenta();  
+               }      
             }
             
-            if ((cTrans == '\u0052') || (cTrans == '\u0072')) {                         //R Reimprmir recibo
+            if ((cTrans == '\u0052') || (cTrans == '\u0072')) {                         //R Reimprimir recibo
                 stateToZero();
                 reimprimirTicket();
             }
             
-            if ((cTrans == '\u0041') || (cTrans == '\u0061')) {                          //A Eliminar linea
+            if ((cTrans == '\u0054') || (cTrans == '\u0074')) {                         //T Nueva Venta
+                stateToZero();                
+            }
+            
+            if ((cTrans == '\u0059') || (cTrans == '\u0079')) {                         //Y Borrar Venta Actual
+                stateToZero();                
+            }
+            
+            if ((cTrans == '\u0055') || (cTrans == '\u0075')) {                         //U Recuperar Venta
+                stateToZero();                
+            }
+            
+            if ((cTrans == '\u0049') || (cTrans == '\u0069')) {                          //I Consultar Inventario
+                stateToZero(); 
+                consultaInventario();
+            }            
+                        
+            if ((cTrans == '\u004F') || (cTrans == '\u006F')) {                          //O Impresora Remota
                 stateToZero();
-                eliminarLinea();
+                impresionRemota();
+            }            
+           
+            if ((cTrans == '\u003E')) {                                                  // > Arriba panel lista
+                stateToZero();
+                m_ticketlines.selectionUp();             
+            }
+            
+            if ((cTrans == '\u003C')) {                                                  // < Abajo panel lista
+                stateToZero();
+                m_ticketlines.selectionDown();                
+            }            
+            
+            if ((cTrans == '\u0041') || (cTrans == '\u0061')) {                          //A Arriba panel lista
+                stateToZero();
+                m_ticketlines.selectionUp();
+            }
+            
+            if ((cTrans == '\u005A') || (cTrans == '\u007A')) {                          //Z Abajo panel lista
+                stateToZero();
+                m_ticketlines.selectionDown();
             }
             
             if ((cTrans == '\u0053') || (cTrans == '\u0073')) {                           //S Buscar productos
@@ -1525,25 +1595,25 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 buscarProductos();
             }
             
-            if ((cTrans == '\u0044') || (cTrans == '\u0064')) {                          //D Edicion de productos
-                stateToZero();
-                editarProductos();
+            if ((cTrans == '\u0044') || (cTrans == '\u0064')) {                          //D Eliminar Linea
+                if(m_jDelete.isEnabled()==true){
+                  stateToZero();
+                  eliminarLinea();  
+               }    
             }
              
-            if ((cTrans == '\u0046') || (cTrans == '\u0066')) {                          //F Atributos de productos
+            if ((cTrans == '\u0046') || (cTrans == '\u0066')) {                          //F Editar Productos
+               if(m_jEditLine.isEnabled()==true){
+                 stateToZero();
+                 editarProductos();  
+               } 
+            }
+            
+            if ((cTrans == '\u0047') || (cTrans == '\u0067')) {                          //G Atributos de productos
                 stateToZero();
                 atributosProductos();
-            }
-            
-            if ((cTrans == '\u0049') || (cTrans == '\u0069')) {                          //I Consultar Inventario
-                stateToZero(); 
-                consultaInventario();
-            }      
-            
-            if ((cTrans == '\u002F') || (cTrans == '\u002F')) {                          //Arriba panel lista
-            m_ticketlines.selectionUp();
-            }
-            
+            }     
+             
             if (cTrans == '\u007f') { 
                 stateToZero();
             } else if ((cTrans == '0') && (m_iNumberStatus == NUMBER_INPUTZERO)) {
@@ -2483,8 +2553,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        m_jDelete = new javax.swing.JButton();
         m_jList = new javax.swing.JButton();
+        m_jDelete = new javax.swing.JButton();
         m_jEditLine = new javax.swing.JButton();
         jEditAttributes = new javax.swing.JButton();
         m_jPanelCentral = new javax.swing.JPanel();
@@ -2697,22 +2767,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         });
         jPanel2.add(jButton1);
 
-        m_jDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/editdelete.png"))); // NOI18N
-        m_jDelete.setToolTipText(bundle.getString("tooltip.saleremoveline")); // NOI18N
-        m_jDelete.setFocusPainted(false);
-        m_jDelete.setFocusable(false);
-        m_jDelete.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        m_jDelete.setMaximumSize(new java.awt.Dimension(42, 36));
-        m_jDelete.setMinimumSize(new java.awt.Dimension(42, 36));
-        m_jDelete.setPreferredSize(new java.awt.Dimension(50, 45));
-        m_jDelete.setRequestFocusEnabled(false);
-        m_jDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_jDeleteActionPerformed(evt);
-            }
-        });
-        jPanel2.add(m_jDelete);
-
         m_jList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search32.png"))); // NOI18N
         m_jList.setToolTipText(bundle.getString("tooltip.saleproductfind")); // NOI18N
         m_jList.setFocusPainted(false);
@@ -2728,6 +2782,22 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
         });
         jPanel2.add(m_jList);
+
+        m_jDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/editdelete.png"))); // NOI18N
+        m_jDelete.setToolTipText(bundle.getString("tooltip.saleremoveline")); // NOI18N
+        m_jDelete.setFocusPainted(false);
+        m_jDelete.setFocusable(false);
+        m_jDelete.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jDelete.setMaximumSize(new java.awt.Dimension(42, 36));
+        m_jDelete.setMinimumSize(new java.awt.Dimension(42, 36));
+        m_jDelete.setPreferredSize(new java.awt.Dimension(50, 45));
+        m_jDelete.setRequestFocusEnabled(false);
+        m_jDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jDeleteActionPerformed(evt);
+            }
+        });
+        jPanel2.add(m_jDelete);
 
         m_jEditLine.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/sale_editline.png"))); // NOI18N
         m_jEditLine.setToolTipText(bundle.getString("tooltip.saleeditline")); // NOI18N
