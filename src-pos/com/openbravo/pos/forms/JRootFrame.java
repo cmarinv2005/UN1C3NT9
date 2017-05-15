@@ -80,7 +80,9 @@ public class JRootFrame extends javax.swing.JFrame implements AppMessage {
             } catch (IOException e) {
             }   
 
-            setTitle(AppLocal.APP_NAME + " - " + AppLocal.APP_VERSION);       
+       //  Mostrar versión de instalación
+    //      setTitle(AppLocal.APP_NAME + " - " + AppLocal.APP_VERSION);  
+            setTitle("Executer Pos Versión 2.0");
             pack();
             setLocationRelativeTo(null);        
             
