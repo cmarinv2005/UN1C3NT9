@@ -712,6 +712,26 @@ public final class TicketInfo implements SerializableRead, Externalizable {
         }
     }
     
+    public String printTicketHeaderLine7() {
+        String lineData = getTicketHeaderFooterData("header7");
+        
+        if(lineData != null) {
+            return lineData;
+        } else {
+            return "";
+        }
+    }
+     
+      public String printTicketHeaderLine8() {
+        String lineData = getTicketHeaderFooterData("header8");
+        
+        if(lineData != null) {
+            return lineData;
+        } else {
+            return "";
+        }
+    }
+    
     public String printTicketFooterLine1() {
         String lineData = getTicketHeaderFooterData("footer1");
         
@@ -764,6 +784,16 @@ public final class TicketInfo implements SerializableRead, Externalizable {
     
     public String printTicketFooterLine6() {
         String lineData = getTicketHeaderFooterData("footer6");
+        
+        if(lineData != null) {
+            return lineData;
+        } else {
+            return "";
+        }
+    }
+
+    public String printTicketFooterLine7() {
+        String lineData = getTicketHeaderFooterData("footer7");
         
         if(lineData != null) {
             return lineData;

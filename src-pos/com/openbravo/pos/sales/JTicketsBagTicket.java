@@ -44,6 +44,24 @@ import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
+import com.openbravo.pos.util.JRPrinterAWT300;
+import com.openbravo.pos.util.ReportUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import javax.print.PrintService;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 /**
  *
@@ -124,7 +142,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jEdit.setVisible(m_App.getAppUserView().getUser().hasPermission("sales.EditTicket"));
         m_jRefund.setVisible(m_App.getAppUserView().getUser().hasPermission("sales.RefundTicket"));
         m_jPrint.setVisible(m_App.getAppUserView().getUser().hasPermission("sales.PrintTicket"));
-
+        m_jPrint1.setVisible(m_App.getAppUserView().getUser().hasPermission("sales.PrintTicket"));
     }
     
     /**
@@ -269,7 +287,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         }
 
         m_jPrint.setEnabled(m_ticket != null);
-        
+        m_jPrint1.setEnabled(m_ticket != null);
         m_TP.getDevicePrinter("1").reset();
         
         if (m_ticket == null) {
@@ -306,6 +324,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jEdit = new javax.swing.JButton();
         m_jRefund = new javax.swing.JButton();
         m_jPrint = new javax.swing.JButton();
+        m_jPrint1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         m_jPanelTicket = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -326,6 +345,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jTicketId.setOpaque(true);
         m_jTicketId.setPreferredSize(new java.awt.Dimension(200, 30));
         m_jTicketId.setRequestFocusEnabled(false);
+        m_jButtons.add(m_jTicketId);
 
         jButton2.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search24.png"))); // NOI18N
@@ -343,6 +363,7 @@ public class JTicketsBagTicket extends JTicketsBag {
                 jButton2ActionPerformed(evt);
             }
         });
+        m_jButtons.add(jButton2);
 
         m_jEdit.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         m_jEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/sale_editline.png"))); // NOI18N
@@ -359,6 +380,7 @@ public class JTicketsBagTicket extends JTicketsBag {
                 m_jEditActionPerformed(evt);
             }
         });
+        m_jButtons.add(m_jEdit);
 
         m_jRefund.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         m_jRefund.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/inbox.png"))); // NOI18N
@@ -375,6 +397,7 @@ public class JTicketsBagTicket extends JTicketsBag {
                 m_jRefundActionPerformed(evt);
             }
         });
+        m_jButtons.add(m_jRefund);
 
         m_jPrint.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         m_jPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/printer24.png"))); // NOI18N
@@ -391,41 +414,25 @@ public class JTicketsBagTicket extends JTicketsBag {
                 m_jPrintActionPerformed(evt);
             }
         });
+        m_jButtons.add(m_jPrint);
 
-        org.jdesktop.layout.GroupLayout m_jButtonsLayout = new org.jdesktop.layout.GroupLayout(m_jButtons);
-        m_jButtons.setLayout(m_jButtonsLayout);
-        m_jButtonsLayout.setHorizontalGroup(
-            m_jButtonsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(m_jButtonsLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(m_jTicketId, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(5, 5, 5)
-                .add(m_jEdit, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(5, 5, 5)
-                .add(m_jRefund, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(5, 5, 5)
-                .add(m_jPrint, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-        );
-        m_jButtonsLayout.setVerticalGroup(
-            m_jButtonsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(m_jButtonsLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(m_jTicketId, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(m_jButtonsLayout.createSequentialGroup()
-                .add(5, 5, 5)
-                .add(jButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(m_jButtonsLayout.createSequentialGroup()
-                .add(5, 5, 5)
-                .add(m_jEdit, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(m_jButtonsLayout.createSequentialGroup()
-                .add(5, 5, 5)
-                .add(m_jRefund, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(m_jButtonsLayout.createSequentialGroup()
-                .add(5, 5, 5)
-                .add(m_jPrint, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-        );
+        m_jPrint1.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        m_jPrint1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/printer24_on.png"))); // NOI18N
+        m_jPrint1.setToolTipText("Imprimir Factura");
+        m_jPrint1.setFocusPainted(false);
+        m_jPrint1.setFocusable(false);
+        m_jPrint1.setMargin(new java.awt.Insets(0, 4, 0, 4));
+        m_jPrint1.setMaximumSize(new java.awt.Dimension(50, 40));
+        m_jPrint1.setMinimumSize(new java.awt.Dimension(50, 40));
+        m_jPrint1.setName(""); // NOI18N
+        m_jPrint1.setPreferredSize(new java.awt.Dimension(60, 45));
+        m_jPrint1.setRequestFocusEnabled(false);
+        m_jPrint1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jPrint1ActionPerformed(evt);
+            }
+        });
+        m_jButtons.add(m_jPrint1);
 
         m_jOptions.add(m_jButtons);
 
@@ -583,6 +590,74 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
         }
 }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void m_jPrint1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jPrint1ActionPerformed
+        // TODO add your handling code here:
+
+        String[] options = {"Media Carta", "Carta Completa", "Oficio completo", "Cancelar"};
+        int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el tamaño del papel", "Imprimir Factura", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        if (seleccion == 0){
+            if (m_ticket != null) {
+                printReport("/com/openbravo/reports/invoicehalfletter",m_ticket);
+            }
+        }
+
+        if (seleccion == 1){
+            if (m_ticket != null) {
+                printReport("/com/openbravo/reports/invoice",m_ticket);
+            }
+        }
+
+        if (seleccion == 2){
+            if (m_ticket != null) {
+                printReport("/com/openbravo/reports/invoiceoficio",m_ticket);
+            }
+        }
+    }//GEN-LAST:event_m_jPrint1ActionPerformed
+    
+    private void printReport(String resourcefile, TicketInfo ticket) {
+        try {     
+         
+            JasperReport jr;
+           
+            InputStream in = getClass().getResourceAsStream(resourcefile + ".ser");
+            if (in == null) {      
+                // read and compile the report
+                JasperDesign jd = JRXmlLoader.load(getClass().getResourceAsStream(resourcefile + ".jrxml"));            
+                jr = JasperCompileManager.compileReport(jd);    
+            } else {
+                try (ObjectInputStream oin = new ObjectInputStream(in)) {
+                    jr = (JasperReport) oin.readObject();
+                }
+                }
+           
+            // Construyo el mapa de los parametros.
+            Map reportparams = new HashMap();
+            // reportparams.put("ARG", params);
+            try {
+                reportparams.put("REPORT_RESOURCE_BUNDLE", ResourceBundle.getBundle(resourcefile + ".properties"));
+            } catch (MissingResourceException e) {
+            }
+            //reportparams.put("TAXESLOGIC", taxeslogic); 
+            
+            Map reportfields = new HashMap();
+            reportfields.put("TICKET", ticket);
+            //reportfields.put("PLACE", ticketext);
+
+            JasperPrint jp = JasperFillManager.fillReport(jr, reportparams, new JRMapArrayDataSource(new Object[] { reportfields } ));
+            
+            PrintService service = ReportUtils.getPrintService(m_App.getProperties().getProperty("machine.printername"));
+            
+            JRPrinterAWT300.printPages(jp, 0, jp.getPages().size() - 1, service);
+            
+// JG May 2013 replaced with Multicatch
+        } catch (JRException | IOException | ClassNotFoundException e) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotloadreport"), e);
+            msg.show(this);
+        }
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }  
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -601,6 +676,7 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JPanel m_jOptions;
     private javax.swing.JPanel m_jPanelTicket;
     private javax.swing.JButton m_jPrint;
+    private javax.swing.JButton m_jPrint1;
     private javax.swing.JButton m_jRefund;
     private com.openbravo.editor.JEditorIntegerPositive m_jTicketEditor;
     private javax.swing.JLabel m_jTicketId;
