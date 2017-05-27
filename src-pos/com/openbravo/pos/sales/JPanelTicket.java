@@ -956,6 +956,41 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     msg.show(this);
                 }          
             }
+            
+            if (Boolean.parseBoolean(m_App.getProperties().getProperty("display.consolidated"))) {
+// includes modified consolidate receipt code for screen and refreshes the screen afer updating            
+                int numlines = m_oTicket.getLinesCount();
+                for (int i = 0; i < numlines; i++) {
+                    TicketLineInfo current_ticketline = m_oTicket.getLine(i);
+                    double current_unit = current_ticketline.getMultiply();
+                    if (current_unit != 0) {
+                        for (int j = i + 1; j < numlines; j++) {
+                            if (m_oTicket.getLine(j).getProductID() != null) {
+                                TicketLineInfo loop_ticketline = m_oTicket.getLine(j);
+                                double loop_unit = loop_ticketline.getMultiply();
+                                String current_productid = current_ticketline.getProductID();
+                                String loop_productid = loop_ticketline.getProductID();
+                                String loop_attr = loop_ticketline.getProductAttSetInstDesc();
+                                String current_attr = current_ticketline.getProductAttSetInstDesc();
+                                if (loop_productid.equals(current_productid) && (loop_ticketline.getPrice() == current_ticketline.getPrice()) && (loop_unit != 0) && (loop_attr.equals(current_attr))) {
+                                    current_unit = current_unit + loop_unit;
+                                    loop_ticketline.setMultiply(0);
+                                }
+                            }
+                        }
+                        current_ticketline.setMultiply(current_unit);
+                    }
+                }
+                for (int i = numlines - 1; i > 0; i--) {
+                    TicketLineInfo loop_ticketline = m_oTicket.getLine(i);
+                    double loop_unit = loop_ticketline.getMultiply();
+                    if (loop_unit == 0) {
+                        m_oTicket.removeLine(i);
+
+                    }
+                }
+                refreshTicket();
+            }
 
             visorTicketLine(oLine);
             printPartialTotals();   

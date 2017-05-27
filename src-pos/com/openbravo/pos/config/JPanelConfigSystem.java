@@ -62,7 +62,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         
         jchkPriceUpdate.addActionListener(dirty);
         jchkBarcodetype.addActionListener(dirty);
-        jchkTransBtn.addActionListener(dirty);        
+        jchkTransBtn.addActionListener(dirty);  
+        jConsolidate.addActionListener(dirty);
         
     }
 
@@ -177,7 +178,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
             jTableNameColour1.setText((config.getProperty("table.tablecolour")));  
         }
         
-        jchkTransBtn.setSelected(Boolean.parseBoolean(config.getProperty("table.transbtn")));                
+        jchkTransBtn.setSelected(Boolean.parseBoolean(config.getProperty("table.transbtn")));  
+        jConsolidate.setSelected(Boolean.valueOf(config.getProperty("display.consolidated")));
        
         dirty.setDirty(false);
     }
@@ -214,6 +216,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         config.setProperty("machine.barcodetype", Boolean.toString(jchkBarcodetype.isSelected()));
         
         config.setProperty("table.transbtn", Boolean.toString(jchkTransBtn.isSelected()));
+        config.setProperty("display.consolidated", Boolean.toString( jConsolidate.isSelected()));
         
         dirty.setDirty(false);
     }
@@ -226,11 +229,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jchkInstance = new javax.swing.JCheckBox();
         jLabelInactiveTime = new javax.swing.JLabel();
         jTextAutoLogoffTime = new javax.swing.JTextField();
         jLabelTimedMessage = new javax.swing.JLabel();
@@ -239,11 +239,6 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jchkShowCustomerDetails = new javax.swing.JCheckBox();
         jchkShowWaiterDetails = new javax.swing.JCheckBox();
         jLabelTableNameTextColour = new javax.swing.JLabel();
-        jCheckPrice00 = new javax.swing.JCheckBox();
-        jTaxIncluded = new javax.swing.JCheckBox();
-        jCloseCashbtn = new javax.swing.JCheckBox();
-        jMoveAMountBoxToTop = new javax.swing.JCheckBox();
-        jchkTextOverlay = new javax.swing.JCheckBox();
         jchkautoRefreshTableMap = new javax.swing.JCheckBox();
         jLabelInactiveTime1 = new javax.swing.JLabel();
         jTxtautoRefreshTimer = new javax.swing.JTextField();
@@ -256,37 +251,32 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jCustomerColour1 = new com.alee.extended.colorchooser.WebColorChooserField();
         jWaiterColour1 = new com.alee.extended.colorchooser.WebColorChooserField();
         jTableNameColour1 = new com.alee.extended.colorchooser.WebColorChooserField();
-        jchkPriceUpdate = new javax.swing.JCheckBox();
-        jchkBarcodetype = new javax.swing.JCheckBox();
         jchkTransBtn = new javax.swing.JCheckBox();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jTaxIncluded = new javax.swing.JCheckBox();
+        jchkInstance = new javax.swing.JCheckBox();
+        jchkTextOverlay = new javax.swing.JCheckBox();
+        jchkPriceUpdate = new javax.swing.JCheckBox();
+        jConsolidate = new javax.swing.JCheckBox();
+        jPanel3 = new javax.swing.JPanel();
+        jCheckPrice00 = new javax.swing.JCheckBox();
+        jMoveAMountBoxToTop = new javax.swing.JCheckBox();
+        jCloseCashbtn = new javax.swing.JCheckBox();
+        jchkBarcodetype = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         setPreferredSize(new java.awt.Dimension(700, 500));
 
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("pos_messages"); // NOI18N
-        jLabel1.setText(bundle.getString("label.configOptionStartup")); // NOI18N
-        jLabel1.setPreferredSize(new java.awt.Dimension(250, 30));
-
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel2.setText(bundle.getString("label.configOptionKeypad")); // NOI18N
-        jLabel2.setPreferredSize(new java.awt.Dimension(250, 30));
-
         jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("pos_messages"); // NOI18N
         jLabel3.setText(bundle.getString("label.configOptionLogOff")); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(100, 30));
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel4.setText(bundle.getString("label.configOptionRestaurant")); // NOI18N
         jLabel4.setPreferredSize(new java.awt.Dimension(250, 30));
-
-        jchkInstance.setBackground(new java.awt.Color(255, 255, 255));
-        jchkInstance.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jchkInstance.setText(bundle.getString("label.instance")); // NOI18N
-        jchkInstance.setMaximumSize(new java.awt.Dimension(0, 25));
-        jchkInstance.setMinimumSize(new java.awt.Dimension(0, 0));
-        jchkInstance.setPreferredSize(new java.awt.Dimension(250, 25));
 
         jLabelInactiveTime.setBackground(new java.awt.Color(255, 255, 255));
         jLabelInactiveTime.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -357,49 +347,6 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jLabelTableNameTextColour.setMaximumSize(new java.awt.Dimension(0, 25));
         jLabelTableNameTextColour.setMinimumSize(new java.awt.Dimension(0, 0));
         jLabelTableNameTextColour.setPreferredSize(new java.awt.Dimension(350, 30));
-
-        jCheckPrice00.setBackground(new java.awt.Color(255, 255, 255));
-        jCheckPrice00.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jCheckPrice00.setText(bundle.getString("label.pricewith00")); // NOI18N
-        jCheckPrice00.setToolTipText("");
-        jCheckPrice00.setMaximumSize(new java.awt.Dimension(0, 25));
-        jCheckPrice00.setMinimumSize(new java.awt.Dimension(0, 0));
-        jCheckPrice00.setPreferredSize(new java.awt.Dimension(250, 25));
-        jCheckPrice00.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckPrice00ActionPerformed(evt);
-            }
-        });
-
-        jTaxIncluded.setBackground(new java.awt.Color(255, 255, 255));
-        jTaxIncluded.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jTaxIncluded.setText(bundle.getString("label.taxincluded")); // NOI18N
-        jTaxIncluded.setMaximumSize(new java.awt.Dimension(0, 25));
-        jTaxIncluded.setMinimumSize(new java.awt.Dimension(0, 0));
-        jTaxIncluded.setPreferredSize(new java.awt.Dimension(250, 25));
-
-        jCloseCashbtn.setBackground(new java.awt.Color(255, 255, 255));
-        jCloseCashbtn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jCloseCashbtn.setText(bundle.getString("message.systemclosecash")); // NOI18N
-        jCloseCashbtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jCloseCashbtn.setMaximumSize(new java.awt.Dimension(0, 25));
-        jCloseCashbtn.setMinimumSize(new java.awt.Dimension(0, 0));
-        jCloseCashbtn.setPreferredSize(new java.awt.Dimension(250, 25));
-
-        jMoveAMountBoxToTop.setBackground(new java.awt.Color(255, 255, 255));
-        jMoveAMountBoxToTop.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jMoveAMountBoxToTop.setText(bundle.getString("label.inputamount")); // NOI18N
-        jMoveAMountBoxToTop.setMaximumSize(new java.awt.Dimension(0, 25));
-        jMoveAMountBoxToTop.setMinimumSize(new java.awt.Dimension(0, 0));
-        jMoveAMountBoxToTop.setPreferredSize(new java.awt.Dimension(250, 25));
-
-        jchkTextOverlay.setBackground(new java.awt.Color(255, 255, 255));
-        jchkTextOverlay.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jchkTextOverlay.setText(bundle.getString("label.currencybutton")); // NOI18N
-        jchkTextOverlay.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jchkTextOverlay.setMaximumSize(new java.awt.Dimension(0, 25));
-        jchkTextOverlay.setMinimumSize(new java.awt.Dimension(0, 0));
-        jchkTextOverlay.setPreferredSize(new java.awt.Dimension(250, 25));
 
         jchkautoRefreshTableMap.setBackground(new java.awt.Color(255, 255, 255));
         jchkautoRefreshTableMap.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -493,24 +440,6 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jTableNameColour1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jTableNameColour1.setPreferredSize(new java.awt.Dimension(200, 30));
 
-        jchkPriceUpdate.setBackground(new java.awt.Color(255, 255, 255));
-        jchkPriceUpdate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jchkPriceUpdate.setText(bundle.getString("label.priceupdate")); // NOI18N
-        jchkPriceUpdate.setToolTipText(bundle.getString("tooltip.priceupdate")); // NOI18N
-        jchkPriceUpdate.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jchkPriceUpdate.setMaximumSize(new java.awt.Dimension(0, 25));
-        jchkPriceUpdate.setMinimumSize(new java.awt.Dimension(0, 0));
-        jchkPriceUpdate.setPreferredSize(new java.awt.Dimension(250, 25));
-
-        jchkBarcodetype.setBackground(new java.awt.Color(255, 255, 255));
-        jchkBarcodetype.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jchkBarcodetype.setText(bundle.getString("label.barcodetype")); // NOI18N
-        jchkBarcodetype.setToolTipText(bundle.getString("tooltip.barcodetype")); // NOI18N
-        jchkBarcodetype.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jchkBarcodetype.setMaximumSize(new java.awt.Dimension(0, 25));
-        jchkBarcodetype.setMinimumSize(new java.awt.Dimension(0, 0));
-        jchkBarcodetype.setPreferredSize(new java.awt.Dimension(250, 25));
-
         jchkTransBtn.setBackground(new java.awt.Color(255, 255, 255));
         jchkTransBtn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jchkTransBtn.setText(bundle.getString("label.tabletransbutton")); // NOI18N
@@ -522,6 +451,151 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                 jchkTransBtnActionPerformed(evt);
             }
         });
+
+        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jTabbedPane1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        jTaxIncluded.setBackground(new java.awt.Color(255, 255, 255));
+        jTaxIncluded.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jTaxIncluded.setText(bundle.getString("label.taxincluded")); // NOI18N
+        jTaxIncluded.setMaximumSize(new java.awt.Dimension(0, 25));
+        jTaxIncluded.setMinimumSize(new java.awt.Dimension(0, 0));
+        jTaxIncluded.setPreferredSize(new java.awt.Dimension(250, 25));
+
+        jchkInstance.setBackground(new java.awt.Color(255, 255, 255));
+        jchkInstance.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jchkInstance.setText(bundle.getString("label.instance")); // NOI18N
+        jchkInstance.setMaximumSize(new java.awt.Dimension(0, 25));
+        jchkInstance.setMinimumSize(new java.awt.Dimension(0, 0));
+        jchkInstance.setPreferredSize(new java.awt.Dimension(250, 25));
+
+        jchkTextOverlay.setBackground(new java.awt.Color(255, 255, 255));
+        jchkTextOverlay.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jchkTextOverlay.setText(bundle.getString("label.currencybutton")); // NOI18N
+        jchkTextOverlay.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jchkTextOverlay.setMaximumSize(new java.awt.Dimension(0, 25));
+        jchkTextOverlay.setMinimumSize(new java.awt.Dimension(0, 0));
+        jchkTextOverlay.setPreferredSize(new java.awt.Dimension(250, 25));
+
+        jchkPriceUpdate.setBackground(new java.awt.Color(255, 255, 255));
+        jchkPriceUpdate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jchkPriceUpdate.setText(bundle.getString("label.priceupdate")); // NOI18N
+        jchkPriceUpdate.setToolTipText(bundle.getString("tooltip.priceupdate")); // NOI18N
+        jchkPriceUpdate.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jchkPriceUpdate.setMaximumSize(new java.awt.Dimension(0, 25));
+        jchkPriceUpdate.setMinimumSize(new java.awt.Dimension(0, 0));
+        jchkPriceUpdate.setPreferredSize(new java.awt.Dimension(250, 25));
+
+        jConsolidate.setBackground(new java.awt.Color(255, 255, 255));
+        jConsolidate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jConsolidate.setText(bundle.getString("Label.ConsolidatedScreen"));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTaxIncluded, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                    .addComponent(jchkInstance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jchkTextOverlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jConsolidate, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jchkPriceUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(146, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTaxIncluded, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jConsolidate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jchkInstance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jchkPriceUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jchkTextOverlay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab(bundle.getString("label.configOptionStartup"), jPanel2);
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        jCheckPrice00.setBackground(new java.awt.Color(255, 255, 255));
+        jCheckPrice00.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jCheckPrice00.setText(bundle.getString("label.pricewith00")); // NOI18N
+        jCheckPrice00.setToolTipText("");
+        jCheckPrice00.setMaximumSize(new java.awt.Dimension(0, 25));
+        jCheckPrice00.setMinimumSize(new java.awt.Dimension(0, 0));
+        jCheckPrice00.setPreferredSize(new java.awt.Dimension(250, 25));
+        jCheckPrice00.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckPrice00ActionPerformed(evt);
+            }
+        });
+
+        jMoveAMountBoxToTop.setBackground(new java.awt.Color(255, 255, 255));
+        jMoveAMountBoxToTop.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jMoveAMountBoxToTop.setText(bundle.getString("label.inputamount")); // NOI18N
+        jMoveAMountBoxToTop.setMaximumSize(new java.awt.Dimension(0, 25));
+        jMoveAMountBoxToTop.setMinimumSize(new java.awt.Dimension(0, 0));
+        jMoveAMountBoxToTop.setPreferredSize(new java.awt.Dimension(250, 25));
+
+        jCloseCashbtn.setBackground(new java.awt.Color(255, 255, 255));
+        jCloseCashbtn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jCloseCashbtn.setText(bundle.getString("message.systemclosecash")); // NOI18N
+        jCloseCashbtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jCloseCashbtn.setMaximumSize(new java.awt.Dimension(0, 25));
+        jCloseCashbtn.setMinimumSize(new java.awt.Dimension(0, 0));
+        jCloseCashbtn.setPreferredSize(new java.awt.Dimension(250, 25));
+
+        jchkBarcodetype.setBackground(new java.awt.Color(255, 255, 255));
+        jchkBarcodetype.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jchkBarcodetype.setText(bundle.getString("label.barcodetype")); // NOI18N
+        jchkBarcodetype.setToolTipText(bundle.getString("tooltip.barcodetype")); // NOI18N
+        jchkBarcodetype.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jchkBarcodetype.setMaximumSize(new java.awt.Dimension(0, 25));
+        jchkBarcodetype.setMinimumSize(new java.awt.Dimension(0, 0));
+        jchkBarcodetype.setPreferredSize(new java.awt.Dimension(250, 25));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jMoveAMountBoxToTop, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                    .addComponent(jCheckPrice00, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCloseCashbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jchkBarcodetype, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(146, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckPrice00, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jchkBarcodetype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jMoveAMountBoxToTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCloseCashbtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab(bundle.getString("label.configOptionKeypad"), jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -580,52 +654,21 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabelTimedMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE))))
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 654, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jchkInstance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTaxIncluded, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jchkTextOverlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jchkPriceUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(150, 150, 150)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckPrice00, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jMoveAMountBoxToTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCloseCashbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jchkBarcodetype, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 654, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 783, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 16, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTaxIncluded, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckPrice00, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jchkInstance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jMoveAMountBoxToTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jchkTextOverlay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCloseCashbtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jchkPriceUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jchkBarcodetype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jchkAutoLogoff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelInactiveTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -663,7 +706,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addComponent(jTableNameColour1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jchkTransBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jCustomerColour1.getAccessibleContext().setAccessibleName("colourChooser");
@@ -735,9 +778,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jCheckPrice00;
     private javax.swing.JCheckBox jCloseCashbtn;
+    private javax.swing.JCheckBox jConsolidate;
     private com.alee.extended.colorchooser.WebColorChooserField jCustomerColour1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelInactiveTime;
@@ -748,6 +790,9 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private javax.swing.JLabel jLabelTimedMessage;
     private javax.swing.JLabel jLblautoRefresh;
     private javax.swing.JCheckBox jMoveAMountBoxToTop;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private com.alee.extended.colorchooser.WebColorChooserField jTableNameColour1;
     private javax.swing.JCheckBox jTaxIncluded;
     private javax.swing.JTextField jTextAutoLogoffTime;
