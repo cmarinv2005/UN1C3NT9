@@ -179,7 +179,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
      */
     @Override
     public void init(AppView app) throws BeanFactoryException {
-
+        
+        CustomFont cf = new CustomFont();
+        this.lblShowTotal.setFont(cf.MyFont(1, 64f)); 
         m_config = new AppConfig(new File((System.getProperty("user.home")), AppLocal.APP_ID + ".properties"));
         m_config.load();
         
@@ -203,7 +205,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         }        
  
         jbtnMooring.setVisible(Boolean.valueOf(m_App.getProperties().getProperty("till.marineoption")));
-
+        
+        jPanel3.setVisible(AppConfig.getInstance().getBoolean("till.bigtotal"));             //Muestro display de total
         priceWith00 = ("true".equals(m_App.getProperties().getProperty("till.pricewith00")));
 
         if (priceWith00) {
@@ -771,6 +774,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             m_jTaxesEuros.setText(null);
             m_jTotalEuros.setText(null); 
             jCheckStock.setText(null);
+            lblShowTotal.setText(null);
 
             checkStock();
             countArticles();        
@@ -841,10 +845,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             m_jSubtotalEuros.setText(null);
             m_jTaxesEuros.setText(null);
             m_jTotalEuros.setText(null);
+            lblShowTotal.setText(null);
         } else {
             m_jSubtotalEuros.setText(m_oTicket.printSubTotal());
             m_jTaxesEuros.setText(m_oTicket.printTax());
             m_jTotalEuros.setText(m_oTicket.printTotal());
+            lblShowTotal.setText(m_oTicket.printTotal());
             repaint();
         }
     
@@ -2603,6 +2609,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jSubtotalEuros = new javax.swing.JLabel();
         m_jTaxesEuros = new javax.swing.JLabel();
         m_jTotalEuros = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        lblShowTotal = new javax.swing.JLabel();
         m_jContEntries = new javax.swing.JPanel();
         m_jPanEntries = new javax.swing.JPanel();
         m_jNumberKeys = new com.openbravo.beans.JNumberKeys();
@@ -2951,6 +2959,18 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jPanelCentral.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
         m_jPanTicket.add(m_jPanelCentral, java.awt.BorderLayout.CENTER);
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(450, 70));
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        lblShowTotal.setBackground(new java.awt.Color(0, 0, 0));
+        lblShowTotal.setForeground(new java.awt.Color(102, 255, 0));
+        lblShowTotal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblShowTotal.setToolTipText("");
+        lblShowTotal.setOpaque(true);
+        jPanel3.add(lblShowTotal, java.awt.BorderLayout.CENTER);
+
+        m_jPanTicket.add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
         m_jPanContainer.add(m_jPanTicket, java.awt.BorderLayout.CENTER);
 
@@ -3489,11 +3509,13 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private javax.swing.JButton jEditAttributes;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JButton j_btnRemotePrt;
     private javax.swing.JButton jbtnMooring;
+    private javax.swing.JLabel lblShowTotal;
     private javax.swing.JPanel m_jButtons;
     private javax.swing.JPanel m_jButtonsExt;
     private javax.swing.JPanel m_jContEntries;

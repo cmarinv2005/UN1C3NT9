@@ -64,6 +64,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jchkBarcodetype.addActionListener(dirty);
         jchkTransBtn.addActionListener(dirty);  
         jConsolidate.addActionListener(dirty);
+        BigTotal.addActionListener(dirty);
         
     }
 
@@ -180,6 +181,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         
         jchkTransBtn.setSelected(Boolean.parseBoolean(config.getProperty("table.transbtn")));  
         jConsolidate.setSelected(Boolean.valueOf(config.getProperty("display.consolidated")));
+        BigTotal.setSelected(AppConfig.getInstance().getBoolean("till.bigtotal"));
        
         dirty.setDirty(false);
     }
@@ -217,6 +219,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         
         config.setProperty("table.transbtn", Boolean.toString(jchkTransBtn.isSelected()));
         config.setProperty("display.consolidated", Boolean.toString( jConsolidate.isSelected()));
+        config.setProperty("till.bigtotal",Boolean.toString(BigTotal.isSelected()));
         
         dirty.setDirty(false);
     }
@@ -264,6 +267,9 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jMoveAMountBoxToTop = new javax.swing.JCheckBox();
         jCloseCashbtn = new javax.swing.JCheckBox();
         jchkBarcodetype = new javax.swing.JCheckBox();
+        jPanel1 = new javax.swing.JPanel();
+        BigTotal = new com.alee.extended.button.WebSwitch();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -522,7 +528,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addComponent(jchkPriceUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jchkTextOverlay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(bundle.getString("label.configOptionStartup"), jPanel2);
@@ -575,8 +581,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jMoveAMountBoxToTop, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
-                    .addComponent(jCheckPrice00, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCloseCashbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jCloseCashbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCheckPrice00, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jchkBarcodetype, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(146, Short.MAX_VALUE))
@@ -592,10 +598,41 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                 .addComponent(jMoveAMountBoxToTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCloseCashbtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(bundle.getString("label.configOptionKeypad"), jPanel3);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        BigTotal.setPreferredSize(new java.awt.Dimension(80, 30));
+
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel1.setText(bundle.getString("label.bigtotal"));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(BigTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(380, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(BigTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab(bundle.getString("label.apariencia"), jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -659,7 +696,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 654, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 783, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 16, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -776,10 +813,12 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.alee.extended.button.WebSwitch BigTotal;
     private javax.swing.JCheckBox jCheckPrice00;
     private javax.swing.JCheckBox jCloseCashbtn;
     private javax.swing.JCheckBox jConsolidate;
     private com.alee.extended.colorchooser.WebColorChooserField jCustomerColour1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelInactiveTime;
@@ -790,6 +829,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private javax.swing.JLabel jLabelTimedMessage;
     private javax.swing.JLabel jLblautoRefresh;
     private javax.swing.JCheckBox jMoveAMountBoxToTop;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTabbedPane jTabbedPane1;
