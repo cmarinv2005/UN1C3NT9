@@ -208,6 +208,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         jPanel3.setVisible(AppConfig.getInstance().getBoolean("till.bigtotal"));             //Muestro display de total
         catcontainer.setVisible(Boolean.valueOf(m_App.getProperties().getProperty("till.hidecatalog")));  //Muestro Catálogo
+        jCheckStock.setVisible(AppConfig.getInstance().getBoolean("till.hidestock"));      //Muestro botón de Inventario
         priceWith00 = ("true".equals(m_App.getProperties().getProperty("till.pricewith00")));
 
         if (priceWith00) {
