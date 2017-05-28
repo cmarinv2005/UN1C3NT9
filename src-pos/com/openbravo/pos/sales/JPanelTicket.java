@@ -207,6 +207,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         jbtnMooring.setVisible(Boolean.valueOf(m_App.getProperties().getProperty("till.marineoption")));
         
         jPanel3.setVisible(AppConfig.getInstance().getBoolean("till.bigtotal"));             //Muestro display de total
+        catcontainer.setVisible(Boolean.valueOf(m_App.getProperties().getProperty("till.hidecatalog")));  //Muestro Catálogo
         priceWith00 = ("true".equals(m_App.getProperties().getProperty("till.pricewith00")));
 
         if (priceWith00) {
@@ -2958,8 +2959,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jPanelCentral.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
-        m_jPanTicket.add(m_jPanelCentral, java.awt.BorderLayout.CENTER);
-
         jPanel3.setPreferredSize(new java.awt.Dimension(450, 70));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
@@ -2970,7 +2969,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         lblShowTotal.setOpaque(true);
         jPanel3.add(lblShowTotal, java.awt.BorderLayout.CENTER);
 
-        m_jPanTicket.add(jPanel3, java.awt.BorderLayout.PAGE_START);
+        m_jPanelCentral.add(jPanel3, java.awt.BorderLayout.PAGE_START);
+
+        m_jPanTicket.add(m_jPanelCentral, java.awt.BorderLayout.CENTER);
 
         m_jPanContainer.add(m_jPanTicket, java.awt.BorderLayout.CENTER);
 

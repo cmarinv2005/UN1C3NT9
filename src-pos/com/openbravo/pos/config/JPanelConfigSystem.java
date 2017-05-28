@@ -21,6 +21,7 @@ package com.openbravo.pos.config;
 
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.pos.forms.AppConfig;
+import com.openbravo.pos.forms.AppLocal;
 import java.awt.Component;
         
         
@@ -65,6 +66,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jchkTransBtn.addActionListener(dirty);  
         jConsolidate.addActionListener(dirty);
         BigTotal.addActionListener(dirty);
+        chbCatalog.addActionListener(dirty); 
         
     }
 
@@ -182,6 +184,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jchkTransBtn.setSelected(Boolean.parseBoolean(config.getProperty("table.transbtn")));  
         jConsolidate.setSelected(Boolean.valueOf(config.getProperty("display.consolidated")));
         BigTotal.setSelected(AppConfig.getInstance().getBoolean("till.bigtotal"));
+        chbCatalog.setSelected(Boolean.valueOf(config.getProperty("till.hidecatalog")));
        
         dirty.setDirty(false);
     }
@@ -220,6 +223,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         config.setProperty("table.transbtn", Boolean.toString(jchkTransBtn.isSelected()));
         config.setProperty("display.consolidated", Boolean.toString( jConsolidate.isSelected()));
         config.setProperty("till.bigtotal",Boolean.toString(BigTotal.isSelected()));
+        config.setProperty("till.hidecatalog", Boolean.toString(chbCatalog.isSelected())); 
         
         dirty.setDirty(false);
     }
@@ -270,6 +274,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jPanel1 = new javax.swing.JPanel();
         BigTotal = new com.alee.extended.button.WebSwitch();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        chbCatalog = new com.alee.extended.button.WebSwitch();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -607,9 +613,24 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jPanel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
         BigTotal.setPreferredSize(new java.awt.Dimension(80, 30));
+        BigTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BigTotalActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel1.setText(bundle.getString("label.bigtotal"));
+        jLabel1.setText("Display");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel2.setText("Catalogo");
+
+        chbCatalog.setPreferredSize(new java.awt.Dimension(80, 30));
+        chbCatalog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbCatalogActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -617,9 +638,13 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(BigTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BigTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chbCatalog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(380, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -629,7 +654,11 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(BigTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(chbCatalog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(45, 45, 45))
         );
 
         jTabbedPane1.addTab(bundle.getString("label.apariencia"), jPanel1);
@@ -810,15 +839,35 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private void jchkTransBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkTransBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jchkTransBtnActionPerformed
+
+    private void BigTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BigTotalActionPerformed
+        // TODO add your handling code here:
+        if (BigTotal.isSelected()) {              
+            jLabel1.setText(AppLocal.getIntString("label.bigtotalyes"));              
+        } else {             
+            jLabel1.setText(AppLocal.getIntString("label.bigtotalno"));             
+        }
+    }//GEN-LAST:event_BigTotalActionPerformed
+
+    private void chbCatalogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbCatalogActionPerformed
+        // TODO add your handling code here:
+        if (chbCatalog.isSelected()) {              
+            jLabel2.setText(AppLocal.getIntString("label.showcatalogoyes"));              
+        } else {             
+            jLabel2.setText(AppLocal.getIntString("label.showcatalogono"));             
+        }
+    }//GEN-LAST:event_chbCatalogActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.alee.extended.button.WebSwitch BigTotal;
+    private com.alee.extended.button.WebSwitch chbCatalog;
     private javax.swing.JCheckBox jCheckPrice00;
     private javax.swing.JCheckBox jCloseCashbtn;
     private javax.swing.JCheckBox jConsolidate;
     private com.alee.extended.colorchooser.WebColorChooserField jCustomerColour1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelInactiveTime;
