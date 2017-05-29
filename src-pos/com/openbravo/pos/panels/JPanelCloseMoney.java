@@ -112,7 +112,16 @@ public class JPanelCloseMoney extends javax.swing.JPanel implements JPanelView, 
         m_jsalestable.getTableHeader().setReorderingAllowed(false);         
         m_jsalestable.setRowHeight(25);
         m_jsalestable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+        jPanelTop.setVisible(false);        
+        if (m_App.getProperties().getProperty("screen.600800") != null) {           
+            if (Boolean.valueOf(m_App.getProperties().getProperty("screen.600800")) == true) {             
+                   jPanelTop.setVisible(true);
+                   jPanelBottom.setVisible(false);
+            } else {
+                   jPanelTop.setVisible(false);
+                   jPanelBottom.setVisible(true);
+            }        
+        }
     }
     
     /**
@@ -434,7 +443,6 @@ public class JPanelCloseMoney extends javax.swing.JPanel implements JPanelView, 
         m_jMinDate = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         m_jMaxDate = new javax.swing.JTextField();
-        webCBCloseCash = new com.alee.laf.combobox.WebComboBox();
         jLabel5 = new javax.swing.JLabel();
         m_jCash = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -456,98 +464,76 @@ public class JPanelCloseMoney extends javax.swing.JPanel implements JPanelView, 
         m_jSales = new javax.swing.JTextField();
         m_jSalesSubtotal = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        m_jCloseCash = new javax.swing.JButton();
-        m_jPrintCash = new javax.swing.JButton();
         m_jCashCurrent = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
+        jPanelBottom = new javax.swing.JPanel();
+        m_jPrintCash = new javax.swing.JButton();
+        m_jCloseCash = new javax.swing.JButton();
+        webCBCloseCash = new com.alee.laf.combobox.WebComboBox();
+        jPanelTop = new javax.swing.JPanel();
+        m_jPrintCashTop = new javax.swing.JButton();
+        m_jCloseCashTop = new javax.swing.JButton();
+        webCBCloseCashTop = new com.alee.laf.combobox.WebComboBox();
 
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel11.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel11.setText(AppLocal.getIntString("label.sequence")); // NOI18N
         jLabel11.setPreferredSize(new java.awt.Dimension(125, 30));
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
 
         m_jSequence.setEditable(false);
         m_jSequence.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jSequence.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         m_jSequence.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(m_jSequence, new org.netbeans.lib.awtextra.AbsoluteConstraints(145, 12, 110, -1));
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText(AppLocal.getIntString("label.StartDate")); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(125, 30));
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 10, 150, -1));
 
         m_jMinDate.setEditable(false);
         m_jMinDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jMinDate.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         m_jMinDate.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(m_jMinDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 10, 160, -1));
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText(AppLocal.getIntString("label.EndDate")); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(125, 30));
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 150, -1));
 
         m_jMaxDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jMaxDate.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         m_jMaxDate.setEnabled(false);
         m_jMaxDate.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(m_jMaxDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 50, 160, -1));
-
-        webCBCloseCash.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vista Previa", "Reimprimir" }));
-        webCBCloseCash.setToolTipText(AppLocal.getIntString("tooltip.closecashactions")); // NOI18N
-        webCBCloseCash.setExpandIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/calculator.png")));
-        webCBCloseCash.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        webCBCloseCash.setPreferredSize(new java.awt.Dimension(150, 45));
-        webCBCloseCash.setRound(3);
-        webCBCloseCash.setShadeWidth(3);
-        webCBCloseCash.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                webCBCloseCashActionPerformed(evt);
-            }
-        });
-        jPanel1.add(webCBCloseCash, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 470, 160, -1));
 
         jLabel5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel5.setText(AppLocal.getIntString("label.sales")); // NOI18N
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 130, -1, -1));
 
         m_jCash.setEditable(false);
         m_jCash.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jCash.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         m_jCash.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(m_jCash, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 330, 160, -1));
 
         jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel4.setText(AppLocal.getIntString("label.moneycash")); // NOI18N
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 290, -1, -1));
 
         m_jCount.setEditable(false);
         m_jCount.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jCount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         m_jCount.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(m_jCount, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 90, 160, -1));
 
         m_jLinesRemoved.setEditable(false);
         m_jLinesRemoved.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jLinesRemoved.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         m_jLinesRemoved.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(m_jLinesRemoved, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 390, 160, -1));
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel1.setText(AppLocal.getIntString("label.Tickets")); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 90, -1, -1));
-        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 370, 312, 10));
 
         m_jScrollTableTicket.setBorder(null);
         m_jScrollTableTicket.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -570,48 +556,39 @@ public class JPanelCloseMoney extends javax.swing.JPanel implements JPanelView, 
         m_jTicketTable.setShowVerticalLines(false);
         m_jScrollTableTicket.setViewportView(m_jTicketTable);
 
-        jPanel1.add(m_jScrollTableTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 55, 520, 230));
-
         jLabel9.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("pos_messages"); // NOI18N
         jLabel9.setText(bundle.getString("label.linevoids")); // NOI18N
         jLabel9.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 390, -1, -1));
 
         m_jNoCashSales.setEditable(false);
         m_jNoCashSales.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jNoCashSales.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         m_jNoCashSales.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(m_jNoCashSales, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 430, 160, -1));
 
         jLabel8.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel8.setText(bundle.getString("label.nocashsales")); // NOI18N
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 430, -1, -1));
 
         m_jSalesTotal.setEditable(false);
         m_jSalesTotal.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jSalesTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         m_jSalesTotal.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(m_jSalesTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 250, 160, -1));
 
         jLabel7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel7.setText(AppLocal.getIntString("label.total")); // NOI18N
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 250, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel12.setText(AppLocal.getIntString("label.taxes")); // NOI18N
         jLabel12.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 210, -1, -1));
 
         m_jSalesTaxes.setEditable(false);
         m_jSalesTaxes.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jSalesTaxes.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         m_jSalesTaxes.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(m_jSalesTaxes, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 210, 160, -1));
 
         m_jScrollSales.setBorder(null);
         m_jScrollSales.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -625,24 +602,45 @@ public class JPanelCloseMoney extends javax.swing.JPanel implements JPanelView, 
         m_jsalestable.setShowVerticalLines(false);
         m_jScrollSales.setViewportView(m_jsalestable);
 
-        jPanel1.add(m_jScrollSales, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 520, 160));
-
         m_jSales.setEditable(false);
         m_jSales.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jSales.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         m_jSales.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(m_jSales, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 130, 160, -1));
 
         m_jSalesSubtotal.setEditable(false);
         m_jSalesSubtotal.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jSalesSubtotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         m_jSalesSubtotal.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(m_jSalesSubtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 170, 160, -1));
 
         jLabel6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel6.setText(AppLocal.getIntString("label.totalnet")); // NOI18N
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 170, -1, -1));
+
+        m_jCashCurrent.setEditable(false);
+        m_jCashCurrent.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        m_jCashCurrent.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        jLabel13.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel13.setText(AppLocal.getIntString("label.Money")); // NOI18N
+        jLabel13.setPreferredSize(new java.awt.Dimension(150, 30));
+
+        jPanelBottom.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 100, 5));
+
+        m_jPrintCash.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        m_jPrintCash.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/printer.png"))); // NOI18N
+        m_jPrintCash.setText(AppLocal.getIntString("button.printcash")); // NOI18N
+        m_jPrintCash.setToolTipText(bundle.getString("tooltip.btn.partialcash")); // NOI18N
+        m_jPrintCash.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        m_jPrintCash.setIconTextGap(2);
+        m_jPrintCash.setMaximumSize(new java.awt.Dimension(85, 33));
+        m_jPrintCash.setMinimumSize(new java.awt.Dimension(85, 33));
+        m_jPrintCash.setPreferredSize(new java.awt.Dimension(150, 45));
+        m_jPrintCash.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jPrintCashActionPerformed(evt);
+            }
+        });
+        jPanelBottom.add(m_jPrintCash);
 
         m_jCloseCash.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jCloseCash.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/calculator.png"))); // NOI18N
@@ -659,33 +657,193 @@ public class JPanelCloseMoney extends javax.swing.JPanel implements JPanelView, 
                 m_jCloseCashActionPerformed(evt);
             }
         });
-        jPanel1.add(m_jCloseCash, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 470, -1, -1));
+        jPanelBottom.add(m_jCloseCash);
 
-        m_jPrintCash.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        m_jPrintCash.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/printer.png"))); // NOI18N
-        m_jPrintCash.setText(AppLocal.getIntString("button.printcash")); // NOI18N
-        m_jPrintCash.setToolTipText(bundle.getString("tooltip.btn.partialcash")); // NOI18N
-        m_jPrintCash.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        m_jPrintCash.setIconTextGap(2);
-        m_jPrintCash.setMaximumSize(new java.awt.Dimension(85, 33));
-        m_jPrintCash.setMinimumSize(new java.awt.Dimension(85, 33));
-        m_jPrintCash.setPreferredSize(new java.awt.Dimension(150, 45));
-        m_jPrintCash.addActionListener(new java.awt.event.ActionListener() {
+        webCBCloseCash.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vista Previa", "Reimprimir" }));
+        webCBCloseCash.setToolTipText(AppLocal.getIntString("tooltip.closecashactions")); // NOI18N
+        webCBCloseCash.setExpandIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/calculator.png")));
+        webCBCloseCash.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        webCBCloseCash.setPreferredSize(new java.awt.Dimension(150, 45));
+        webCBCloseCash.setRound(3);
+        webCBCloseCash.setShadeWidth(3);
+        webCBCloseCash.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_jPrintCashActionPerformed(evt);
+                webCBCloseCashActionPerformed(evt);
             }
         });
-        jPanel1.add(m_jPrintCash, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, -1, -1));
+        jPanelBottom.add(webCBCloseCash);
 
-        m_jCashCurrent.setEditable(false);
-        m_jCashCurrent.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        m_jCashCurrent.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jPanel1.add(m_jCashCurrent, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 290, 160, 30));
+        jPanelTop.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 100, 5));
 
-        jLabel13.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel13.setText(AppLocal.getIntString("label.Money")); // NOI18N
-        jLabel13.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 330, -1, -1));
+        m_jPrintCashTop.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        m_jPrintCashTop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/printer.png"))); // NOI18N
+        m_jPrintCashTop.setText(AppLocal.getIntString("button.printcash")); // NOI18N
+        m_jPrintCashTop.setToolTipText(bundle.getString("tooltip.btn.partialcash")); // NOI18N
+        m_jPrintCashTop.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        m_jPrintCashTop.setIconTextGap(2);
+        m_jPrintCashTop.setMaximumSize(new java.awt.Dimension(85, 33));
+        m_jPrintCashTop.setMinimumSize(new java.awt.Dimension(85, 33));
+        m_jPrintCashTop.setPreferredSize(new java.awt.Dimension(150, 45));
+        m_jPrintCashTop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jPrintCashTopActionPerformed(evt);
+            }
+        });
+        jPanelTop.add(m_jPrintCashTop);
+
+        m_jCloseCashTop.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        m_jCloseCashTop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/calculator.png"))); // NOI18N
+        m_jCloseCashTop.setText(AppLocal.getIntString("button.closecash")); // NOI18N
+        m_jCloseCashTop.setToolTipText(bundle.getString("tooltip.btn.closecash")); // NOI18N
+        m_jCloseCashTop.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        m_jCloseCashTop.setIconTextGap(2);
+        m_jCloseCashTop.setInheritsPopupMenu(true);
+        m_jCloseCashTop.setMaximumSize(new java.awt.Dimension(85, 33));
+        m_jCloseCashTop.setMinimumSize(new java.awt.Dimension(85, 33));
+        m_jCloseCashTop.setPreferredSize(new java.awt.Dimension(150, 45));
+        m_jCloseCashTop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jCloseCashTopActionPerformed(evt);
+            }
+        });
+        jPanelTop.add(m_jCloseCashTop);
+
+        webCBCloseCashTop.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vista Previa", "Reimprimir" }));
+        webCBCloseCashTop.setToolTipText(AppLocal.getIntString("tooltip.closecashactions")); // NOI18N
+        webCBCloseCashTop.setExpandIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/calculator.png")));
+        webCBCloseCashTop.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        webCBCloseCashTop.setPreferredSize(new java.awt.Dimension(150, 45));
+        webCBCloseCashTop.setRound(3);
+        webCBCloseCashTop.setShadeWidth(3);
+        webCBCloseCashTop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                webCBCloseCashTopActionPerformed(evt);
+            }
+        });
+        jPanelTop.add(webCBCloseCashTop);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)
+                        .addComponent(m_jSequence, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(290, 290, 290)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(m_jMinDate, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(m_jScrollTableTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(m_jMaxDate, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jCount, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jSales, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jSalesSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jSalesTaxes, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jSalesTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(m_jScrollSales, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(m_jCashCurrent, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(m_jCash, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(m_jLinesRemoved, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(m_jNoCashSales, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jPanelBottom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(jPanelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jSequence, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jMinDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(m_jScrollTableTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(m_jMaxDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(m_jCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(m_jSales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(m_jSalesSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(m_jSalesTaxes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(m_jSalesTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(m_jScrollSales, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jCashCurrent, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jCash, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jLinesRemoved, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jNoCashSales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanelBottom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -779,6 +937,95 @@ public class JPanelCloseMoney extends javax.swing.JPanel implements JPanelView, 
             m_App.getAppUserView().showTask("com.openbravo.pos.panels.JPanelCloseMoneyReprint");
         }      
     }//GEN-LAST:event_webCBCloseCashActionPerformed
+
+    private void m_jPrintCashTopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jPrintCashTopActionPerformed
+        // TODO add your handling code here:
+        printPayments("Printer.PartialCash");
+    }//GEN-LAST:event_m_jPrintCashTopActionPerformed
+
+    private void m_jCloseCashTopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jCloseCashTopActionPerformed
+        // TODO add your handling code here:
+         int res = JOptionPane.showConfirmDialog(this, 
+                AppLocal.getIntString("message.wannaclosecash"), 
+                AppLocal.getIntString("message.title"), 
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        
+        if (res == JOptionPane.YES_OPTION) {
+
+            Date dNow = new Date();
+
+            try {
+
+                if (m_App.getActiveCashDateEnd() == null) {
+                    new StaticSentence(m_App.getSession()
+                        , "UPDATE closedcash SET DATEEND = ?, NOSALES = ? WHERE HOST = ? AND MONEY = ?"
+                        , new SerializerWriteBasic(new Datas[] {
+                            Datas.TIMESTAMP, 
+                            Datas.INT, 
+                            Datas.STRING, 
+                            Datas.STRING}))
+                    .exec(new Object[] {dNow, result, 
+                        m_App.getProperties().getHost(), 
+                        m_App.getActiveCashIndex()});
+                }
+            } catch (BasicException e) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, 
+                        AppLocal.getIntString("message.cannotclosecash"), e);
+                msg.show(this);
+            }
+
+            try {
+                // Creamos una nueva caja
+                m_App.setActiveCash(UUID.randomUUID().toString(), 
+                        m_App.getActiveCashSequence() + 1, dNow, null);
+
+                // creamos la caja activa
+                m_dlSystem.execInsertCash(
+                    new Object[] {m_App.getActiveCashIndex(), 
+                        m_App.getProperties().getHost(), 
+                        m_App.getActiveCashSequence(), 
+                        m_App.getActiveCashDateStart(), 
+                        m_App.getActiveCashDateEnd(),0});
+
+                m_dlSystem.execDrawerOpened(
+                    new Object[] {m_App.getAppUserView().getUser().getName(),"Close Cash"});
+
+                // ponemos la fecha de fin
+                m_PaymentsToClose.setDateEnd(dNow);
+
+                // print report
+                printPayments("Printer.CloseCash");
+
+                // Mostramos el mensaje
+                JOptionPane.showMessageDialog(this, 
+                        AppLocal.getIntString("message.closecashok"), 
+                        AppLocal.getIntString("message.title"), 
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (BasicException e) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, 
+                        AppLocal.getIntString("message.cannotclosecash"), e);
+                msg.show(this);
+            }
+
+            try {
+                loadData();
+            } catch (BasicException e) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, 
+                        AppLocal.getIntString("label.noticketstoclose"), e);
+                msg.show(this);
+            }
+        }
+    }//GEN-LAST:event_m_jCloseCashTopActionPerformed
+
+    private void webCBCloseCashTopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webCBCloseCashTopActionPerformed
+        // TODO add your handling code here:
+        if(webCBCloseCashTop.getSelectedIndex() == 0){
+            printPayments("Printer.CloseCash.Preview");  
+        }
+        if(webCBCloseCashTop.getSelectedIndex() == 1) {
+            m_App.getAppUserView().showTask("com.openbravo.pos.panels.JPanelCloseMoneyReprint");
+        }   
+    }//GEN-LAST:event_webCBCloseCashTopActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -795,16 +1042,20 @@ public class JPanelCloseMoney extends javax.swing.JPanel implements JPanelView, 
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanelBottom;
+    private javax.swing.JPanel jPanelTop;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField m_jCash;
     private javax.swing.JTextField m_jCashCurrent;
     private javax.swing.JButton m_jCloseCash;
+    private javax.swing.JButton m_jCloseCashTop;
     private javax.swing.JTextField m_jCount;
     private javax.swing.JTextField m_jLinesRemoved;
     private javax.swing.JTextField m_jMaxDate;
     private javax.swing.JTextField m_jMinDate;
     private javax.swing.JTextField m_jNoCashSales;
     private javax.swing.JButton m_jPrintCash;
+    private javax.swing.JButton m_jPrintCashTop;
     private javax.swing.JTextField m_jSales;
     private javax.swing.JTextField m_jSalesSubtotal;
     private javax.swing.JTextField m_jSalesTaxes;
@@ -815,6 +1066,7 @@ public class JPanelCloseMoney extends javax.swing.JPanel implements JPanelView, 
     private javax.swing.JTable m_jTicketTable;
     private javax.swing.JTable m_jsalestable;
     private com.alee.laf.combobox.WebComboBox webCBCloseCash;
+    private com.alee.laf.combobox.WebComboBox webCBCloseCashTop;
     // End of variables declaration//GEN-END:variables
     
 }

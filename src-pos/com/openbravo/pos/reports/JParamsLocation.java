@@ -93,7 +93,7 @@ public class JParamsLocation extends javax.swing.JPanel implements ReportEditorC
      * @param a
      */
     protected void addFirst(List a) {
-        a.add(0, null);
+     //   a.add(0, null);
     }
     
     /**
