@@ -328,7 +328,7 @@ public final class CustomersView extends javax.swing.JPanel implements EditorRec
         txtCurdebt.setText(Formats.CURRENCY.formatValue(customer[22]));    
         m_jImage.setImage((BufferedImage) customer[23]);
         m_jVip.setSelected(((Boolean) customer[24]));
-        txtDiscount.setText(Formats.DOUBLE.formatValue(customer[25]));        
+        txtDiscount.setText(Formats.PERCENT.formatValue(customer[25]));        
 
         m_jTaxID.setEnabled(false);
         m_jSearchkey.setEnabled(false);
@@ -401,7 +401,7 @@ public final class CustomersView extends javax.swing.JPanel implements EditorRec
         txtCurdebt.setText(Formats.CURRENCY.formatValue(customer[22]));    
         m_jImage.setImage((BufferedImage) customer[23]);
         m_jVip.setSelected(((Boolean) customer[24]));        
-        txtDiscount.setText(Formats.DOUBLE.formatValue(customer[25]));        
+        txtDiscount.setText(Formats.PERCENT.formatValue(customer[25]));        
 
         m_jTaxID.setEnabled(true);
         m_jSearchkey.setEnabled(true);
@@ -498,7 +498,7 @@ public void resetTranxTable() {
         customer[22] = Formats.CURRENCY.parseValue(txtCurdebt.getText()); // not saved
         customer[23] = m_jImage.getImage();  
         customer[24] = m_jVip.isSelected();
-        customer[25] = Formats.CURRENCY.parseValue(txtDiscount.getText(), 0.0);
+        customer[25] = Formats.PERCENT.parseValue(txtDiscount.getText(), 0.0);
         customer[26] = (Object)getAppView();
         
         return customer;

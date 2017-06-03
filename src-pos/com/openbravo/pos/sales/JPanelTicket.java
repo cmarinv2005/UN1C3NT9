@@ -327,7 +327,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             restDB.setCustomerNameInTableByTicketId(dlSales.loadCustomerExt
                                 (finder.getSelectedCustomer().getId()).toString(), m_oTicket.getId());
                         }                        
-                            checkCustomer();
+                        checkCustomer();
                         m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
                                 
                     } catch (BasicException e) {
@@ -938,7 +938,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 } else {
                     Toolkit.getDefaultToolkit().beep();                                   
                 }
-            } else {    
+            } else {   
+                // Apply any customer discount 
+                if (m_oTicket.getDiscount() > 0.0) {
+                    oLine.setPrice(oLine.getPrice() - (oLine.getPrice() * m_oTicket.getDiscount()));
+                }
                 m_oTicket.addLine(oLine);            
                 m_ticketlines.addTicketLine(oLine);
              
@@ -1257,8 +1261,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                         new MessageInf(MessageInf.SGN_WARNING, AppLocal
                             .getIntString("message.nocustomer")).show(this);           
                     } else {
+//                        if (m_oTicket.getDiscount() > 0.0 && m_oTicket.getLinesCount() > 0) {
+//                                JOptionPane.showMessageDialog(null,
+//                                        AppLocal.getIntString("message.customerdiscountapplied"),
+//                                        AppLocal.getIntString("Menu.Customers"),
+//                                        JOptionPane.WARNING_MESSAGE);
+//                            }   
                         m_oTicket.setCustomer(newcustomer);
-                        m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
+                        checkCustomer();
+                        m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));                                             
                     }
                 } catch (BasicException e) {
                     Toolkit.getDefaultToolkit().beep();                   
@@ -2435,6 +2446,27 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         }
     
     public void checkCustomer() {
+        if (m_oTicket.getCustomer().isVIP() == false) {
+            if (m_oTicket.getDiscount() > 0.0 && m_oTicket.getLinesCount() > 0) {
+
+                        Object[] options = {AppLocal.getIntString("Button.Yes"),
+                            AppLocal.getIntString("Button.No")};
+
+                            if (JOptionPane.showOptionDialog(this,
+                                        AppLocal.getIntString("message.customerdiscount"),
+                                        AppLocal.getIntString("Menu.Customers"),
+                                        JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.INFORMATION_MESSAGE, null,
+                                        options, options[1]) == 0) {
+                                    // Apply this discount to all ticket lines  
+                                    for (TicketLineInfo line : m_oTicket.getLines()) {
+                                        line.setPrice(line.getPrice() - (line.getPrice() * m_oTicket.getDiscount()));
+                                    }
+                                refreshTicket();
+                            }
+            }  
+        }     
+        
         if (m_oTicket.getCustomer().isVIP() == true) {
 
             String content;
@@ -2445,22 +2477,44 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 vip = AppLocal.getIntString("message.vipyes");
             } else {
                 vip = AppLocal.getIntString("message.vipno");
-            }
-            if (m_oTicket.getCustomer().getDiscount() > 0) {
-                discount = AppLocal.getIntString("message.discyes") + m_oTicket.getCustomer().getDiscount() + "%";
-            } else {
-                discount = AppLocal.getIntString("message.discno");
+            }   
+
+            if (m_oTicket.getDiscount() > 0.0 && m_oTicket.getCustomer().isVIP() == true){  
+                
+                if (m_oTicket.getDiscount() > 0.0 && m_oTicket.getLinesCount() > 0) {
+
+                        Object[] options = {AppLocal.getIntString("Button.Yes"),
+                            AppLocal.getIntString("Button.No")};
+
+                            if (JOptionPane.showOptionDialog(this,
+                                        AppLocal.getIntString("message.customerdiscount"),
+                                        AppLocal.getIntString("Menu.Customers"),
+                                        JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.INFORMATION_MESSAGE, null,
+                                        options, options[1]) == 0) {
+                                    // Apply this discount to all ticket lines  
+                                    for (TicketLineInfo line : m_oTicket.getLines()) {
+                                        line.setPrice(line.getPrice() - (line.getPrice() * m_oTicket.getDiscount()));
+                                    }
+                                refreshTicket();
+                            }
+                }  
+                    discount = AppLocal.getIntString("message.discyes") + m_oTicket.getCustomer().getDiscount() * 100 + "%";             
+                    m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
+                    refreshTicket();
+                    
+            } else {  
+                  discount = AppLocal.getIntString("message.discno");                  
             }
                                 
             content = "<html>"+
                 "<b>" + AppLocal.getIntString("label.vip") + " : " + "</b>" + vip + "<br>" +
                 "<b>" + AppLocal.getIntString("label.discount") + " : " + "</b>" + discount + "<br>";
-                    
-
+                     
             JFrame frame = new JFrame();
             JOptionPane.showMessageDialog(frame, 
                 content,                             
-                "Info", 
+                "Información", 
                 JOptionPane.WARNING_MESSAGE);  
         }        
     }

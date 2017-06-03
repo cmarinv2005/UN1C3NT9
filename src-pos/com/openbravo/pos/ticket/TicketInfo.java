@@ -205,7 +205,26 @@ public final class TicketInfo implements SerializableRead, Externalizable {
         
         return t;
     }
+    
+    public Double getDiscount() {
+        Double discount = null;
+        if (m_Customer != null) {
+            discount = m_Customer.getDiscount();
+        }
+        if (discount == null) {
+            discount = 0.0;
+        }
 
+        return discount;
+    }
+
+    private Double applyDiscount(Double value) {
+        if (value != null && value > 0.0) {
+            value = value - (value * getDiscount());
+        }
+        return value;
+    }
+    
     public String getId() {
         return m_sId;
     }
@@ -270,7 +289,14 @@ public final class TicketInfo implements SerializableRead, Externalizable {
         if (m_Customer != null) {        
             name.add(m_Customer.getName());            
         }
-
+        
+        if (getCustomerId() != null) {            
+            Double discount = getDiscount();
+            if (discount > 0.0) {
+                name.add(Formats.PERCENT.formatValue(discount));
+            }
+        }
+        
         return org.apache.commons.lang.StringUtils.join(name, " - ");        
     }
     

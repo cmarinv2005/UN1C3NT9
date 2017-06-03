@@ -438,7 +438,7 @@ public class CustomerInfoExt extends CustomerInfo {
         this.discount = discount;
     }
     public String printDiscount() {       
-        return Formats.CURRENCY.formatValue(RoundUtils.getValue(getDiscount()));
+        return Formats.PERCENT.formatValue(RoundUtils.getValue(getDiscount()));
     }    
     
     
