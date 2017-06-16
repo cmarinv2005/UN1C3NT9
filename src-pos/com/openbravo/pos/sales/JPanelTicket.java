@@ -74,6 +74,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import static java.lang.Integer.parseInt;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -1137,7 +1138,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     }
     
     private void incProductByCode(String sCode) {
-
+        // Modificar para permitir el número x con productos escaneados       
+        int count = 1;
+        if (sCode.contains("*")) {
+            count = (sCode.indexOf("*") == 0) ? 1 : parseInt(sCode.substring(0, sCode.indexOf("*")));
+            sCode = sCode.substring(sCode.indexOf("*") + 1, sCode.length());
+        }
         try {
             ProductInfoExt oProduct = dlSales.getProductInfoByCode(sCode);
 
@@ -1148,7 +1154,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                    "Check", JOptionPane.WARNING_MESSAGE);                
                 stateToZero();
             } else {
-                incProduct(oProduct);
+                incProduct(count, oProduct);
             }
         } catch (BasicException eData) {
             stateToZero();           
