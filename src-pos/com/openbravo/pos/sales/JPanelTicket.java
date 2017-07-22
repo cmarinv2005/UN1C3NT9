@@ -86,6 +86,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -210,8 +212,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         jPanel3.setVisible(AppConfig.getInstance().getBoolean("till.bigtotal"));             //Muestro display de total
         catcontainer.setVisible(Boolean.valueOf(m_App.getProperties().getProperty("till.hidecatalog")));  //Muestro Catálogo
         jCheckStock.setVisible(AppConfig.getInstance().getBoolean("till.hidestock"));      //Muestro botón de Inventario
+        jPanel6.setVisible(AppConfig.getInstance().getBoolean("till.imagen"));             //Muestro botón de Inventario        
+        
         priceWith00 = ("true".equals(m_App.getProperties().getProperty("till.pricewith00")));
-
+        
+        if ("true".equals(m_App.getProperties().getProperty("till.teclado"))) {  
+             m_jPanContainer.add(m_jContEntries, java.awt.BorderLayout.WEST);      //Teclado numerico a la izquierda
+             m_jPanTicket.add(jPanel5, java.awt.BorderLayout.WEST);                //Panel de edición a la izquierda
+        }
+         
         if (priceWith00) {
             m_jNumberKeys.dotIs00(true);
         }
@@ -223,6 +232,30 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         m_ticketlines = new JTicketLines(dlSystem.getResourceAsXML("Ticket.Line"));
         m_jPanelCentral.add(m_ticketlines, java.awt.BorderLayout.CENTER);
+        
+        m_ticketlines.addListSelectionListener(new ListSelectionListener() {    // 22 lineas agregadas por Carlos Marin
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                int i = m_ticketlines.getSelectedIndex();
+ 
+                if (i >= 0) {
+                    try {
+                        String sProduct = m_oTicket.getLine(i).getProductID();
+                        if (sProduct != null) {
+                            ProductInfoExt prod = JPanelTicket.this.dlSales.getProductInfo(sProduct);
+                            if (prod.getImage() != null) {
+                                m_jImage.setImage(prod.getImage());   //Coloco la imagen en el cuadro de ventas                                
+                            } else {
+                                m_jImage.setImage(null);              // producto sin imagen			
+                            }
+                        }
+                    } catch (BasicException ex) {
+                        Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+    });
         
         m_TTP = new TicketParser(m_App.getDeviceTicket(), dlSystem);
                
@@ -698,6 +731,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     @Override
     public void setActiveTicket(TicketInfo oTicket, Object oTicketExt) {
         
+        m_jImage.setImage(null);   //Borro imagen del panel de Ventas   
+        
         switch (m_App.getProperties().getProperty("machine.ticketsbag")){
            case "restaurant":                              
             if ("true".equals(m_App.getProperties().getProperty("till.autoLogoffrestaurant"))) {
@@ -937,6 +972,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     m_oTicket.insertLine(i, oLine);
                     m_ticketlines.insertTicketLine(i, oLine);
                 } else {
+                    m_jImage.setImage(null);
                     Toolkit.getDefaultToolkit().beep();                                   
                 }
             } else {   
@@ -1049,8 +1085,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                         if (input == 0) {
                             m_oTicket.removeLine(i);
                             m_ticketlines.removeTicketLine(i);
+                            m_jImage.setImage(null);
                         }    
-                    } else {
+                    } else {                            
                         JOptionPane.showMessageDialog(this, 
                             AppLocal.getIntString("message.deletelineno")
                             ,AppLocal.getIntString("label.deleteline"), JOptionPane.WARNING_MESSAGE);
@@ -1911,6 +1948,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 int i = m_ticketlines.getSelectedIndex();
 
                 if (i < 0){
+					m_jImage.setImage(null);
                     Toolkit.getDefaultToolkit().beep();
                 } else {
                     double dPor = getPorValue();
@@ -1934,6 +1972,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 int i = m_ticketlines.getSelectedIndex();
 
                 if (i < 0){
+					m_jImage.setImage(null);
                     Toolkit.getDefaultToolkit().beep();
                 } else {
                     double dPor = getPorValue();
@@ -1979,6 +2018,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             } else if (cTrans == ' ' || cTrans == '=') {
                 if (m_oTicket.getLinesCount() > 0) {
                     if (closeTicket(m_oTicket, m_oTicketExt)) {
+						m_jImage.setImage(null);
                         m_ticketsbag.deleteTicket();  
                         String autoLogoff = (m_App.getProperties().getProperty("till.autoLogoff"));
                         if (autoLogoff != null){               
@@ -2671,6 +2711,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jSubtotalEuros = new javax.swing.JLabel();
         m_jTaxesEuros = new javax.swing.JLabel();
         m_jTotalEuros = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        m_jImage = new com.openbravo.data.gui.JImageViewer();
         jPanel3 = new javax.swing.JPanel();
         lblShowTotal = new javax.swing.JLabel();
         m_jContEntries = new javax.swing.JPanel();
@@ -3020,6 +3062,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jPanelCentral.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
+        jPanel6.setPreferredSize(new java.awt.Dimension(210, 200));
+        jPanel6.setLayout(new java.awt.BorderLayout());
+        jPanel6.add(m_jImage, java.awt.BorderLayout.CENTER);
+
+        m_jPanelCentral.add(jPanel6, java.awt.BorderLayout.LINE_END);
+
         jPanel3.setPreferredSize(new java.awt.Dimension(450, 70));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
@@ -3188,6 +3236,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         int i = m_ticketlines.getSelectedIndex();
         
         if (i < 0){
+			m_jImage.setImage(null);
             Toolkit.getDefaultToolkit().beep(); // no line selected
         } else {
             try {
@@ -3232,7 +3281,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         if (i < 0){
             Toolkit.getDefaultToolkit().beep();
-        } else {               
+        } else {         
             removeTicketLine(i);
             jCheckStock.setText("");
         }     
@@ -3253,6 +3302,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         } 
         int i = m_ticketlines.getSelectedIndex();
         if (i < 0) {
+			m_jImage.setImage(null);  
             Toolkit.getDefaultToolkit().beep(); // no line selected
         } else {
             try {
@@ -3574,6 +3624,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JButton j_btnRemotePrt;
     private javax.swing.JButton jbtnMooring;
@@ -3584,6 +3635,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private javax.swing.JButton m_jDelete;
     private javax.swing.JButton m_jEditLine;
     private javax.swing.JButton m_jEnter;
+    private com.openbravo.data.gui.JImageViewer m_jImage;
     private javax.swing.JTextField m_jKeyFactory;
     private javax.swing.JLabel m_jLblTotalEuros1;
     private javax.swing.JLabel m_jLblTotalEuros2;

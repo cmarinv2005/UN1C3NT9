@@ -76,6 +76,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         BigTotal.addActionListener(dirty);
         chbCatalog.addActionListener(dirty); 
         chbHideStock.addActionListener(dirty);
+        chbTeclado.addActionListener(dirty); 
+        chbImagen.addActionListener(dirty); 
         actualizarCheckbox();
     }
     
@@ -152,6 +154,18 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         else {        
             chbHideStock.setBackground(Color.red);                     
         } 
+        if (chbTeclado.isSelected()) {  
+            chbTeclado.setBackground(Color.green);                      
+        } 
+        else {        
+            chbTeclado.setBackground(Color.red);                     
+        } 
+        if (chbImagen.isSelected()) {  
+            chbImagen.setBackground(Color.green);                      
+        } 
+        else {        
+            chbImagen.setBackground(Color.red);                     
+        } 
     }
         
     /**
@@ -208,7 +222,9 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         BigTotal.setSelected(Boolean.parseBoolean(config.getProperty("till.bigtotal")));
         chbCatalog.setSelected(Boolean.parseBoolean(config.getProperty("till.hidecatalog")));
         chbHideStock.setSelected(Boolean.parseBoolean(config.getProperty("till.hidestock")));
-//        chbHideStock.setSelected(Boolean.valueOf(config.getProperty("till.hidestock")));
+        chbTeclado.setSelected(Boolean.parseBoolean(config.getProperty("till.teclado")));
+        chbImagen.setSelected(Boolean.parseBoolean(config.getProperty("till.imagen")));
+
         
         jchkautoRefreshTableMap.setSelected(Boolean.parseBoolean(config.getProperty("till.autoRefreshTableMap")));  
                 
@@ -314,6 +330,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         config.setProperty("till.bigtotal",Boolean.toString(BigTotal.isSelected()));
         config.setProperty("till.hidecatalog", Boolean.toString(chbCatalog.isSelected())); 
         config.setProperty("till.hidestock", Boolean.toString(chbHideStock.isSelected())); 
+        config.setProperty("till.teclado", Boolean.toString(chbTeclado.isSelected())); 
+        config.setProperty("till.imagen", Boolean.toString(chbImagen.isSelected())); 
         
         dirty.setDirty(false);
     }
@@ -377,6 +395,10 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         chbCatalog = new com.alee.extended.button.WebSwitch();
         chbHideStock = new com.alee.extended.button.WebSwitch();
         jLabel5 = new javax.swing.JLabel();
+        chbImagen = new com.alee.extended.button.WebSwitch();
+        chbTeclado = new com.alee.extended.button.WebSwitch();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -701,7 +723,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jchkPriceUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 991, Short.MAX_VALUE)))
+                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -810,7 +832,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                         .addGap(18, 18, 18)
                         .addComponent(jchkBarcodetype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 991, Short.MAX_VALUE)))
+                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -818,9 +840,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jCheckPrice00, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jCheckPrice00, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jchkBarcodetype, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -892,22 +913,50 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jLabel5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel5.setText("Mostrar boton de Inventario");
 
+        chbImagen.setOpaque(true);
+        chbImagen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbImagenActionPerformed(evt);
+            }
+        });
+
+        chbTeclado.setOpaque(true);
+        chbTeclado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbTecladoActionPerformed(evt);
+            }
+        });
+
+        jLabel15.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel15.setText("Mostrar cuadro de Imagen");
+
+        jLabel16.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel16.setText("Teclado numérico a la Izquierda");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BigTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chbCatalog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chbHideStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(BigTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(chbCatalog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(chbHideStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 917, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(488, 488, 488))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(chbTeclado, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                    .addComponent(chbImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(758, 758, 758))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -915,11 +964,15 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(BigTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(chbTeclado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(chbCatalog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(chbCatalog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(chbImagen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(chbHideStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -985,7 +1038,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 654, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1287,12 +1340,36 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
             jLabel14.setText(AppLocal.getIntString("label.barcodetypeno"));             
         }
     }//GEN-LAST:event_jchkBarcodetypeActionPerformed
+
+    private void chbTecladoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbTecladoActionPerformed
+        // TODO add your handling code here:
+        if (chbTeclado.isSelected()) {  
+            chbTeclado.setBackground(Color.green);            
+            jLabel16.setText(AppLocal.getIntString("label.tecladoizq"));              
+        } else {      
+            chbTeclado.setBackground(Color.red);
+            jLabel16.setText(AppLocal.getIntString("label.tecladoder"));             
+        }
+    }//GEN-LAST:event_chbTecladoActionPerformed
+
+    private void chbImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbImagenActionPerformed
+        // TODO add your handling code here:
+        if (chbImagen.isSelected()) {  
+            chbImagen.setBackground(Color.green);            
+            jLabel15.setText(AppLocal.getIntString("label.imagenyes"));              
+        } else {      
+            chbImagen.setBackground(Color.red);
+            jLabel15.setText(AppLocal.getIntString("label.imagenno"));             
+        }
+    }//GEN-LAST:event_chbImagenActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.alee.extended.button.WebSwitch BigTotal;
     private com.alee.extended.button.WebSwitch chbCatalog;
     private com.alee.extended.button.WebSwitch chbHideStock;
+    private com.alee.extended.button.WebSwitch chbImagen;
+    private com.alee.extended.button.WebSwitch chbTeclado;
     private com.alee.extended.button.WebSwitch jCheckPrice00;
     private com.alee.extended.button.WebSwitch jCloseCashbtn;
     private com.alee.extended.button.WebSwitch jConsolidate;
@@ -1303,6 +1380,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
