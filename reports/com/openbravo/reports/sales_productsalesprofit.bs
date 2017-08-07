@@ -40,7 +40,7 @@ report.setSentence("SELECT products.REFERENCE, " +
          "SUM(ticketlines.UNITS * products.PRICESELL) " +
        "- SUM(ticketlines.UNITS * products.PRICEBUY) " +
           "AS EXPECTED_PROFIT, " +
-       "SUM(ticketlines.PRICE) - SUM(ticketlines.UNITS * products.PRICEBUY) " +
+       "SUM(ticketlines.PRICE * ticketlines.UNITS) - SUM(ticketlines.UNITS * products.PRICEBUY) " +
           "AS ACTUAL_PROFIT " +
   "FROM (ticketlines ticketlines " +
        "INNER JOIN receipts receipts " +
