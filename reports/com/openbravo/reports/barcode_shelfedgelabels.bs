@@ -19,7 +19,7 @@
 
 report = new com.openbravo.pos.reports.PanelReportBean();
 
-report.setTitleKey("Menu.BarcodeSheet");
+report.setTitleKey("Menu.BarcodeSheet2");
 report.setReport("/com/openbravo/reports/barcode_shelfedgelabels");
 report.setResourceBundle("com/openbravo/reports/barcode_sheet_messages");
 

@@ -611,6 +611,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
 
     private void jcmdCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmdCancelActionPerformed
         
+        m_ReturnCustomer=null;
         dispose();
 
     }//GEN-LAST:event_jcmdCancelActionPerformed

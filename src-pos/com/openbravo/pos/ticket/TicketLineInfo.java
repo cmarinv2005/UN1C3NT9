@@ -73,14 +73,16 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
      *
      * @param productid
      * @param productname
+     * @param productreference
      * @param producttaxcategory
      * @param dMultiply
      * @param dPrice
      * @param tax
      */
-    public TicketLineInfo(String productid, String productname, String producttaxcategory, double dMultiply, double dPrice, TaxInfo tax) {
+    public TicketLineInfo(String productid, String productname, String productreference, String producttaxcategory, double dMultiply, double dPrice, TaxInfo tax) {
         Properties props = new Properties();
         props.setProperty("product.name", productname);
+        props.setProperty("product.reference", productreference);
         props.setProperty("product.taxcategoryid", producttaxcategory);
         init(productid, null, dMultiply, dPrice, tax, props);
     }
@@ -88,15 +90,17 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     /**
      *
      * @param productname
+     * @param productreference
      * @param producttaxcategory
      * @param dMultiply
      * @param dPrice
      * @param tax
      */
-    public TicketLineInfo(String productname, String producttaxcategory, double dMultiply, double dPrice, TaxInfo tax) {
+    public TicketLineInfo(String productname, String productreference, String producttaxcategory, double dMultiply, double dPrice, TaxInfo tax) {
 
         Properties props = new Properties();
         props.setProperty("product.name", productname);
+        props.setProperty("product.reference", productreference);
         props.setProperty("product.taxcategoryid", producttaxcategory);
         init(null, null, dMultiply, dPrice, tax, props);
     }
@@ -126,6 +130,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
             pid = product.getID();
 
             attributes.setProperty("product.name", product.getName());
+            attributes.setProperty("product.reference", product.getReference());
             attributes.setProperty("product.com", product.isCom() ? "true" : "false");
             attributes.setProperty("product.constant", product.isConstant() ? "true" : "false");
 
@@ -307,6 +312,11 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     public String getProductName() {
         return attributes.getProperty("product.name");
     }
+    
+    public String getProductReference() {
+        return attributes.getProperty("product.reference");
+    }
+    
     public double getPrice() {
         return price;
     }
@@ -385,6 +395,11 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     public String printName() {
         return StringUtils.encodeXML(attributes.getProperty("product.name"));
     }
+    
+    public String printReference() {
+        return StringUtils.encodeXML(attributes.getProperty("product.reference"));
+    }
+    
     public String printPrice() {
         return Formats.CURRENCY.formatValue(getPrice());
     }

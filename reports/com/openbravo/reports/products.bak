@@ -226,7 +226,7 @@ ORDER BY categories.NAME, products.NAME]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="11" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.units}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.qty}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

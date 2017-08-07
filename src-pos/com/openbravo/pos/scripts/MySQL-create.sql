@@ -942,35 +942,35 @@ INSERT INTO products_cat(product) VALUES ('xxx998_998xxx_x8x8x8');
 INSERT INTO locations(id, name, address) VALUES ('0','Location 1','Local');
 
 -- ADD SUPPLIERS
-INSERT INTO suppliers(id, searchkey, name) VALUES ('0','uniCenta','uniCenta');
+INSERT INTO suppliers(id, searchkey, name) VALUES ('0','executerpos','Executer Pos');
 
 -- ADD UOM
-INSERT INTO uom(id, name) VALUES ('0','Each');
+INSERT INTO uom(id, name) VALUES ('0','Unidad');
 
 -- ADD FLOORS
 INSERT INTO floors(id, name, image) VALUES ('0', 'Restaurant floor', $FILE{/com/openbravo/pos/templates/restaurant_floor.png});
 
 -- ADD PLACES
-INSERT INTO places(id, name, x, y, floor) VALUES ('1', 'Table 1', 100, 50, '0');
-INSERT INTO places(id, name, x, y, floor) VALUES ('2', 'Table 2', 250, 50, '0');
-INSERT INTO places(id, name, x, y, floor) VALUES ('3', 'Table 3', 400, 50, '0');
-INSERT INTO places(id, name, x, y, floor) VALUES ('4', 'Table 4', 550, 50, '0');
-INSERT INTO places(id, name, x, y, floor) VALUES ('5', 'Table 5', 700, 50, '0');
-INSERT INTO places(id, name, x, y, floor) VALUES ('6', 'Table 6', 850, 50, '0');
-INSERT INTO places(id, name, x, y, floor) VALUES ('7', 'Table 7', 100, 150, '0');
-INSERT INTO places(id, name, x, y, floor) VALUES ('8', 'Table 8', 250, 150, '0');
-INSERT INTO places(id, name, x, y, floor) VALUES ('9', 'Table 9', 400, 150, '0');
-INSERT INTO places(id, name, x, y, floor) VALUES ('10', 'Table 10', 550, 150, '0');
-INSERT INTO places(id, name, x, y, floor) VALUES ('11', 'Table 11', 700, 150, '0');
-INSERT INTO places(id, name, x, y, floor) VALUES ('12', 'Table 12', 850, 150, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('1', 'Mesa 1', 100, 50, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('2', 'Mesa 2', 250, 50, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('3', 'Mesa 3', 400, 50, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('4', 'Mesa 4', 550, 50, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('5', 'Mesa 5', 700, 50, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('6', 'Mesa 6', 850, 50, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('7', 'Mesa 7', 100, 150, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('8', 'Mesa 8', 250, 150, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('9', 'Mesa 9', 400, 150, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('10', 'Mesa 10', 550, 150, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('11', 'Mesa 11', 700, 150, '0');
+INSERT INTO places(id, name, x, y, floor) VALUES ('12', 'Mesa 12', 850, 150, '0');
 
 -- ADD SHIFTS
 INSERT INTO shifts(id, startshift, endshift, pplid) VALUES ('0', '2016-01-01 00:00:00.001', '2016-01-01 00:00:00.002','0');
 
 -- ADD BREAKS
-INSERT INTO breaks(id, name, visible, notes) VALUES ('0', 'Lunch Break', TRUE, NULL);
-INSERT INTO breaks(id, name, visible, notes) VALUES ('1', 'Tea Break', TRUE, NULL);
-INSERT INTO breaks(id, name, visible, notes) VALUES ('2', 'Mid Break', TRUE, NULL);
+INSERT INTO breaks(id, name, visible, notes) VALUES ('0', 'Pausa para Almorzar', TRUE, NULL);
+INSERT INTO breaks(id, name, visible, notes) VALUES ('1', 'Pausa para el Té', TRUE, NULL);
+INSERT INTO breaks(id, name, visible, notes) VALUES ('2', 'Pausa para descansar', TRUE, NULL);
 
 -- ADD SHIFT_BREAKS
 INSERT INTO shift_breaks(id, shiftid, breakid, starttime, endtime) VALUES ('0', '0', '0', '2016-01-01 00:00:00.003', '2016-01-01 00:00:00.004');

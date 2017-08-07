@@ -19,9 +19,9 @@
 
 report = new com.openbravo.pos.reports.PanelReportBean();
 
-report.setTitleKey("Menu.Inventory");
+report.setTitleKey("Menu.Inventory2");
 report.setReport("/com/openbravo/reports/inventoryb");
-report.setResourceBundle("com/openbravo/reports/inventory_messages");
+report.setResourceBundle("com/openbravo/reports/inventoryb_messages");
 
 report.setSentence("SELECT " +
         "stockcurrent.LOCATION AS LOCATIONID, locations.NAME AS LOCATIONNAME, " +

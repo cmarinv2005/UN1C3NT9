@@ -347,11 +347,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
          if (listener  != null) { 
             listener.stop(); 
          }      
-            JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
+            JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);            
             if (m_oTicket.getCustomerId() == null) {
                 finder.setAppView(m_App);
                 finder.search(m_oTicket.getCustomer());
-                finder.executeSearch();        
+    //            finder.executeSearch();        
                 finder.setVisible(true);
                 if (finder.getSelectedCustomer() != null) {
                     try {
@@ -381,7 +381,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
                     finder.setAppView(m_App);
                     finder.search(m_oTicket.getCustomer());
-                    finder.executeSearch();
+    //                finder.executeSearch();
                     finder.setVisible(true);
                     if (finder.getSelectedCustomer() != null) {
                         try {

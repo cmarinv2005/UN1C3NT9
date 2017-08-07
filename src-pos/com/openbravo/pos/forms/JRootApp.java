@@ -322,7 +322,7 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
     public boolean initApp(AppProperties props) {
         
         m_props = props;
-        m_jPanelDown.setVisible(!(Boolean.valueOf(m_props.getProperty("till.hideinfo"))));            
+        m_jPanelDown.setVisible((Boolean.valueOf(m_props.getProperty("till.hideinfo"))));            
 
         applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
         

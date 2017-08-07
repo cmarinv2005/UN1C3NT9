@@ -107,7 +107,7 @@ group = menu.addGroup("Menu.Backoffice");
 
 // EPM
     submenu = group.addSubmenu("/com/openbravo/images/users.png", "Menu.PresenceManagement", "com.openbravo.pos.forms.MenuEmployees");
-    submenu.addTitle("Menu.PresenceManagement");
+    submenu.addTitle("Menu.PresenceManagement.Panel");
         submenu.addPanel("/com/openbravo/images/coffee.png", "Menu.Breaks", "com.openbravo.pos.epm.BreaksPanel");
         submenu.addPanel("/com/openbravo/images/leaves.png", "Menu.Leaves", "com.openbravo.pos.epm.LeavesPanel");
         submenu.addTitle("Menu.Employees.Reports");

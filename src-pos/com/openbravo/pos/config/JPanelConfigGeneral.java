@@ -235,7 +235,6 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jcboLAF = new javax.swing.JComboBox();
         jcboMachineScreenmode = new javax.swing.JComboBox();
         jcboTicketsBag = new javax.swing.JComboBox();
-        jchkHideInfo = new javax.swing.JCheckBox();
         jLabel18 = new javax.swing.JLabel();
         jtxtStartupLogo = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
@@ -251,6 +250,8 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jtxtStartupHTML = new javax.swing.JTextField();
         jbtnHTML = new javax.swing.JButton();
         jbtnClearHTML = new javax.swing.JButton();
+        jchkHideInfo = new com.alee.extended.button.WebSwitch();
+        txtEstado = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -302,18 +303,8 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jcboTicketsBag.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jcboTicketsBag.setPreferredSize(new java.awt.Dimension(200, 30));
 
-        jchkHideInfo.setBackground(new java.awt.Color(255, 255, 255));
-        jchkHideInfo.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("pos_messages"); // NOI18N
-        jchkHideInfo.setText(bundle.getString("label.Infopanel")); // NOI18N
-        jchkHideInfo.setToolTipText(AppLocal.getIntString("tooltip.config.general.footer")); // NOI18N
-        jchkHideInfo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jchkHideInfo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jchkHideInfo.setMaximumSize(new java.awt.Dimension(0, 25));
-        jchkHideInfo.setMinimumSize(new java.awt.Dimension(0, 0));
-        jchkHideInfo.setPreferredSize(new java.awt.Dimension(150, 30));
-
         jLabel18.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("pos_messages"); // NOI18N
         jLabel18.setText(bundle.getString("label.startuplogo")); // NOI18N
         jLabel18.setMaximumSize(new java.awt.Dimension(0, 25));
         jLabel18.setMinimumSize(new java.awt.Dimension(0, 0));
@@ -444,6 +435,16 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
             }
         });
 
+        jchkHideInfo.setOpaque(true);
+        jchkHideInfo.setPreferredSize(new java.awt.Dimension(80, 30));
+        jchkHideInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jchkHideInfoActionPerformed(evt);
+            }
+        });
+
+        txtEstado.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
@@ -490,10 +491,13 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
                                     .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLblURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jchkHideInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jtxtStartupText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jtxtStartupHTML, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jtxtStartupHTML, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel11Layout.createSequentialGroup()
+                                        .addComponent(jchkHideInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(21, 21, 21)
+                                        .addComponent(txtEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jbtnLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -551,9 +555,11 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
                     .addComponent(jtxtStartupHTML, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnHTML, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnClearHTML))
-                .addGap(18, 18, 18)
-                .addComponent(jchkHideInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jchkHideInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -621,6 +627,15 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
             JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jLblURLMouseClicked
 
+    private void jchkHideInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkHideInfoActionPerformed
+        // TODO add your handling code here:
+        if (jchkHideInfo.isSelected()) {
+            txtEstado.setText(AppLocal.getIntString("label.Infopanelyes"));
+        } else {      
+            txtEstado.setText(AppLocal.getIntString("label.Infopanelno"));
+        }
+    }//GEN-LAST:event_jchkHideInfoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
@@ -639,13 +654,14 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
     private javax.swing.JComboBox jcboLAF;
     private javax.swing.JComboBox jcboMachineScreenmode;
     private javax.swing.JComboBox jcboTicketsBag;
-    private javax.swing.JCheckBox jchkHideInfo;
+    private com.alee.extended.button.WebSwitch jchkHideInfo;
     private javax.swing.JTextField jtxtMachineDepartment;
     private javax.swing.JTextField jtxtMachineHostname;
     private javax.swing.JTextField jtxtStartupHTML;
     private javax.swing.JTextField jtxtStartupLogo;
     private javax.swing.JTextField jtxtStartupText;
     private com.alee.laf.label.WebLabel lblIP_Address;
+    private javax.swing.JLabel txtEstado;
     private com.alee.laf.label.WebLabel webLabel1;
     // End of variables declaration//GEN-END:variables
 }

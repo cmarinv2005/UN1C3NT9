@@ -92,12 +92,12 @@
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="20"  isSplitAllowed="true" >
+			<band height="30"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
 						x="512"
-						y="5"
+						y="10"
 						width="20"
 						height="15"
 						forecolor="#000000"
@@ -117,7 +117,7 @@
 					<reportElement
 						mode="Opaque"
 						x="542"
-						y="5"
+						y="10"
 						width="20"
 						height="15"
 						forecolor="#000000"
@@ -137,7 +137,7 @@
 					<reportElement
 						mode="Opaque"
 						x="532"
-						y="5"
+						y="10"
 						width="10"
 						height="15"
 						forecolor="#000000"
@@ -157,7 +157,7 @@
 					<reportElement
 						mode="Opaque"
 						x="10"
-						y="3"
+						y="6"
 						width="554"
 						height="1"
 						forecolor="#000000"
@@ -168,7 +168,7 @@
 				<staticText>
 					<reportElement
 						x="10"
-						y="5"
+						y="10"
 						width="100"
 						height="15"
 						key="staticText-2"/>

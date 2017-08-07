@@ -94,9 +94,9 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         m_jButtonPrint.setVisible(true);
         this.applyComponentOrientation(o);
         if (printselected) {
-            jlblPrinterStatus.setText("Printer ON");            
+            jlblPrinterStatus.setText("Impresora ON");            
         } else {
-            jlblPrinterStatus.setText("Printer OFF");
+            jlblPrinterStatus.setText("Impresora OFF");
         }         
     }
 
@@ -108,9 +108,9 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
 
         printselected = false;
         if (printselected) {
-            jlblPrinterStatus.setText("Printer ON");            
+            jlblPrinterStatus.setText("Impresora ON");            
         } else {
-            jlblPrinterStatus.setText("Printer OFF");
+            jlblPrinterStatus.setText("Impresora OFF");
         }        
 
     }
@@ -163,9 +163,9 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         m_jTotalEuros.setText(Formats.CURRENCY.formatValue(m_dTotal));
         
         if (printselected) {
-            jlblPrinterStatus.setText("Printer ON");            
+            jlblPrinterStatus.setText("Impresora ON");            
         } else {
-            jlblPrinterStatus.setText("Printer OFF");
+            jlblPrinterStatus.setText("Impresora OFF");
         }         
         
  //       m_jPayTotal.setText(Formats.CURRENCY.formatValue(m_dTotal));
