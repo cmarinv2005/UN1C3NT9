@@ -93,6 +93,10 @@ public class ProductInfoExt {
         m_bWarranty = false;
         m_dStockUnits = 0.0;
         m_sPrinter = null;
+        
+        m_sWarning = null;                     //Agregado por Carlos Marin	
+        m_sExpiry = null;               
+        
         supplierid = "0";
         uomid = "0";        
 
@@ -301,6 +305,30 @@ public class ProductInfoExt {
     public final void setPrinter(String value) {
         m_sPrinter = value;
     }    
+    
+     /**
+     *
+     */
+        protected String m_sWarning;
+		
+    /**
+     *
+     */
+        protected String m_sExpiry;
+        
+   public final String getWarning() {              //Agregado por Carlos Marin
+       return m_sWarning;
+   }
+   public final void setWarning(String sWarning) {
+       m_sWarning = sWarning;
+  }
+  
+   public final String getExpiry() {
+       return m_sExpiry;
+   }
+   public final void setExpiry(String sExpiry) {
+       m_sExpiry = sExpiry;
+  }
 
     public final String getSupplierID() {
         return supplierid;
@@ -352,8 +380,12 @@ public class ProductInfoExt {
                 product.m_bWarranty = dr.getBoolean(25);                        
                 product.m_dStockUnits = dr.getDouble(26); 
                 product.m_sPrinter = dr.getString(27);
-                product.supplierid = dr.getString(28);
-                product.uomid = dr.getString(29);
+                                                 
+                product.m_sWarning = dr.getString(28);                  //Agregado por Carlos Marin              
+                product.m_sExpiry = dr.getString(29);	
+                
+                product.supplierid = dr.getString(30);
+                product.uomid = dr.getString(31);
 
                 return product;
             }

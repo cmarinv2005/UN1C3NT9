@@ -20,7 +20,9 @@
 package com.openbravo.pos.inventory;
 
 import com.openbravo.basic.BasicException;
+import com.openbravo.beans.JCalendarDialog;
 import com.openbravo.data.gui.ComboBoxValModel;
+import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.loader.SentenceFind;
 import com.openbravo.data.user.DirtyManager;
@@ -36,7 +38,10 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -101,6 +106,11 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         m_dlSuppliers = (DataLogicSuppliers) app.getBean("com.openbravo.pos.suppliers.DataLogicSuppliers");
             
         initComponents();
+        
+        txtWarning.setVisible(false);
+        txtExpiry.setVisible(false);
+        txtWarningProperties.setVisible(false);
+        txtExpiryProperties.setVisible(false);
         
         loadimage = dlSales.getProductImage(); // JG 3 feb 16 speedup
 
@@ -170,6 +180,36 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         m_jPriceSellTax.getDocument().addDocumentListener(new PriceTaxManager());
         m_jmargin.getDocument().addDocumentListener(new MarginManager());
         m_jGrossProfit.getDocument().addDocumentListener(new MarginManager());
+        
+        txtWarning.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    updateWarning();
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    updateWarning();
+                }
+
+                public void insertUpdate(DocumentEvent e) {
+                    updateWarning();
+                }
+            });
+    
+    
+    
+    txtExpiry.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    updateExpiry();
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    updateExpiry();
+                }
+
+                public void insertUpdate(DocumentEvent e) {
+                    updateExpiry();
+                }
+            });  
        
             init();
     }
@@ -281,6 +321,12 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         m_jPriceSell.setEnabled(false);
         m_jPriceSellTax.setEnabled(false);
         m_jmargin.setEnabled(false);
+        
+        txtWarning.setText(null);          //Agregado por Carlos Marin
+        txtWarning.setEnabled(false);
+	txtExpiry.setText(null);          
+        txtExpiry.setEnabled(false);
+        
         m_jSupplier.setEnabled(false);        
         
 // Tab Stock        
@@ -378,6 +424,13 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         m_jPriceSell.setEnabled(true);
         m_jPriceSellTax.setEnabled(true);
         m_jmargin.setEnabled(true);
+        
+        txtWarning.setText(null);            //Agregado por Carlos Marin
+        txtWarning.setEnabled(false);
+        
+        txtExpiry.setText(null);            
+        txtExpiry.setEnabled(false);
+        
         m_jSupplier.setEnabled(true);        
 
 // Tab Stock        
@@ -418,7 +471,7 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
     @Override
     public Object createValue() throws BasicException {
 
-        Object[] myprod = new Object[31];        
+        Object[] myprod = new Object[33];        
 
         myprod[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;        
         myprod[1] = m_jRef.getText();
@@ -447,11 +500,15 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         myprod[24] = m_jCheckWarrantyReceipt.isSelected();
         myprod[25] = Formats.DOUBLE.parseValue(m_jStockUnits.getText());        
         myprod[26] = m_jPrintTo.getSelectedItem().toString();        
-        myprod[27] = m_SuppliersModel.getSelectedKey();
-        myprod[28] = m_UomModel.getSelectedKey();
+        
+        myprod[27] = Formats.DATE.parseValue(txtWarning.getText());
+        myprod[28] = Formats.DATE.parseValue(txtExpiry.getText());
+        
+        myprod[29] = m_SuppliersModel.getSelectedKey();
+        myprod[30] = m_UomModel.getSelectedKey();
 
-        myprod[29] = m_jInCatalog.isSelected();
-        myprod[30] = Formats.INT.parseValue(m_jCatalogOrder.getText());
+        myprod[31] = m_jInCatalog.isSelected();
+        myprod[32] = Formats.INT.parseValue(m_jCatalogOrder.getText());
 
         return myprod;        
     }
@@ -496,12 +553,16 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         m_jTextTip.setText(Formats.STRING.formatValue(myprod[23]));
         m_jCheckWarrantyReceipt.setSelected(((Boolean)myprod[24]));  
         m_jStockUnits.setText(Formats.DOUBLE.formatValue(myprod[25]));
-        m_jPrintTo.setSelectedItem(myprod[26]);         
-        m_SuppliersModel.setSelectedKey(myprod[27]);
-        m_UomModel.setSelectedKey(myprod[28]);        
+        m_jPrintTo.setSelectedItem(myprod[26]);       
         
-        m_jInCatalog.setSelected(((Boolean)myprod[29]));
-        m_jCatalogOrder.setText(Formats.INT.formatValue(myprod[30]));
+        txtWarning.setText(Formats.DATE.formatValue(myprod[27]));             //Update 
+        txtExpiry.setText(Formats.DATE.formatValue(myprod[28]));
+        
+        m_SuppliersModel.setSelectedKey(myprod[29]);
+        m_UomModel.setSelectedKey(myprod[30]);        
+        
+        m_jInCatalog.setSelected(((Boolean)myprod[31]));
+        m_jCatalogOrder.setText(Formats.INT.formatValue(myprod[32]));
         
         txtAttributes.setCaretPosition(0);
         reportlock = false;
@@ -551,6 +612,9 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
 
 // Tab Properties
         txtAttributes.setEnabled(true);
+        
+        txtWarning.setEnabled(true);                //Agregado por Carlos Marin
+	txtExpiry.setEnabled(true);
 
         calculateMargin();
         calculatePriceSellTax();
@@ -597,12 +661,16 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         m_jTextTip.setText(Formats.STRING.formatValue(myprod[23])); 
         m_jCheckWarrantyReceipt.setSelected(((Boolean)myprod[24]));
         m_jStockUnits.setText(Formats.DOUBLE.formatValue(myprod[25]));       
-        m_jPrintTo.setSelectedItem(myprod[26]);                
-        m_SuppliersModel.setSelectedKey(myprod[27]);
-        m_UomModel.setSelectedKey(myprod[28]);        
+        m_jPrintTo.setSelectedItem(myprod[26]);  
         
-        m_jInCatalog.setSelected(((Boolean)myprod[29]));
-        m_jCatalogOrder.setText(Formats.INT.formatValue(myprod[30]));
+        txtWarning.setText(Formats.DATE.formatValue(myprod[27]));
+        txtExpiry.setText(Formats.DATE.formatValue(myprod[28])); 
+        
+        m_SuppliersModel.setSelectedKey(myprod[29]);
+        m_UomModel.setSelectedKey(myprod[30]);        
+        
+        m_jInCatalog.setSelected(((Boolean)myprod[31]));
+        m_jCatalogOrder.setText(Formats.INT.formatValue(myprod[32]));
 
         txtAttributes.setCaretPosition(0);
         
@@ -650,6 +718,9 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         
 // Tab Properties        
         txtAttributes.setEnabled(false);
+        
+        txtWarning.setEnabled(false);             //Agregado por Carlos Marin
+	txtExpiry.setEnabled(false);    
 
         calculateMargin();
         calculatePriceSellTax();
@@ -668,6 +739,52 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
     
 }
     
+    private void updateWarning() {
+//        m_Dirty.setDirty(true);
+       
+        try {
+                       if (txtWarning.getText().equals(null) || txtWarning.getText().equals("")) {
+                           txtShowWarning.setText("");
+            //               jAge.setText("");
+                       } else {
+            
+            Date date = (Date) Formats.TIMESTAMP.parseValue(txtWarning.getText());
+            
+                           String str = String.format("%1$s %2$tB %2$td, %2$tY", "", date);
+                           txtShowWarning.setText(str);
+            //               Period age = getAge(date);
+            //               String Age = " " + age.getYears() + " yrs " + age.getMonths() + " mths";
+            //               jAge.setText(Age);
+                       }
+        } catch (BasicException ex) {
+            Logger.getLogger(ProductsEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+    }
+     
+      
+     private void updateExpiry() {
+//        m_Dirty.setDirty(true);
+       
+        try {
+                       if (txtExpiry.getText().equals(null) || txtExpiry.getText().equals("")) {
+                           txtShowExpiry.setText("");
+            //               jAge.setText("");
+                       } else {
+            
+            Date date = (Date) Formats.TIMESTAMP.parseValue(txtExpiry.getText());
+            
+                           String str = String.format("%1$s %2$tB %2$td, %2$tY", "", date);
+                           txtShowExpiry.setText(str);
+            //               Period age = getAge(date);
+            //               String Age = " " + age.getYears() + " yrs " + age.getMonths() + " mths";
+            //               jAge.setText(Age);
+                       }
+        } catch (BasicException ex) {
+            Logger.getLogger(ProductsEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+    }
     
 
     /**
@@ -1126,6 +1243,18 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         m_jPrintKB = new javax.swing.JCheckBox();
         m_jSendStatus = new javax.swing.JCheckBox();
         m_jStockUnits = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        txtShowWarning = new javax.swing.JTextField();
+        txtShowExpiry = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        txtExpiry = new javax.swing.JTextField();
+        btnExpiry = new javax.swing.JButton();
+        txtWarningProperties = new javax.swing.JTextField();
+        txtExpiryProperties = new javax.swing.JTextField();
+        btnWarning = new javax.swing.JButton();
+        txtWarning = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         m_jImage = new com.openbravo.data.gui.JImageEditor();
         jLabel34 = new javax.swing.JLabel();
@@ -1148,11 +1277,13 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAttributes = new javax.swing.JTextArea();
+        btnVence = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setLayout(null);
 
         m_jTitle.setBackground(new java.awt.Color(255, 255, 255));
-        m_jTitle.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        m_jTitle.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         m_jTitle.setForeground(new java.awt.Color(102, 102, 102));
         m_jTitle.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         m_jTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
@@ -1161,7 +1292,7 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         m_jTitle.setOpaque(true);
         m_jTitle.setPreferredSize(new java.awt.Dimension(260, 25));
         add(m_jTitle);
-        m_jTitle.setBounds(415, 5, 330, 25);
+        m_jTitle.setBounds(240, 460, 500, 30);
 
         jTabbedPane1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(620, 420));
@@ -1438,7 +1569,7 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
                         .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(m_jSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(webBtnSupplier, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(AppLocal.getIntString("label.prodgeneral"), jPanel1); // NOI18N
@@ -1717,6 +1848,162 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
 
         jTabbedPane1.addTab(AppLocal.getIntString("label.prodstock"), jPanel2); // NOI18N
 
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Fecha de Vencimiento"));
+        jPanel9.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        txtShowWarning.setEditable(false);
+        txtShowWarning.setAutoscrolls(false);
+        txtShowWarning.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtShowWarningFocusLost(evt);
+            }
+        });
+        txtShowWarning.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtShowWarningActionPerformed(evt);
+            }
+        });
+        txtShowWarning.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtShowWarningPropertyChange(evt);
+            }
+        });
+        txtShowWarning.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtShowWarningKeyTyped(evt);
+            }
+        });
+
+        txtShowExpiry.setEditable(false);
+        txtShowExpiry.setAutoscrolls(false);
+        txtShowExpiry.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtShowExpiryFocusLost(evt);
+            }
+        });
+        txtShowExpiry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtShowExpiryActionPerformed(evt);
+            }
+        });
+        txtShowExpiry.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtShowExpiryKeyTyped(evt);
+            }
+        });
+
+        jLabel24.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel24.setText("Fecha de advertencia");
+
+        jLabel25.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel25.setText("Fecha de expiración");
+
+        txtExpiry.setAutoscrolls(false);
+        txtExpiry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtExpiryActionPerformed(evt);
+            }
+        });
+
+        btnExpiry.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/date.png"))); // NOI18N
+        btnExpiry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExpiryActionPerformed(evt);
+            }
+        });
+
+        txtWarningProperties.setEditable(false);
+
+        txtExpiryProperties.setEditable(false);
+
+        btnWarning.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/date.png"))); // NOI18N
+        btnWarning.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnWarningActionPerformed(evt);
+            }
+        });
+
+        txtWarning.setAutoscrolls(false);
+        txtWarning.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtWarningActionPerformed(evt);
+            }
+        });
+        txtWarning.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtWarningPropertyChange(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                    .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtShowExpiry)
+                    .addComponent(txtShowWarning, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnWarning, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExpiry, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtExpiry, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtWarning, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtWarningProperties, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                    .addComponent(txtExpiryProperties))
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtWarningProperties, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtShowWarning)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnWarning, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(txtWarning, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(11, 11, 11)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnExpiry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtExpiry)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtShowExpiry, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                            .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(txtExpiryProperties))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(262, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Vencimiento", jPanel5);
+
         jPanel6.setPreferredSize(new java.awt.Dimension(0, 0));
 
         m_jImage.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -1955,7 +2242,6 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jPanel3.setPreferredSize(new java.awt.Dimension(0, 0));
-        jPanel3.setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(700, 400));
 
@@ -1965,12 +2251,49 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         txtAttributes.setPreferredSize(new java.awt.Dimension(600, 400));
         jScrollPane1.setViewportView(txtAttributes);
 
-        jPanel3.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        btnVence.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        btnVence.setText("Vencimiento");
+        btnVence.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVenceActionPerformed(evt);
+            }
+        });
+
+        jButton1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jButton1.setText("Reset");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 725, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnVence)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnVence)
+                    .addComponent(jButton1))
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         jTabbedPane1.addTab(AppLocal.getIntString("label.properties"), jPanel3); // NOI18N
 
         add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 10, 740, 420);
+        jTabbedPane1.setBounds(10, 10, 740, 440);
     }// </editor-fold>//GEN-END:initComponents
 
     private void m_jInCatalogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jInCatalogActionPerformed
@@ -2076,9 +2399,199 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         
     }//GEN-LAST:event_webBtnSupplierActionPerformed
 
+    private void txtShowWarningFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtShowWarningFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtShowWarningFocusLost
+
+    private void txtShowWarningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtShowWarningActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtShowWarningActionPerformed
+
+    private void txtShowWarningPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtShowWarningPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtShowWarningPropertyChange
+
+    private void txtShowWarningKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtShowWarningKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtShowWarningKeyTyped
+
+    private void txtShowExpiryFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtShowExpiryFocusLost
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txtShowExpiryFocusLost
+
+    private void txtShowExpiryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtShowExpiryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtShowExpiryActionPerformed
+
+    private void txtShowExpiryKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtShowExpiryKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtShowExpiryKeyTyped
+
+    private void txtExpiryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtExpiryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtExpiryActionPerformed
+
+    private void btnExpiryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExpiryActionPerformed
+        // TODO add your handling code here:
+        Date date;
+
+        try {
+            date = (Date) Formats.DATE.parseValue(txtExpiry.getText());
+        } catch (BasicException e) {
+            date = Calendar.getInstance().getTime();
+        }
+
+        date = JCalendarDialog.showCalendar(this, date);
+        if (date != null) {
+            if (IsValidDate(date)) {
+
+                txtExpiry.setText(Formats.TIMESTAMP.formatValue(date));
+                String str = String.format("%1$s %2$tB %2$td, %2$tY", "", date);
+                txtShowExpiry.setText(str);
+
+                String extractedDate = new SimpleDateFormat("dd-MM-yyyy").format(date);
+                txtExpiryProperties.setText(extractedDate);
+
+                txtAttributes.setText("");
+                txtAttributes.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+                    "<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">\n" +
+                    "\n" +
+                    "<properties>\n" +
+                    "<!-- fecha de advertencia sobre vencimiento del producto -->\n" +
+                    "<entry key=\"WARNING_DATO\">");
+                txtAttributes.append(txtWarningProperties.getText());
+                txtAttributes.append("</entry>\n");
+                txtAttributes.append("<!-- fecha de vencimiento del producto -->\n");
+                txtAttributes.append("<entry key=\"EXPIRY_DATO\">");
+                txtAttributes.append(txtExpiryProperties.getText());
+                txtAttributes.append("</entry>\n");
+                txtAttributes.append("</properties>");
+
+                //                String correctDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+                //                txtExpiry.setText(correctDate);       // "yyyy-MM-dd hh:mm:ss" Dato listo
+
+            } else {
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.invaliddobdate"));
+                msg.show(this);
+            }
+        }
+
+    }//GEN-LAST:event_btnExpiryActionPerformed
+
+    private static Date truncateTime(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        
+        try {      
+            date = sdf.parse(sdf.format(date));
+        } catch (ParseException ex) {
+            Logger.getLogger(ProductsEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+        return date;
+    }
+    
+       private boolean IsValidDate(Date dateToValidate) {            //Agregado por Carlos Marin
+        if (dateToValidate == null) {
+            return false;
+        }
+        Date today = truncateTime(Calendar.getInstance().getTime());
+        Date dob = truncateTime(dateToValidate);
+        if (dob.after(today) || dob.equals(today)) {
+          //  return false;
+              return true;
+        }
+        return true;
+    }
+    
+    private void btnWarningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWarningActionPerformed
+        // TODO add your handling code here:
+        Date date;
+
+        try {
+            date = (Date) Formats.DATE.parseValue(txtWarning.getText());
+        } catch (BasicException e) {
+            date = Calendar.getInstance().getTime();
+        }
+
+        date = JCalendarDialog.showCalendar(this, date);
+        if (date != null) {
+            if (IsValidDate(date)) {
+
+                txtWarning.setText(Formats.TIMESTAMP.formatValue(date));
+                String str = String.format("%1$s %2$tB %2$td, %2$tY", "", date);
+                txtShowWarning.setText(str);
+
+                String extractedDate = new SimpleDateFormat("dd-MM-yyyy").format(date);
+                txtWarningProperties.setText(extractedDate);
+
+                txtAttributes.setText("");
+                txtAttributes.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+                    "<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">\n" +
+                    "\n" +
+                    "<properties>\n" +
+                    "<!-- fecha de advertencia sobre vencimiento del producto -->\n" +
+                    "<entry key=\"WARNING_DATO\">");
+                txtAttributes.append(txtWarningProperties.getText());
+                txtAttributes.append("</entry>\n");
+                txtAttributes.append("<!-- fecha de vencimiento del producto -->\n");
+                txtAttributes.append("<entry key=\"EXPIRY_DATO\">");
+                txtAttributes.append(txtExpiryProperties.getText());
+                txtAttributes.append("</entry>\n");
+                txtAttributes.append("</properties>");
+
+                //                String correctDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+                //                txtExpiry.setText(correctDate);       // "yyyy-MM-dd hh:mm:ss" Dato listo
+
+            } else {
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.invaliddobdate"));
+                msg.show(this);
+            }
+        }
+    }//GEN-LAST:event_btnWarningActionPerformed
+
+    private void txtWarningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtWarningActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtWarningActionPerformed
+
+    private void txtWarningPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtWarningPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtWarningPropertyChange
+
+    private void btnVenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenceActionPerformed
+        // TODO add your handling code here:
+        txtAttributes.setText("");
+        txtAttributes.setText("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+"<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">\n" +
+"\n" +
+"<properties>\n" +
+"<!-- fecha de advertencia sobre vencimiento del producto -->\n" +
+"<entry key=\"WARNING_DATO\">02-08-2016</entry>\n" +
+"\n" +
+"<!-- fecha de vencimiento del producto -->\n" +
+"<entry key=\"EXPIRY_DATO\">03-08-2016</entry>\n" +
+"\n" +
+"</properties>");  
+    }//GEN-LAST:event_btnVenceActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        txtAttributes.setText("");
+        txtShowWarning.setText("");
+        txtShowExpiry.setText("");   
+        txtWarning.setText(null);
+        txtExpiry.setText(null); 
+        txtWarningProperties.setText("");
+        txtExpiryProperties.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExpiry;
+    private javax.swing.JButton btnVence;
+    private javax.swing.JButton btnWarning;
     private com.alee.extended.colorchooser.WebColorChooserField colourChooser;
     private javax.swing.JButton jBtnShowTrans;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonHTML;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -2096,6 +2609,8 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
@@ -2111,7 +2626,9 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -2151,6 +2668,12 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
     private javax.swing.JTextField m_jstockcost;
     private javax.swing.JTextField m_jstockvolume;
     private javax.swing.JTextArea txtAttributes;
+    private javax.swing.JTextField txtExpiry;
+    private javax.swing.JTextField txtExpiryProperties;
+    private javax.swing.JTextField txtShowExpiry;
+    private javax.swing.JTextField txtShowWarning;
+    private javax.swing.JTextField txtWarning;
+    private javax.swing.JTextField txtWarningProperties;
     private com.alee.laf.button.WebButton webBtnBold;
     private com.alee.laf.button.WebButton webBtnBreak;
     private com.alee.laf.button.WebButton webBtnColour;

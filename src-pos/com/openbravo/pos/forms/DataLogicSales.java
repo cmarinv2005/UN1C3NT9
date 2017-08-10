@@ -128,13 +128,15 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 new Field("TEXTTIP", Datas.STRING, Formats.STRING),
                 new Field("WARRANTY", Datas.BOOLEAN, Formats.BOOLEAN),
                 new Field(AppLocal.getIntString("label.stockunits"), Datas.DOUBLE, Formats.DOUBLE),                  
-                new Field("PRINTTO", Datas.STRING, Formats.STRING),
+                new Field("PRINTTO", Datas.STRING, Formats.STRING),              
+                new Field("WARNING", Datas.TIMESTAMP, Formats.DATE),                                                                                   
+		new Field("EXPIRY", Datas.TIMESTAMP, Formats.DATE),               
                 new Field(AppLocal.getIntString("label.prodsupplier"), Datas.STRING, Formats.STRING, false, false, true),
-                new Field(AppLocal.getIntString("label.UOM"), Datas.STRING, Formats.STRING),                
-
+                new Field(AppLocal.getIntString("label.UOM"), Datas.STRING, Formats.STRING),
+                                
                 new Field("ISCATALOG", Datas.BOOLEAN, Formats.BOOLEAN),
                 new Field("CATORDER", Datas.INT, Formats.INT)
-
+				
         );
         
 // creating customers object here for now for future global reuse
@@ -281,7 +283,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "TEXTTIP, "
                 + "WARRANTY, "
                 + "STOCKUNITS, "
-                + "PRINTTO, "
+                + "PRINTTO, "				
+		+ "WARNING, "                               //28
+		+ "EXPIRY, "                                //29			
                 + "SUPPLIER, "
                 + "UOM "
                 + "FROM products WHERE ID = ?"
@@ -321,7 +325,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "TEXTTIP, "
                 + "WARRANTY, "
                 + "STOCKUNITS, "
-                + "PRINTTO, "
+                + "PRINTTO, "				
+		+ "WARNING, "                               //28
+		+ "EXPIRY, " 			            //29				
                 + "SUPPLIER, "
                 + "UOM "        
 		+ "FROM products WHERE CODE = ?"
@@ -455,7 +461,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "TEXTTIP, "
                 + "WARRANTY, "
                 + "STOCKUNITS, "
-                + "PRINTTO, "
+                + "PRINTTO, "				
+		+ "WARNING, "                               //28
+		+ "EXPIRY, "                                //29				
                 + "SUPPLIER, "
                 + "UOM "        
 		+ "FROM products WHERE REFERENCE = ?"
@@ -505,7 +513,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             , CategoryInfo.getSerializerRead()).list(category);
     }
 
-    /**
+    /** Esta consulta la ejecuta el abrir el panel de Ventas
      *
      * @param category
      * @return
@@ -540,7 +548,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "P.TEXTTIP, "
                 + "P.WARRANTY, "
                 + "P.STOCKUNITS, " 
-                + "P.PRINTTO, "
+                + "P.PRINTTO, "				
+		+ "P.WARNING, "                       
+		+ "P.EXPIRY, "  		
                 + "P.SUPPLIER, "        
                 + "P.UOM "
 		+ "FROM products P, products_cat O "
@@ -585,7 +595,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "P.TEXTTIP, "
                 + "P.WARRANTY, "
                 + "P.STOCKUNITS, " 
-                + "P.PRINTTO, "
+                + "P.PRINTTO, "				
+		+ "P.WARNING, "                
+		+ "P.EXPIRY, " 				
                 + "P.SUPPLIER, "         
                 + "P.UOM "        
                 + "FROM products P, "
@@ -702,7 +714,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "TEXTTIP, "
                 + "WARRANTY, "
                 + "STOCKUNITS, "
-                + "PRINTTO, "
+                + "PRINTTO, "				
+		+ "WARNING, "	                //28	
+		+ "EXPIRY, "		        //29		
                 + "SUPPLIER, "            
                 + "UOM "
                 + "FROM products "
@@ -752,7 +766,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "TEXTTIP, "
                 + "WARRANTY, "
                 + "STOCKUNITS, "
-                + "PRINTTO, "
+                + "PRINTTO, "				
+		+ "WARNING, "	                     //28
+		+ "EXPIRY, "	                     //29		
                 + "SUPPLIER, "           
                 + "UOM "
 		+ "FROM products "
@@ -843,7 +859,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "TEXTTIP, "
                 + "WARRANTY, "
                 + "STOCKUNITS, "
-                + "PRINTTO, "
+                + "PRINTTO, "				
+		+ "WARNING, "			    //28	
+                + "EXPIRY, "                        //29		
                 + "SUPPLIER, "            
                 + "UOM "
 		+ "FROM products "
@@ -1892,7 +1910,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 , (DataRead dr) -> ImageUtils.readImage(dr.getBytes(1)));
     }
     
-    /**
+    /**  Esta consulta es realizada al abrir el panel de editor de Productos
      *
      * @return
      */
@@ -1927,7 +1945,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                     + "P.TEXTTIP, "
                     + "P.WARRANTY, "
                     + "P.STOCKUNITS, "
-                    + "P.PRINTTO, "
+                    + "P.PRINTTO, "					
+		    + "P.WARNING, "
+		    + "P.EXPIRY, "                			
                     + "P.SUPPLIER, "
                     + "P.UOM, "                    
                         + "CASE WHEN "
@@ -1989,7 +2009,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                     + "TEXTTIP, "
                     + "WARRANTY, "
                     + "STOCKUNITS, "
-                    + "PRINTTO, "
+                    + "PRINTTO, "					
+		    + "WARNING, "
+		    + "EXPIRY, "			
                     + "SUPPLIER, "
                     + "UOM ) "
                     + "VALUES ("
@@ -1997,18 +2019,18 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                     + "?, ?, ?, ?, ?, ?, "
                     + "?, ?, ?, ?, ?, ?, "
                     + "?, ?, ?, ?, ?, ?, "
-                    + "?, ?, ?, ?, ?)"
+                    + "?, ?, ?, ?, ?, ?, ?)"
 		, new SerializerWriteBasicExt(productsRow.getDatas(), 
                 new int[]{0, 
                     1, 2, 3, 4, 5, 6, 
                     7, 8, 9, 10, 11, 12, 
                     13, 14, 15, 16, 17, 18,
                     19, 20, 21, 22, 23, 24, 
-                    25, 26, 27, 28}))
+                    25, 26, 27, 28, 29, 30}))
                     
                     .exec(params);
 
-                if (i > 0 && ((Boolean)values[29])) {
+                if (i > 0 && ((Boolean)values[31])) {           
                     return new PreparedSentence(s
                     , "INSERT INTO products_cat (PRODUCT, CATORDER) VALUES (?, ?)"
                     , new SerializerWriteBasicExt(productsRow.getDatas(), new int[] {0, 30}))
@@ -2021,7 +2043,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 	};
     }
 
-    /**
+    /** Llamado desde editor de productos al actualizar productos
      *
      * @return
      */
@@ -2058,7 +2080,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                         + "TEXTTIP = ?, "
                         + "WARRANTY = ?, "
                         + "STOCKUNITS = ?, "
-                        + "PRINTTO = ?, "
+                        + "PRINTTO = ?, "						
+			+ "WARNING = ?, "
+			+ "EXPIRY = ?, "					
                         + "SUPPLIER = ?, "
                         + "UOM = ? "
                     + "WHERE ID = ?"
@@ -2069,17 +2093,17 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                             11, 12, 13, 14, 15,
                             16, 17, 18, 19, 20, 
                             21, 22, 23, 24, 25, 
-                            26, 27, 28, 0}))
+                            26, 27, 28, 29, 30, 0}))
                         .exec(params);
             	if (i > 0) {
-                    if (((Boolean)values[29])) {
+                    if (((Boolean)values[31])) {         //29
 			if (new PreparedSentence(s
                                 , "UPDATE products_cat SET CATORDER = ? WHERE PRODUCT = ?"
                                 , new SerializerWriteBasicExt(productsRow.getDatas()
                                 , new int[] {30, 0})).exec(params) == 0) {
                             new PreparedSentence(s
 				, "INSERT INTO products_cat (PRODUCT, CATORDER) VALUES (?, ?)"
-                                , new SerializerWriteBasicExt(productsRow.getDatas(), new int[] {0, 30})).exec(params);
+                                , new SerializerWriteBasicExt(productsRow.getDatas(), new int[] {0, 30})).exec(params);     //30
                             }
 			} else {
                             new PreparedSentence(s

@@ -1,0 +1,53 @@
+import java.util.*;
+import java.text.*;
+// expiry dates module Einde
+// ------------------------------
+//------------------------------------------------------------------------------------------------
+if(line.getProperty("EXPIRY_DATO", "") != ""){
+ JLabel FontText = new JLabel();
+ FontText.setFont (new Font ( "Arial", Font.BOLD, 20) );
+
+          Date cald = Calendar.getInstance().getTime();
+          String str_exdate= (String)line.getProperty("EXPIRY_DATO", "0");
+          String str_wadate= (String)line.getProperty("WARNING_DATO", "0");
+          DateFormat formatter ; 
+          formatter = new SimpleDateFormat("dd-MM-yyyy");
+          datoex = (Date)formatter.parse(str_exdate); 
+          datowa = (Date)formatter.parse(str_wadate); 
+
+// javax.swing.JOptionPane.showMessageDialog(null, "(dato 1) " + datoex + "(str date 2) " + str_exdate, "Stock Check", JOptionPane.WARNING_MESSAGE);
+
+     FontText.setText("Este producto há expirado  " + line.getProperty("EXPIRY_DATO", "0")); 
+     Object[] options = {"Aceptar", "Cancelar",};
+
+        tidlex=datoex.before(cald);
+          if (tidlex) {
+              value = JOptionPane.showOptionDialog(null,FontText,"Vencimiento del producto",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options);
+
+                  if (value == JOptionPane.NO_OPTION){
+                     return "Cancel";
+                  }
+                  if (value == JOptionPane.YES_OPTION){
+
+                 }
+          } else {
+
+     FontText.setText("Este producto expira el " + line.getProperty("EXPIRY_DATO", "0")); 
+     Object[] options = {"Aceptar", "Cancelar",};
+
+        tidlwa=datowa.before(cald);
+//        tidlwa=datowa.before(datoex);
+          if (tidlwa) {
+              value = JOptionPane.showOptionDialog(null,FontText,"Advertencia sobre el vencimiento del producto",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options);
+
+                  if (value == JOptionPane.NO_OPTION){
+                     return "Cancel";
+                  }
+                  if (value == JOptionPane.YES_OPTION){
+
+                 }
+           }
+          }
+}
+// expiry dates module Einde
+// ------------------------------ 

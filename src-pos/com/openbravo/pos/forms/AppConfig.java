@@ -334,14 +334,10 @@ public class AppConfig implements AppProperties {
         m_propsconfig.setProperty("paper.standard.height", "698");
         m_propsconfig.setProperty("paper.standard.mediasizename", "A4");
 
-        m_propsconfig.setProperty("tkt.header1", "uniCenta oPOS");
-        m_propsconfig.setProperty("tkt.header2", "Touch Friendly Point Of Sale");
-        m_propsconfig.setProperty("tkt.header3", "Copyright (c) 2009-2016 uniCenta");
-        m_propsconfig.setProperty("tkt.header4", "Change header text in Configuration");                
+        m_propsconfig.setProperty("tkt.header1", "Executer POS");
+        m_propsconfig.setProperty("tkt.header2", "El futuro de los puntos de Venta");                      
         
-        m_propsconfig.setProperty("tkt.footer1", "Change footer text in Configuration");        
-        m_propsconfig.setProperty("tkt.footer2", "Thank you for your custom");
-        m_propsconfig.setProperty("tkt.footer3", "Please Call Again");
-
+        m_propsconfig.setProperty("tkt.footer1", "Gracias por su Compra");  
+      
     }
 }

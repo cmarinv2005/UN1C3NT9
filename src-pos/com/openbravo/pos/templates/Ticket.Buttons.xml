@@ -107,7 +107,9 @@
     <!-- SET Stock Level Checking (Default=DISABLED) --> 
         <!-- <event key="ticket.addline" code="script.StockCurrentAdd"/> -->
         <!-- <event key="ticket.setline" code="script.StockCurrentSet"/> -->
-
+        <event key="ticket.addline" code="script.expiry"/>                       <!-- Activar vencimiento de productos  -->
+        <!--<event key="ticket.addline" code="script.happyhour"/> -->		 <!-- Activar hora feliz  -->
+         
         <!-- <event key="ticket.change" code="event.change"/> -->
         <!-- <event key="ticket.addline" code="event.addline"/> -->
         <!-- <event key="ticket.removeline" code="event.removeline"/> -->

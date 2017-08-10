@@ -314,6 +314,8 @@ CREATE TABLE `products` (
 	`warranty` smallint(6) NOT NULL default '0',
 	`stockunits` double NOT NULL default '0',
 	`printto` varchar(255) default '1',
+        `warning` timestamp NULL,
+        `expiry` timestamp NULL,
 	`supplier` varchar(255) default NULL,
         `uom` varchar(255) default '0',
 
@@ -917,6 +919,9 @@ INSERT INTO resources(id, name, restype, content) VALUES('109', 'banknote.20000p
 INSERT INTO resources(id, name, restype, content) VALUES('110', 'banknote.50000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.50000pesos.png});
 INSERT INTO resources(id, name, restype, content) VALUES('111', 'banknote.100000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.100000pesos.png});
 
+-- SCRIPTS
+INSERT INTO resources(id, name, restype, content) VALUES('120', 'script.expiry', 0, $FILE{/com/openbravo/pos/templates/script.expiry.txt});
+INSERT INTO resources(id, name, restype, content) VALUES('121', 'script.happyhour', 0, $FILE{/com/openbravo/pos/templates/script.happyhour.txt});
 -- ADD CATEGORIES
 INSERT INTO categories(id, name) VALUES ('000', 'Category Standard');
 

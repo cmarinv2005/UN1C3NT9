@@ -1,0 +1,16 @@
+import java.util.Calendar;
+ 
+ Calendar cal = Calendar.getInstance();
+ int hour = cal.get(Calendar.HOUR_OF_DAY);
+ 
+ //Discount
+ discountrate = 0.1;
+ 
+ //Happy hour range
+ start = 12;
+ end = 13; 
+ 
+ if (hour>=start && hour<end) {
+   p = line.getPrice();
+   line.setPrice(p - (p*discountrate));
+ }
