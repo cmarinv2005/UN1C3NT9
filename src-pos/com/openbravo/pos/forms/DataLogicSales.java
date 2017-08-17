@@ -367,6 +367,8 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "WARRANTY, "
                 + "STOCKUNITS, "
                 + "PRINTTO, "
+				+ "WARNING, "                               //28  ojo
+		        + "EXPIRY, " 			            //29
                 + "SUPPLIER, "
                 + "UOM "        
 		+ "FROM products "
@@ -414,6 +416,8 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "WARRANTY, "
                 + "STOCKUNITS, "
                 + "PRINTTO, "
+				+ "WARNING, "                               //28   ojo
+		+ "EXPIRY, " 			            //29
                 + "SUPPLIER, "
                 + "UOM "        
 		+ "FROM products "
@@ -645,6 +649,8 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                     + "products.WARRANTY, "
                     + "products.STOCKUNITS, " 
                     + "products.PRINTTO, "
+					+ "WARNING, "                               //28  ojo
+		            + "EXPIRY, " 			            //29
                     + "products.SUPPLIER, "
                     + "products.UOM "
                 + "FROM categories INNER JOIN products ON (products.CATEGORY = categories.ID) "
@@ -817,6 +823,8 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "WARRANTY, "
                 + "STOCKUNITS, "
                 + "PRINTTO, "
+				+ "WARNING, "                               //28 ojo
+		+ "EXPIRY, " 			            //29
                 + "SUPPLIER, "          
                 + "UOM "
 		+ "FROM products "
@@ -2030,10 +2038,10 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                     
                     .exec(params);
 
-                if (i > 0 && ((Boolean)values[31])) {           
+                if (i > 0 && ((Boolean)values[31])) {         
                     return new PreparedSentence(s
                     , "INSERT INTO products_cat (PRODUCT, CATORDER) VALUES (?, ?)"
-                    , new SerializerWriteBasicExt(productsRow.getDatas(), new int[] {0, 30}))
+                    , new SerializerWriteBasicExt(productsRow.getDatas(), new int[] {0, 32}))       
                     
                     .exec(params);
                 } else {
@@ -2096,14 +2104,14 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                             26, 27, 28, 29, 30, 0}))
                         .exec(params);
             	if (i > 0) {
-                    if (((Boolean)values[31])) {         //29
+                    if (((Boolean)values[31])) {         
 			if (new PreparedSentence(s
                                 , "UPDATE products_cat SET CATORDER = ? WHERE PRODUCT = ?"
                                 , new SerializerWriteBasicExt(productsRow.getDatas()
-                                , new int[] {30, 0})).exec(params) == 0) {
+                                , new int[] {32, 0})).exec(params) == 0) {
                             new PreparedSentence(s
 				, "INSERT INTO products_cat (PRODUCT, CATORDER) VALUES (?, ?)"
-                                , new SerializerWriteBasicExt(productsRow.getDatas(), new int[] {0, 30})).exec(params);     //30
+                                , new SerializerWriteBasicExt(productsRow.getDatas(), new int[] {0, 32})).exec(params);     
                             }
 			} else {
                             new PreparedSentence(s
