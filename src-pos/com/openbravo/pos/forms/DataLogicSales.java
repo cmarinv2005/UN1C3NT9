@@ -926,7 +926,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 "LEFT JOIN stocklevel ON products.id = stocklevel.product) " +
                     "ON locations.id = stockcurrent.location " +
             "WHERE products.id= ? " +
-            "ORDER BY locations.name"
+            "ORDER BY locations.id"                    // locations.name
 		, SerializerWriteString.INSTANCE
 		, ProductStock.getSerializerRead()).find(pId);
     }     

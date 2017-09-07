@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="dailypresence"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="612"
+		 pageHeight="792"
+		 columnWidth="542"
+		 columnSpacing="0"
+		 leftMargin="35"
+		 rightMargin="35"
+		 topMargin="30"
+		 bottomMargin="35"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.zoom" value="1.5" />
+	<property name="ireport.x" value="0" />
+	<property name="ireport.y" value="0" />
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="unicentaopos" />
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+	<import value="java.lang.*" />
+
+	<parameter name="ARG" isForPrompting="false" class="java.lang.Object"/>
+	<queryString><![CDATA[SELECT PEOPLE.NAME,
+       SHIFTS.ENDSHIFT,
+       SHIFTS.STARTSHIFT,
+       CONCAT('',TIMEDIFF(SHIFTS.ENDSHIFT, SHIFTS.STARTSHIFT)) AS TOTAL
+ FROM PEOPLE LEFT JOIN SHIFTS ON SHIFTS.PPLID = PEOPLE.ID
+ORDER BY PEOPLE.NAME ASC, SHIFTS.ENDSHIFT ASC]]></queryString>
+
+	<field name="NAME" class="java.lang.String"/>
+	<field name="ENDSHIFT" class="java.util.Date"/>
+	<field name="STARTSHIFT" class="java.util.Date"/>
+	<field name="TOTAL" class="java.lang.String"/>
+
+	<variable name="EMPLOYEE_TOTAL" class="java.lang.Integer" resetType="Group" resetGroup="ByEmployee" calculation="Sum">
+		<variableExpression><![CDATA[Integer.parseInt($F{TOTAL}.substring(0,$F{TOTAL}.indexOf(":")))*3600 + Integer.parseInt($F{TOTAL}.substring($F{TOTAL}.length()-5,$F{TOTAL}.length()-3))*60 + Integer.parseInt($F{TOTAL}.substring($F{TOTAL}.length()-2,$F{TOTAL}.length()))]]></variableExpression>
+	</variable>
+	<variable name="GRAND_TOTAL" class="java.lang.Integer" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[Integer.parseInt($F{TOTAL}.substring(0,$F{TOTAL}.indexOf(":")))*3600 + Integer.parseInt($F{TOTAL}.substring($F{TOTAL}.length()-5,$F{TOTAL}.length()-3))*60 + Integer.parseInt($F{TOTAL}.substring($F{TOTAL}.length()-2,$F{TOTAL}.length()))]]></variableExpression>
+	</variable>
+
+		<group  name="ByEmployee" >
+			<groupExpression><![CDATA[$F{NAME}]]></groupExpression>
+			<groupHeader>
+			<band height="7"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="33"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="314"
+						y="5"
+						width="221"
+						height="1"
+						key="line"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="293"
+						y="13"
+						width="116"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NAME} + "  Total"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Auto" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="409"
+						y="13"
+						width="125"
+						height="20"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($V{EMPLOYEE_TOTAL}/3600)+":"+(($V{EMPLOYEE_TOTAL}-($V{EMPLOYEE_TOTAL}/3600*3600))/60)+"."+($V{EMPLOYEE_TOTAL}-($V{EMPLOYEE_TOTAL}/60*60))]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="74"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="0"
+						y="0"
+						width="375"
+						height="30"
+						forecolor="#33CCFF"
+						backcolor="#FFFFFF"
+						key="textField-21"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="14" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.title}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="400"
+						y="0"
+						width="135"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-2"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.printed}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="MM-dd-yyyy   h.mm a" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="400"
+						y="15"
+						width="135"
+						height="15"
+						key="textField-3"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="33"
+						width="50"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-10"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.period}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="50"
+						y="33"
+						width="110"
+						height="15"
+						key="textField-2"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[(java.util.Date)((Object[])((Object[])$P{ARG})[0])[1]]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="160"
+						y="33"
+						width="10"
+						height="15"
+						key="staticText-1"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[-]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="170"
+						y="33"
+						width="110"
+						height="15"
+						key="textField-3"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[(java.util.Date)((Object[])((Object[])$P{ARG})[0])[3]]]></textFieldExpression>
+				</textField>
+				<rectangle radius="5" >
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="50"
+						width="535"
+						height="2"
+						forecolor="#33CCFF"
+						backcolor="#33CCFF"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch" fill="Solid" >
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+</graphicElement>
+				</rectangle>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="55"
+						width="115"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-23"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="11" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="138"
+						y="55"
+						width="122"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-23"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="11" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.start}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="280"
+						y="55"
+						width="130"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-23"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="11" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.end}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="435"
+						y="55"
+						width="100"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-23"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="11" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.total}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="70"
+						width="535"
+						height="1"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch" fill="Solid" >
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+</graphicElement>
+				</line>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="16"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="115"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-4">
+							<property name="local_mesure_unitheight" value="pixel" />
+							<property name="com.jaspersoft.studio.unit.height" value="px" />
+						</reportElement>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NAME}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="138"
+						y="0"
+						width="122"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-4"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{STARTSHIFT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="280"
+						y="0"
+						width="130"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-4"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDSHIFT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="435"
+						y="0"
+						width="100"
+						height="15"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TOTAL}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="28"  isSplitAllowed="true" >
+				<frame>					<reportElement
+						mode="Opaque"
+						x="1"
+						y="1"
+						width="533"
+						height="24"
+						forecolor="#D0B48E"
+						backcolor="#F2EBDF"
+						key="frame"/>
+					<box></box>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="442"
+						y="2"
+						width="20"
+						height="20"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-6"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
+						<font fontName="Dialog" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="472"
+						y="2"
+						width="20"
+						height="20"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-7"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+						<font fontName="Dialog" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="462"
+						y="2"
+						width="10"
+						height="20"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-5"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None">
+						<font fontName="Dialog" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[/]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="4"
+						y="5"
+						width="100"
+						height="15"
+						key="staticText"/>
+					<box></box>
+					<textElement>
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<text><![CDATA[rpt:dailypresencereport]]></text>
+				</staticText>
+				</frame>			</band>
+		</pageFooter>
+		<summary>
+			<band height="30"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="340"
+						y="6"
+						width="100"
+						height="20"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Gran Total : ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="440"
+						y="6"
+						width="95"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font fontName="Arial" size="14"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($V{GRAND_TOTAL}/3600)+":"+(($V{GRAND_TOTAL}-($V{GRAND_TOTAL}/3600*3600))/60)+"."+($V{GRAND_TOTAL}-($V{GRAND_TOTAL}/60*60))]]></textFieldExpression>
+				</textField>
+			</band>
+		</summary>
+</jasperReport>

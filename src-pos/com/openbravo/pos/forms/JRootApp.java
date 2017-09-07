@@ -69,7 +69,9 @@ import com.dalsemi.onewire.OneWireException;
 import com.dalsemi.onewire.container.OneWireContainer;
 import com.dalsemi.onewire.utils.*;
 import com.dalsemi.onewire.application.monitor.*;
+import com.openbravo.pos.config.JPanelConfigGeneral;
 import com.openbravo.pos.util.uOWWatch;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -322,7 +324,35 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
     public boolean initApp(AppProperties props) {
         
         m_props = props;
-        m_jPanelDown.setVisible((Boolean.valueOf(m_props.getProperty("till.hideinfo"))));            
+        m_jPanelDown.setVisible((Boolean.valueOf(m_props.getProperty("till.hideinfo")))); 
+             
+        Process process = null;
+        try {
+            process = Runtime.getRuntime().exec(new String[] { "wmic", "cpu", "get", "ProcessorId" });
+        } catch (IOException ex) {
+            Logger.getLogger(JPanelConfigGeneral.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            process.getOutputStream().close();
+        } catch (IOException ex) {
+            Logger.getLogger(JPanelConfigGeneral.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            Scanner sc = new Scanner(process.getInputStream());
+            String property = sc.next();
+            String serial = sc.next();
+            
+            String validador=(m_props.getProperty("machine.validador"));
+            validador = (validador+serial);
+            
+            String encript1=DigestUtils.md5Hex(validador);
+            String encript2=DigestUtils.sha256Hex(encript1);            
+            encript2 = encript2.substring(15, 47);  
+            String licencia=(m_props.getProperty("machine.licencia"));
+                        
+            if(! licencia.equals(encript2)){     //Valido la licencia  al revés 
+               JOptionPane.showMessageDialog(null, "El software no se encuentra licenciado, comuníquese al celular 311 211 16 87"); 
+               System.exit(0);
+            }
 
         applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
         
@@ -716,9 +746,9 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
                 btn.setFocusPainted(false);
                 btn.setFocusable(false);
                 btn.setRequestFocusEnabled(false);
-                btn.setMaximumSize(new Dimension(110, 60));
-                btn.setPreferredSize(new Dimension(110, 60));
-                btn.setMinimumSize(new Dimension(110, 60));
+                btn.setMaximumSize(new Dimension(160, 60));
+                btn.setPreferredSize(new Dimension(160, 60));
+                btn.setMinimumSize(new Dimension(160, 60));
                 btn.setHorizontalAlignment(SwingConstants.CENTER);
                 btn.setHorizontalTextPosition(AbstractButton.CENTER);                 
                 btn.setVerticalTextPosition(AbstractButton.BOTTOM);
@@ -974,7 +1004,7 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
 
         m_jPanelLogin.add(jPanel4, java.awt.BorderLayout.CENTER);
 
-        jPanel5.setPreferredSize(new java.awt.Dimension(300, 400));
+        jPanel5.setPreferredSize(new java.awt.Dimension(360, 400));
 
         m_jLogonName.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         m_jLogonName.setLayout(new java.awt.BorderLayout());
@@ -1023,7 +1053,7 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
                         .add(0, 0, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .add(m_jClose, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)))
+                        .add(m_jClose, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -1043,7 +1073,7 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
                 .add(jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(jScrollPane1))
-                .add(104, 104, 104)
+                .add(51, 51, 51)
                 .add(m_jLogonName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(0, 0, Short.MAX_VALUE))
         );

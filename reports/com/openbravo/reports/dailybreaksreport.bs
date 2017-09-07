@@ -1,5 +1,5 @@
 //    uniCenta oPOS  - Touch Friendly Point Of Sale
-//    Copyright (c) 2009-2015 uniCenta & previous Openbravo POS works
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
 //    http://www.unicenta.com
 //    Copyright (C) 2011 Gjergj Sheldija
 //    http://www.acme-tech.net//
@@ -21,20 +21,26 @@
 
 report = new com.openbravo.pos.reports.PanelReportBean();
 
-report.setTitleKey("Menu.DailyPresenceReport");
-report.setReport("/com/openbravo/reports/dailypresence");
-report.setResourceBundle("com/openbravo/reports/dailypresence_messages");
+report.setTitleKey("Menu.DailyBreaksReport");
+report.setReport("/com/openbravo/reports/dailybreaksreport");
+report.setResourceBundle("com/openbravo/reports/dailybreaksreport_messages_es");
 
 report.setSentence("SELECT " +
-                "people.NAME, " +
-                "shifts.STARTSHIFT, " +
-                "shifts.ENDSHIFT, " +
-                "CONCAT('',TIMEDIFF(shifts.ENDSHIFT, shifts.STARTSHIFT)) AS TOTAL " +
-                "FROM people LEFT JOIN shifts ON shifts.PPLID = people.ID " +
-                "WHERE ?(QBF_FILTER) ");
+                "PEOPLE.NAME, " +
+				"BREAKS.NAME AS NAMEBREAK, " +
+                "SHIFT_BREAKS.STARTTIME, " +
+                "SHIFT_BREAKS.ENDTIME, " +
+				
+                "CONCAT('',TIMEDIFF(SHIFT_BREAKS.ENDTIME, SHIFT_BREAKS.STARTTIME)) AS TOTAL " +
+				"FROM SHIFTS INNER JOIN SHIFT_BREAKS ON SHIFT_BREAKS.SHIFTID = SHIFTS.ID " +				
+				"INNER JOIN BREAKS ON SHIFT_BREAKS.BREAKID = BREAKS.ID " +				
+                "INNER JOIN PEOPLE ON SHIFTS.PPLID = PEOPLE.ID " +
+				
+                "WHERE ?(QBF_FILTER) " +
+                "ORDER BY PEOPLE.NAME ASC, SHIFT_BREAKS.ENDTIME ASC");
 
-report.addParameter("shifts.STARTSHIFT");
-report.addParameter("shifts.ENDSHIFT");
+report.addParameter("SHIFT_BREAKS.STARTTIME");
+report.addParameter("SHIFT_BREAKS.ENDTIME");
 
 paramdates = new com.openbravo.pos.reports.JParamsDatesInterval();
 
@@ -45,8 +51,9 @@ paramdates.setEndDate(com.openbravo.beans.DateUtils.getTodayMinutes());
 report.addQBFFilter(paramdates);
 
 report.addField("NAME", com.openbravo.data.loader.Datas.STRING);
-report.addField("STARTSHIFT", com.openbravo.data.loader.Datas.TIMESTAMP);
-report.addField("ENDSHIFT", com.openbravo.data.loader.Datas.TIMESTAMP);
+report.addField("NAMEBREAK", com.openbravo.data.loader.Datas.STRING);
+report.addField("STARTTIME", com.openbravo.data.loader.Datas.TIMESTAMP);
+report.addField("ENDTIME", com.openbravo.data.loader.Datas.TIMESTAMP);
 report.addField("TOTAL", com.openbravo.data.loader.Datas.STRING);
 
 report;

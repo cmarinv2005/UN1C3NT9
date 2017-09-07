@@ -796,7 +796,7 @@ public class StockManagement extends JPanel implements JPanelView {
         setLayout(new java.awt.BorderLayout());
 
         jPanel8.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jPanel8.setPreferredSize(new java.awt.Dimension(1020, 320));
+        jPanel8.setPreferredSize(new java.awt.Dimension(1020, 400));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -884,7 +884,7 @@ public class StockManagement extends JPanel implements JPanelView {
         jPanel5.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanel5.setPreferredSize(new java.awt.Dimension(455, 245));
         jPanel5.setLayout(new java.awt.BorderLayout());
-        jPanel8.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 5, -1, 190));
+        jPanel8.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 5, -1, 210));
 
         m_jcodebar.setBackground(java.awt.Color.white);
         m_jcodebar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -1069,7 +1069,7 @@ public class StockManagement extends JPanel implements JPanelView {
         jTableProductStock.setRowHeight(25);
         jScrollPane2.setViewportView(jTableProductStock);
 
-        jPanel8.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 220, 650, 70));
+        jPanel8.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 220, 650, 140));
 
         m_jBtnShowStock.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jBtnShowStock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/pay.png"))); // NOI18N
@@ -1085,25 +1085,25 @@ public class StockManagement extends JPanel implements JPanelView {
         lblTotalQtyValue.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTotalQtyValue.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblTotalQtyValue.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel8.add(lblTotalQtyValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 290, -1, -1));
+        jPanel8.add(lblTotalQtyValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 360, -1, -1));
 
         lbTotalValue.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbTotalValue.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbTotalValue.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lbTotalValue.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel8.add(lbTotalValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(547, 290, -1, -1));
+        jPanel8.add(lbTotalValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 360, -1, -1));
 
         webLblQty.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         webLblQty.setText(AppLocal.getIntString("label.stock.quantity")); // NOI18N
         webLblQty.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         webLblQty.setPreferredSize(new java.awt.Dimension(90, 30));
-        jPanel8.add(webLblQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 290, 100, -1));
+        jPanel8.add(webLblQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 100, -1));
 
         webLblValue.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         webLblValue.setText(AppLocal.getIntString("label.stock.value")); // NOI18N
         webLblValue.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         webLblValue.setPreferredSize(new java.awt.Dimension(180, 30));
-        jPanel8.add(webLblValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(355, 290, 170, -1));
+        jPanel8.add(webLblValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 360, 170, -1));
 
         add(jPanel8, java.awt.BorderLayout.PAGE_START);
 

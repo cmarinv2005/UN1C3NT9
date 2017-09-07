@@ -423,9 +423,9 @@ CREATE TABLE `sharedtickets` (
 CREATE TABLE `shift_breaks` (
 	`id` varchar(255) NOT NULL,
 	`shiftid` varchar(255) NOT NULL,
-	`breakid` varchar(255) NOT NULL,
+	`breakid` varchar(255) NOT NULL,	
 	`starttime` datetime NOT NULL,
-	`endtime` datetime NOT NULL,
+	`endtime` datetime default NULL,
 	PRIMARY KEY  ( `id` ),
 	KEY `shift_breaks_breakid` ( `breakid` ),
 	KEY `shift_breaks_shiftid` ( `shiftid` )
@@ -806,16 +806,17 @@ ALTER TABLE `tickets` ADD CONSTRAINT `tickets_fk_id`
 -- *****************************************************************************
 
  -- ADD roles
-INSERT INTO roles(id, name, permissions) VALUES('0', 'Administrator role', $FILE{/com/openbravo/pos/templates/Role.Administrator.xml} );
-INSERT INTO roles(id, name, permissions) VALUES('1', 'Manager role', $FILE{/com/openbravo/pos/templates/Role.Manager.xml} );
-INSERT INTO roles(id, name, permissions) VALUES('2', 'Employee role', $FILE{/com/openbravo/pos/templates/Role.Employee.xml} );
-INSERT INTO roles(id, name, permissions) VALUES('3', 'Guest role', $FILE{/com/openbravo/pos/templates/Role.Guest.xml} );
+INSERT INTO roles(id, name, permissions) VALUES('0', 'Rol Administrador', $FILE{/com/openbravo/pos/templates/Role.Administrator.xml} );
+INSERT INTO roles(id, name, permissions) VALUES('1', 'Rol Gerente', $FILE{/com/openbravo/pos/templates/Role.Manager.xml} );
+INSERT INTO roles(id, name, permissions) VALUES('2', 'Rol Empleado', $FILE{/com/openbravo/pos/templates/Role.Employee.xml} );
+INSERT INTO roles(id, name, permissions) VALUES('3', 'Rol Invitado', $FILE{/com/openbravo/pos/templates/Role.Guest.xml} );
 
 -- ADD people
-INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('0', 'Administrator', NULL, '0', TRUE, NULL);
-INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('1', 'Manager', NULL, '1', TRUE, NULL);
-INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('2', 'Employee', NULL, '2', TRUE, NULL);
-INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('3', 'Guest', NULL, '3', TRUE, NULL);
+INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('0', 'Administrador', NULL, '0', TRUE, NULL);
+INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('1', 'Gerente', NULL, '1', TRUE, NULL);
+INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('2', 'Empleado', NULL, '2', TRUE, NULL);
+INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('3', 'Invitado', NULL, '3', TRUE, NULL);
+INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('4', 'Soporte Técnico', NULL, '0', TRUE, NULL);
 
 -- ADD resources --
 -- MENU
@@ -922,6 +923,9 @@ INSERT INTO resources(id, name, restype, content) VALUES('111', 'banknote.100000
 -- SCRIPTS
 INSERT INTO resources(id, name, restype, content) VALUES('120', 'script.expiry', 0, $FILE{/com/openbravo/pos/templates/script.expiry.txt});
 INSERT INTO resources(id, name, restype, content) VALUES('121', 'script.happyhour', 0, $FILE{/com/openbravo/pos/templates/script.happyhour.txt});
+INSERT INTO resources(id, name, restype, content) VALUES('122', 'event.total', 0, $FILE{/com/openbravo/pos/templates/event.total.txt});
+INSERT INTO resources(id, name, restype, content) VALUES('123', 'abrir.cajon', 0, $FILE{/com/openbravo/pos/templates/abrir.cajon.txt});
+INSERT INTO resources(id, name, restype, content) VALUES('124', 'Printer.Ticket_A4', 0, $FILE{/com/openbravo/pos/templates/Printer.Ticket_A4.xml});
 -- ADD CATEGORIES
 INSERT INTO categories(id, name) VALUES ('000', 'Category Standard');
 

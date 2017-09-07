@@ -1,0 +1,66 @@
+//    uniCenta oPOS - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2013 uniCenta & previous Openbravo POS works
+//    https://unicenta.com
+//
+//    This file is part of uniCenta oPOS
+//
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    uniCenta oPOS is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
+
+// *** NOT SUITABLE FOR DERBY DB'S***
+
+report = new com.openbravo.pos.reports.PanelReportBean();
+
+report.setTitleKey("Menu.SummarySales");
+report.setReport("/com/openbravo/reports/summarysales");
+report.setResourceBundle("com/openbravo/reports/summarysales_messages_es");
+
+report.setSentence("SELECT " +
+        "TICKETS.ticketid,  " +
+        "PAYMENTS.payment, " +
+		"PEOPLE.name AS PEOPLENAME, " +
+		"PRODUCTS.name, " +
+		"PRODUCTS.pricebuy, " +
+		"TICKETLINES.units, " +
+		"TICKETLINES.price, " +
+		"(ticketlines.units * PRODUCTS.pricebuy) AS Totalcompra, " +	
+		"(ticketlines.units * ticketlines.price) AS Total " +				        
+        "FROM TICKETLINES " +		
+		"INNER JOIN TICKETS ON ticketlines.ticket = tickets.id " +		
+        "INNER JOIN PEOPLE ON PEOPLE.id = tickets.person " +
+        "INNER JOIN PRODUCTS ON ticketlines.product = products.id " +
+		"INNER JOIN RECEIPTS ON receipts.id = tickets.id " +
+		"INNER JOIN PAYMENTS ON payments.receipt = receipts.id " +		
+        "WHERE ?(QBF_FILTER) " +       
+        "ORDER BY PEOPLE.name, TICKETS.ticketid DESC ");
+
+report.addParameter("receipts.DATENEW");
+report.addParameter("receipts.DATENEW");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
+
+report.addParameter("people.ID");
+report.addParameter("people.NAME");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsUser());
+
+report.addField("TICKETID", com.openbravo.data.loader.Datas.INT);
+report.addField("PAYMENT", com.openbravo.data.loader.Datas.STRING);
+report.addField("PEOPLENAME", com.openbravo.data.loader.Datas.STRING);
+report.addField("NAME", com.openbravo.data.loader.Datas.STRING);
+report.addField("PRICEBUY", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("UNITS", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("PRICE", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("TOTALCOMPRA", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
+
+report;
+

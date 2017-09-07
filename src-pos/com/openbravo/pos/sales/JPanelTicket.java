@@ -804,6 +804,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         CardLayout cl = (CardLayout)(getLayout());
         
+        m_jEditLine.setVisible(true);
+        m_jList.setVisible(true);
+        
         if (m_oTicket == null) {        
             m_jTicketId.setText(null);            
             m_ticketlines.clearTicketLines();
@@ -1191,7 +1194,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                    "Check", JOptionPane.WARNING_MESSAGE);                
                 stateToZero();
             } else {
-                incProduct(count, oProduct);
+//              incProduct(count, oProduct); // Llamo este método para permitir ingresar cantidades desde código de barras
+                incProduct(oProduct);       // Llamo este método para obtener peso desde código de barras
             }
         } catch (BasicException eData) {
             stateToZero();           
@@ -1293,8 +1297,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 sCodetype = "EAN";                                              // Ensure not null   
             }   
             
-            if (sCode.startsWith("C")
-                    || sCode.startsWith("c")) {
+            if (sCode.startsWith("C")                 
+                    || sCode.startsWith("c")) {    
                 try {
                     String card = sCode;
                     CustomerInfoExt newcustomer = dlSales.findCustomerExt(card);
@@ -1507,11 +1511,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             
                         if(m_jaddtax.isSelected()) {
                             addTicketLine(oProduct
-                            , dUnits //weight
+                            , dUnits //weight                       
                             , dPriceSell = oProduct.getPriceSellTax(tax)); 
                         } else {
                             addTicketLine(oProduct
-                            , dUnits
+                            , dUnits                                
                             , dPriceSell);
                         }
                     }
@@ -1615,6 +1619,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
             m_sBarcode.append(cTrans);
             
+    if ("true".equals(m_App.getProperties().getProperty("till.atajos"))) { 
             //Aqui inicio atajos de teclado personalizados 
             
             if (cTrans == '\u001B') {                                                  //Esc Cambio rápido de Usuario
@@ -1710,7 +1715,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 stateToZero();
                 atributosProductos();
             }     
-             
+    }             
             if (cTrans == '\u007f') { 
                 stateToZero();
             } else if ((cTrans == '0') && (m_iNumberStatus == NUMBER_INPUTZERO)) {

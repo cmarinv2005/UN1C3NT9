@@ -222,8 +222,8 @@ public class JPanelEmployeePresence extends javax.swing.JPanel implements JPanel
 
         setPreferredSize(new java.awt.Dimension(0, 45));
 
-        btnCheckIn.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnCheckIn.setText("Check In");
+        btnCheckIn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        btnCheckIn.setText("Entrada");
         btnCheckIn.setMaximumSize(new java.awt.Dimension(85, 23));
         btnCheckIn.setPreferredSize(new java.awt.Dimension(0, 45));
         btnCheckIn.addActionListener(new java.awt.event.ActionListener() {
@@ -232,8 +232,8 @@ public class JPanelEmployeePresence extends javax.swing.JPanel implements JPanel
             }
         });
 
-        btnCheckOut.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnCheckOut.setText("Check Out");
+        btnCheckOut.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        btnCheckOut.setText("Salida");
         btnCheckOut.setPreferredSize(new java.awt.Dimension(0, 45));
         btnCheckOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -264,7 +264,7 @@ public class JPanelEmployeePresence extends javax.swing.JPanel implements JPanel
                         .addComponent(btnCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
                     .addComponent(message, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -279,7 +279,7 @@ public class JPanelEmployeePresence extends javax.swing.JPanel implements JPanel
                     .addComponent(btnCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(179, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

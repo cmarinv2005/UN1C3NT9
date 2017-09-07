@@ -78,6 +78,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         chbHideStock.addActionListener(dirty);
         chbTeclado.addActionListener(dirty); 
         chbImagen.addActionListener(dirty); 
+        jchkAtajos.addActionListener(dirty); 
         actualizarCheckbox();
     }
     
@@ -166,6 +167,12 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         else {        
             chbImagen.setBackground(Color.red);                     
         } 
+        if (jchkAtajos.isSelected()) {  
+            jchkAtajos.setBackground(Color.green);                      
+        } 
+        else {        
+            jchkAtajos.setBackground(Color.red);                     
+        } 
     }
         
     /**
@@ -224,7 +231,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         chbHideStock.setSelected(Boolean.parseBoolean(config.getProperty("till.hidestock")));
         chbTeclado.setSelected(Boolean.parseBoolean(config.getProperty("till.teclado")));
         chbImagen.setSelected(Boolean.parseBoolean(config.getProperty("till.imagen")));
-
+        jchkAtajos.setSelected(Boolean.parseBoolean(config.getProperty("till.atajos")));
         
         jchkautoRefreshTableMap.setSelected(Boolean.parseBoolean(config.getProperty("till.autoRefreshTableMap")));  
                 
@@ -332,7 +339,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         config.setProperty("till.hidestock", Boolean.toString(chbHideStock.isSelected())); 
         config.setProperty("till.teclado", Boolean.toString(chbTeclado.isSelected())); 
         config.setProperty("till.imagen", Boolean.toString(chbImagen.isSelected())); 
-        
+        config.setProperty("till.atajos", Boolean.toString(jchkAtajos.isSelected())); 
         dirty.setDirty(false);
     }
     
@@ -379,6 +386,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jLabel9 = new javax.swing.JLabel();
         jchkPriceUpdate = new com.alee.extended.button.WebSwitch();
         jLabel10 = new javax.swing.JLabel();
+        jchkAtajos = new com.alee.extended.button.WebSwitch();
+        jLabel17 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jCheckPrice00 = new com.alee.extended.button.WebSwitch();
         jLabel11 = new javax.swing.JLabel();
@@ -695,6 +704,17 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jLabel10.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel10.setText("Permitir Actualizaciones de Precios");
 
+        jchkAtajos.setOpaque(true);
+        jchkAtajos.setPreferredSize(new java.awt.Dimension(80, 30));
+        jchkAtajos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jchkAtajosActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel17.setText("No Habilitar Atajos de Teclado");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -723,7 +743,12 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jchkPriceUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE)))
+                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jchkAtajos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(752, 752, 752)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -748,7 +773,9 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jchkTextOverlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jchkAtajos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -1362,6 +1389,17 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
             jLabel15.setText(AppLocal.getIntString("label.imagenno"));             
         }
     }//GEN-LAST:event_chbImagenActionPerformed
+
+    private void jchkAtajosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkAtajosActionPerformed
+        // TODO add your handling code here:
+        if (jchkAtajos.isSelected()) {  
+            jchkAtajos.setBackground(Color.green);            
+            jLabel17.setText(AppLocal.getIntString("label.atajosyes"));              
+        } else {      
+            jchkAtajos.setBackground(Color.red);
+            jLabel17.setText(AppLocal.getIntString("label.atajosno"));             
+        }
+    }//GEN-LAST:event_jchkAtajosActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1382,6 +1420,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1408,6 +1447,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private javax.swing.JTextField jTextSCRate;
     private javax.swing.JTextField jTxtautoRefreshTimer;
     private com.alee.extended.colorchooser.WebColorChooserField jWaiterColour1;
+    private com.alee.extended.button.WebSwitch jchkAtajos;
     private javax.swing.JCheckBox jchkAutoLogoff;
     private javax.swing.JCheckBox jchkAutoLogoffToTables;
     private com.alee.extended.button.WebSwitch jchkBarcodetype;

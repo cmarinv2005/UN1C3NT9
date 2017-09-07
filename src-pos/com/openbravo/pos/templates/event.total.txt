@@ -1,0 +1,35 @@
+import com.openbravo.format.Formats; 
+import com.openbravo.pos.ticket.TicketLineInfo; 
+import com.openbravo.pos.ticket.TicketProductInfo;  
+import java.util.Properties; 
+ 
+total = ticket.getTotal();  
+ 
+if (total > 0.0) {  
+  //redondeando m al múltiplo mas cercano de n  
+  m=total;    
+  n=5000.0; //redondear a los $50 mas cercanos                
+  d = Math.floor((m*100.0+n/2.0)/n)*n/100.0-m;  
+  //round to 2 decimal places 
+  rounding = Math.round(d * Math.pow(10, (double) 2)) / Math.pow(10,(double) 2); 
+  //add line if rounding is needed 
+  if (rounding <= -0.01 || rounding >= 0.01) {  
+    taxes = ticket.getTaxLines();  
+    for (int i = 0; i < taxes.length; i++) {  
+      taxline = taxes[i];  
+  // Si sólo desea redondear hacia abajo, retire las barras de estas dos lineas
+  //  if (rounding>0) {
+  //  rounding = rounding - 50; }
+      ticket.insertLine(ticket.getLinesCount(), 
+        new TicketLineInfo( 
+        "Ajuste de redondeo",  
+        taxline.getTaxInfo().getTaxCategoryID(),  
+        1.0,  
+        rounding, 
+        taxline.getTaxInfo()));  
+    } 
+  }  
+  sales.setSelectedIndex(ticket.getLinesCount() - 1); 
+ } else {  
+  java.awt.Toolkit.getDefaultToolkit().beep(); 
+} 

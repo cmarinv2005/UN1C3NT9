@@ -29,13 +29,14 @@ group = menu.addGroup("Menu.Backoffice");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.Suppliers.Reports.Sales", "/com/openbravo/reports/suppliers_sales.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.Suppliers.Reports.List", "/com/openbravo/reports/suppliers_list.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.Suppliers.Reports.Export", "/com/openbravo/reports/suppliers_export.bs");
-
+    
     submenu = group.addSubmenu("/com/openbravo/images/products.png", "Menu.StockManagement", "com.openbravo.pos.forms.MenuStockManagement");
     submenu.addTitle("Menu.Panel.Stock.Forms");
 
         submenu.addPanel("/com/openbravo/images/category.png", "Menu.Categories", "com.openbravo.pos.inventory.CategoriesPanel");
         submenu.addPanel("/com/openbravo/images/products.png", "Menu.Products", "com.openbravo.pos.inventory.ProductsPanel");
         submenu.addPanel("/com/openbravo/images/location.png", "Menu.ProductsWarehouse", "com.openbravo.pos.inventory.ProductsWarehousePanel");
+	submenu.addPanel("/com/openbravo/images/stockdiary.png", "Menu.StockDiary", "com.openbravo.pos.inventory.StockDiaryPanel");
         submenu.addPanel("/com/openbravo/images/stockmaint.png", "Menu.StockMovement", "com.openbravo.pos.inventory.StockManagement");
         submenu.addPanel("/com/openbravo/images/auxiliary.png", "Menu.Auxiliar", "com.openbravo.pos.inventory.AuxiliarPanel");
         submenu.addPanel("/com/openbravo/images/bundle.png", "Menu.Bundle", "com.openbravo.pos.inventory.BundlePanel");
@@ -112,6 +113,7 @@ group = menu.addGroup("Menu.Backoffice");
         submenu.addPanel("/com/openbravo/images/leaves.png", "Menu.Leaves", "com.openbravo.pos.epm.LeavesPanel");
         submenu.addTitle("Menu.Employees.Reports");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.DailyPresenceReport", "/com/openbravo/reports/dailypresencereport.bs");
+		submenu.addPanel("/com/openbravo/images/reports.png", "Menu.DailyBreaksReport", "/com/openbravo/reports/dailybreaksreport.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.DailyScheduleReport", "/com/openbravo/reports/dailyschedulereport.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.PerformanceReport", "/com/openbravo/reports/performancereport.bs");
 

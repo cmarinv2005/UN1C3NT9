@@ -1,0 +1,6 @@
+import java.awt;
+import javax.swing;
+import java.io;
+import java.io.File;
+Runtime runtime = Runtime.getRuntime();
+Process proc = runtime.exec("cmd /C start /MIN C:/cajon.bat"); 

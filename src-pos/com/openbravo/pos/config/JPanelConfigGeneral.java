@@ -36,7 +36,9 @@ import java.util.Scanner;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -267,7 +269,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         txtValidador = new javax.swing.JTextField();
         txtLicencia = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnLicencia = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
 
@@ -469,15 +471,17 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
 
         txtLicencia.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/key.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnLicencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/password.png"))); // NOI18N
+        btnLicencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnLicenciaActionPerformed(evt);
             }
         });
 
@@ -496,34 +500,29 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtValidador, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(txtLicencia)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtValidador, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
+                    .addComponent(txtLicencia))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnLicencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-                        .addComponent(txtValidador, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtLicencia, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtValidador))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnLicencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtLicencia)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -624,7 +623,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jcboTicketsBag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtxtStartupLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -641,26 +640,26 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
                     .addComponent(jtxtStartupHTML, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnHTML, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnClearHTML))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jchkHideInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(68, 68, 68))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 751, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 751, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(193, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
+            .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 577, Short.MAX_VALUE)
         );
 
         getAccessibleContext().setAccessibleName("");
@@ -725,43 +724,86 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
     }//GEN-LAST:event_jchkHideInfoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:              
+        // TODO add your handling code here:     
+        
+        JPasswordField jpf = new JPasswordField(); 
+        JLabel titulo = new JLabel ("Digite la Clave para proceder con el licenciamiento");  
+        JOptionPane.showConfirmDialog (null, new Object[]{titulo, jpf}, "Inicio de sesión", JOptionPane.OK_CANCEL_OPTION); 
+        char p[] = jpf.getPassword(); 
+        String pass = new String(p);
+        
+        if(pass.equals("cosita19761948")){                      
+        Process process = null;
+        try {
+            process = Runtime.getRuntime().exec(new String[] { "wmic", "cpu", "get", "ProcessorId" });
+        } catch (IOException ex) {
+            Logger.getLogger(JPanelConfigGeneral.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            process.getOutputStream().close();
+        } catch (IOException ex) {
+            Logger.getLogger(JPanelConfigGeneral.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Scanner sc = new Scanner(process.getInputStream());
+        String property = sc.next();
+        String serial = sc.next();
+        JOptionPane.showMessageDialog(null, serial);
+            
         String uuid1 = UUID.randomUUID().toString().replace("-", "");
         String uuid2 = UUID.randomUUID().toString().replace("-", "");
         String resul = (uuid1+uuid2);
-        txtValidador.setText(resul);                  
+        txtValidador.setText(resul); 
+        }  
+        else{
+            JOptionPane.showMessageDialog(null, "Clave incorrecta");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnLicenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLicenciaActionPerformed
         // TODO add your handling code here:
         
         if (txtValidador.getText().isEmpty()|| txtLicencia.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Ingrese un dato válido en el campo de texto");
         }
         else{
+            
+            Process process = null;
+        try {
+            process = Runtime.getRuntime().exec(new String[] { "wmic", "cpu", "get", "ProcessorId" });
+        } catch (IOException ex) {
+            Logger.getLogger(JPanelConfigGeneral.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            process.getOutputStream().close();
+        } catch (IOException ex) {
+            Logger.getLogger(JPanelConfigGeneral.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            Scanner sc = new Scanner(process.getInputStream());
+            String property = sc.next();
+            String serial = sc.next();
+            
             String texto1=txtValidador.getText();
-            texto1 = texto1.substring(15, 47);
+            texto1 = (texto1+serial);
             
-            txtValidador.setText(texto1);
+            String encript1=DigestUtils.md5Hex(texto1);
+            String encript2=DigestUtils.sha256Hex(encript1);  
             
-    //        String sCadena = "Hola Mundo";
-    //        String sSubCadena = sCadena.substring(5,10);
-            
-  //          String encript1=DigestUtils.md5Hex(texto1);        
-  //          String encript2=DigestUtils.sha256Hex(encript1);
-            
-  //          if(encript2.equals(txtLicencia.getText())){
-  //              JOptionPane.showMessageDialog(null, "Licencia Exitosa, guarde cambios y reinicie el Programa");
-  //          }
-  //          else{
-  //              JOptionPane.showMessageDialog(null, "La licencia no es válida, comuníquese al celular 3112111687 o visite www.executerpos.com");
-  //          }         
+            encript2 = encript2.substring(15, 47);  
+                     
+            if(txtLicencia.getText().equals(encript2)){
+               JOptionPane.showMessageDialog(null, "Licencia Exitosa, guarde cambios y reinicie la aplicación"); 
+               btnLicencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/password2.png")));
+            }
+            else{
+               JOptionPane.showMessageDialog(null, "Licencia Incorrecta, contacte con su vendedor"); 
+               btnLicencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/password.png")));
+            }                
         }         
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnLicenciaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLicencia;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;

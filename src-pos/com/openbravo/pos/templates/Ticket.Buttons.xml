@@ -49,6 +49,8 @@
 
 	<!-- SET Open Cashdrawer (Default=ENABLED) -->
 	<button key="button.opendrawer" image="img.cashdrawer" template="Printer.OpenDrawer"/>
+    <!--	<button key="button.open" image="img.cashdrawer" code="abrir.cajon"/>  -->
+
 
 	<!-- SET Virtual Keyboard (Default=DISABLED) -->	
 	<!-- <button key="button.keyboard" image="img.keyboard_32" code="script.Keyboard"/> -->                

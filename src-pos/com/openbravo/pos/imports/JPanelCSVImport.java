@@ -870,7 +870,7 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
      */
     public void createProduct(String pType) {
 
-        Object[] myprod = new Object[31];
+        Object[] myprod = new Object[33];
         if("new".equals(pType)) {
             myprod[0] = UUID.randomUUID().toString();
         } else {
@@ -901,11 +901,13 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
         myprod[23] = "<html><center><h4>" + productName;                        // Text tip string
         myprod[24] = false;                                                     // Warranty flag
         myprod[25] = 0.0;                                                       // Stock Units
-        myprod[26] = "1";                                                       // Printer         
-        myprod[27] = dSupplier;                                                 // Supplier
-        myprod[28] = "0";                                                       // UOM
-        myprod[29] = jCheckInCatalogue.isSelected();                            // In catalog flag
-        myprod[30] = null;                                                      // catalog order                
+        myprod[26] = "1";                                                       // Printer               
+        myprod[27] = null;                                                      // Warning
+        myprod[28] = null;                                                      // Expiry        
+        myprod[29] = dSupplier;                                                 // Supplier
+        myprod[30] = "0";                                                       // UOM        
+        myprod[31] = jCheckInCatalogue.isSelected();                            // In catalog flag
+        myprod[32] = null;                                                      // catalog order                
         
         try {
             if ("new".equals(pType)) {

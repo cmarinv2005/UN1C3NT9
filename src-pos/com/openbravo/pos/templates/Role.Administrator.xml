@@ -65,6 +65,7 @@
     <class name="button.totaldiscount"/>
     <class name="button.print"/>
     <class name="button.opendrawer"/>
+<!--<class name="button.open"/>   -->          <!-- Agregado por Carlos Marín  -->
     
 <!-- Additional button scripts -->
     <class name="button.linediscount"/>
@@ -105,7 +106,7 @@
         
     <class name="com.openbravo.pos.inventory.ProductsPanel"/>
     <class name="com.openbravo.pos.inventory.ProductsWarehousePanel"/>
-    <class name="com.openbravo.pos.inventory.StockDiaryPanel"/>
+    <class name="com.openbravo.pos.inventory.StockDiaryPanel"/>	
     <class name="com.openbravo.pos.inventory.StockManagement"/>
     <class name="com.openbravo.pos.inventory.TaxCategoriesPanel"/>
     <class name="com.openbravo.pos.inventory.TaxCustCategoriesPanel"/>
@@ -181,6 +182,7 @@
     <class name="com.openbravo.pos.epm.LeavesPanel" />
     <class name="com.openbravo.pos.epm.JPanelEmployeePresence" />
         <class name="/com/openbravo/reports/dailypresencereport.bs" />
+		<class name="/com/openbravo/reports/dailybreaksreport.bs" />
         <class name="/com/openbravo/reports/dailyschedulereport.bs" />
         <class name="/com/openbravo/reports/performancereport.bs" />
     

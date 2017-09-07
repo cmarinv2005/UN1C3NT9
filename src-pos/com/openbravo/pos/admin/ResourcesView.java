@@ -29,7 +29,13 @@ import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.util.Base64Encoder;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.UUID;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -210,6 +216,28 @@ public final class ResourcesView extends JPanel implements EditorRecord {
         cl.show(m_jContainer, view);  
     }
     
+    private void Leer() {
+        String aux = "";
+        String texto = "";
+        String resultado = "";
+        try {
+            JFileChooser file = new JFileChooser(System.getProperty("user.dir"));
+            file.showOpenDialog(this);
+            File archivo = file.getSelectedFile();
+            if (archivo != null) {
+                FileReader archivos = new FileReader(archivo);
+                BufferedReader leer = new BufferedReader(archivos);
+                while ((aux = leer.readLine()) != null) {
+                    texto += aux + "\n";
+                }
+                leer.close();
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error Importando - " + ex);
+        }
+        m_jText.setText(texto);
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -228,6 +256,7 @@ public final class ResourcesView extends JPanel implements EditorRecord {
         jLabel2 = new javax.swing.JLabel();
         m_jName = new javax.swing.JTextField();
         m_jType = new javax.swing.JComboBox();
+        jButton1 = new javax.swing.JButton();
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
@@ -257,6 +286,14 @@ public final class ResourcesView extends JPanel implements EditorRecord {
             }
         });
 
+        jButton1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jButton1.setText("Importar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -271,7 +308,8 @@ public final class ResourcesView extends JPanel implements EditorRecord {
                         .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(m_jType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -281,7 +319,8 @@ public final class ResourcesView extends JPanel implements EditorRecord {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(m_jType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(m_jType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                 .addContainerGap())
@@ -302,9 +341,15 @@ public final class ResourcesView extends JPanel implements EditorRecord {
         }
       
     }//GEN-LAST:event_m_jTypeActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Leer();
+    }//GEN-LAST:event_jButton1ActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
