@@ -1,24 +1,24 @@
-//    Chromis POS  - The New Face of Open Source POS
-//    Copyright (c) 2015
-//    http://www.chromis.co.uk
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2016 uniCenta
+//    https://unicenta.com
 //
-//    This file is part of Chromis POS
+//    This file is part of uniCenta oPOS
 //
-//     Chromis POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Chromis POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Chromis POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
+
 package com.openbravo.pos.admin;
 
-import javax.swing.ListCellRenderer;
 import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.data.loader.ComparatorCreator;
 import com.openbravo.data.loader.TableDefinition;
@@ -29,35 +29,33 @@ import com.openbravo.data.user.ListProviderCreator;
 import com.openbravo.data.user.SaveProvider;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.panels.JPanelTable;
+import javax.swing.ListCellRenderer;
 
 /**
  *
  * @author adrianromero
  */
-public class RolesPanel extends JPanelTable {
-
+public class RolesPanelOld extends JPanelTable {
+    
     private TableDefinition troles;
     private TableDefinition trolesmenu;
-    private DataLogicAdmin dlAdmin;
-    private RolesViewTree jeditor;
+    private RolesView jeditor;
 
-    /**
-     * Creates a new instance of RolesPanel
-     */
-    public RolesPanel() {
-    }
-
+    
+    /** Creates a new instance of RolesPanel */
+    public RolesPanelOld() {
+     }
+    
     /**
      *
      */
     @Override
     protected void init() {
-        dlAdmin = (DataLogicAdmin) app.getBean("com.openbravo.pos.admin.DataLogicAdmin");
+        DataLogicAdmin dlAdmin  = (DataLogicAdmin) app.getBean("com.openbravo.pos.admin.DataLogicAdmin");        
         troles = dlAdmin.getTableRoles();         
-        jeditor = new RolesViewTree(dlAdmin, dirty, app);
-        AppLocal.LIST_BY_RIGHTS="";       
+        jeditor = new RolesView(dirty);    
     }
-
+    
     /**
      *
      * @return
@@ -66,43 +64,43 @@ public class RolesPanel extends JPanelTable {
     public ListProvider getListProvider() {
         return new ListProviderCreator(troles);
     }
-
+    
     /**
      *
      * @return
      */
     @Override
     public SaveProvider getSaveProvider() {
-        return new SaveProvider(troles);
+        return new SaveProvider(troles);        
     }
-
+    
     /**
      *
      * @return
      */
     @Override
     public Vectorer getVectorer() {
-        return troles.getVectorerBasic(new int[]{1});
+        return troles.getVectorerBasic(new int[] {1});
     }
-
+    
     /**
      *
      * @return
      */
     @Override
     public ComparatorCreator getComparatorCreator() {
-        return troles.getComparatorCreator(new int[]{1});
+        return troles.getComparatorCreator(new int[] {1});
     }
-
+    
     /**
      *
      * @return
      */
     @Override
     public ListCellRenderer getListCellRenderer() {
-        return new ListCellRendererBasic(troles.getRenderStringBasic(new int[]{1}));
+        return new ListCellRendererBasic(troles.getRenderStringBasic(new int[] {1}));
     }
-
+    
     /**
      *
      * @return
@@ -111,7 +109,7 @@ public class RolesPanel extends JPanelTable {
     public EditorRecord getEditor() {
         return jeditor;
     }
-
+    
     /**
      *
      * @return
@@ -119,6 +117,5 @@ public class RolesPanel extends JPanelTable {
     @Override
     public String getTitle() {
         return AppLocal.getIntString("Menu.Roles");
-    }
-
+    }        
 }

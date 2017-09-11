@@ -126,6 +126,31 @@ public class AppViewConnection {
         }
     
     }
+	
+	public static Session createSession() throws BasicException {               
+        try{
+            if (isJavaWebStart()) {
+                Class.forName(AppConfig.getInstance().getProperty("db.driver"), true, Thread.currentThread().getContextClassLoader());
+            } else {
+                ClassLoader cloader = new URLClassLoader(new URL[] {new File(AppConfig.getInstance().getProperty("db.driverlib")).toURI().toURL()});
+                DriverManager.registerDriver(new DriverWrapper((Driver) Class.forName(AppConfig.getInstance().getProperty("db.driver"), true, cloader).newInstance()));
+            }
+
+            String sDBUser = AppConfig.getInstance().getProperty("db.user");
+            String sDBPassword = AppConfig.getInstance().getProperty("db.password");        
+            if (sDBUser != null && sDBPassword != null && sDBPassword.startsWith("crypt:")) {
+                // the password is encrypted
+                AltEncrypter cypher = new AltEncrypter("cypherkey" + sDBUser);
+                sDBPassword = cypher.decrypt(sDBPassword.substring(6));
+            }   
+             return new Session(AppConfig.getInstance().getProperty("db.URL"), sDBUser,sDBPassword);     
+
+        } catch (InstantiationException | IllegalAccessException | MalformedURLException | ClassNotFoundException e) {
+            throw new BasicException(AppLocal.getIntString("message.databasedrivererror"), e);
+        } catch (SQLException eSQL) {
+            throw new BasicException(AppLocal.getIntString("message.databaseconnectionerror"), eSQL);
+        }   
+    }
 
     private static boolean isJavaWebStart() {
 

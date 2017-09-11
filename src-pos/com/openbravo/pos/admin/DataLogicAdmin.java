@@ -19,10 +19,12 @@
 
 package com.openbravo.pos.admin;
 
+import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.*;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.BeanFactoryDataSingle;
+import java.util.List;
 
 /**
  *
@@ -34,6 +36,18 @@ public class DataLogicAdmin extends BeanFactoryDataSingle {
     private TableDefinition m_tpeople;
     private TableDefinition m_troles;
     private TableDefinition m_tresources;    
+    protected SentenceExec m_insertentry;
+    protected SentenceList m_sectionList; 
+    protected SentenceList m_rolesList;
+    protected SentenceFind m_description;
+    protected SentenceList m_displayList;
+    protected SentenceFind m_roleID;
+    protected SentenceFind m_roleRightsLevel;
+    protected SentenceFind m_roleRightsLevelByID;
+    protected SentenceFind m_roleRightsLevelByUserName;
+    private SentenceFind m_rolepermissions; 
+    protected SentenceExec m_rolepermissionsdelete;
+    protected SentenceList m_permissionClassList;
     
     
     /** Creates a new instance of DataLogicAdmin */
@@ -73,7 +87,74 @@ public class DataLogicAdmin extends BeanFactoryDataSingle {
             , new Datas[] {Datas.STRING, Datas.STRING, Datas.INT, Datas.BYTES}
             , new Formats[] {Formats.STRING, Formats.STRING, Formats.INT, Formats.NULL}
             , new int[] {0}
-        );           
+        ); 
+
+m_sectionList = new StaticSentence(s, 
+                "SELECT DISTINCT SECTION FROM DBPERMISSIONS ORDER BY SECTION"
+                , null
+                , SerializerReadString.INSTANCE);          
+             
+        m_description = new StaticSentence(s
+                , "SELECT DESCRIPTION FROM DBPERMISSIONS WHERE CLASSNAME = ? "
+                , SerializerWriteString.INSTANCE
+                , SerializerReadString.INSTANCE);  
+        
+        m_displayList = new StaticSentence(s
+                , "SELECT DISPLAYNAME FROM DBPERMISSIONS WHERE SECTION = ? ORDER BY DISPLAYNAME"
+                , SerializerWriteString.INSTANCE
+                , SerializerReadString.INSTANCE);          
+        
+        m_roleID = new StaticSentence(s
+                , "SELECT ID FROM ROLES WHERE NAME = ? "
+                , SerializerWriteString.INSTANCE
+                , SerializerReadString.INSTANCE);  
+        
+        m_roleRightsLevel = new StaticSentence(s
+                , "SELECT RIGHTSLEVEL FROM ROLES WHERE NAME = ? "
+                , SerializerWriteString.INSTANCE
+                , SerializerReadString.INSTANCE); 
+
+        m_roleRightsLevelByID = new StaticSentence(s
+                , "SELECT RIGHTSLEVEL FROM ROLES WHERE ID = ? "
+                , SerializerWriteString.INSTANCE
+                , SerializerReadString.INSTANCE); 
+      
+        m_roleRightsLevelByUserName = new StaticSentence(s
+                , "SELECT ROLES.RIGHTSLEVEL FROM ROLES INNER JOIN PEOPLE ON PEOPLE.ROLE=ROLES.ID WHERE PEOPLE.NAME= ? "
+                , SerializerWriteString.INSTANCE
+                , SerializerReadString.INSTANCE);      
+         
+        m_rolesList = new StaticSentence(s
+                , "SELECT ID FROM ROLES "
+                , null
+                , SerializerReadString.INSTANCE);              
+        
+
+        m_permissionClassList = new StaticSentence(s
+                , "SELECT CLASSNAME FROM DBPERMISSIONS "
+                , null
+                , SerializerReadString.INSTANCE);      
+        
+        
+        m_rolepermissions = new PreparedSentence(s, "SELECT PERMISSIONS FROM ROLES WHERE ID = ?"
+                , SerializerWriteString.INSTANCE
+                , SerializerReadBytes.INSTANCE);      
+        
+               
+        m_insertentry = new StaticSentence(s
+                , "INSERT INTO DBPERMISSIONS (CLASSNAME, SECTION, DISPLAYNAME, DESCRIPTION) " +
+                  "VALUES (?, ?, ?, ?)"
+                , new SerializerWriteBasic(new Datas[] {
+                    Datas.STRING, 
+                    Datas.STRING, 
+                    Datas.STRING, 
+                    Datas.STRING,}));   
+        
+        
+        m_rolepermissionsdelete = new StaticSentence(s, "DELETE * FROM DBPERMISSIONS WHERE CLASSNAME = ?"
+                , SerializerWriteString.INSTANCE
+                , null); 
+		
     }
        
     /**
@@ -93,7 +174,22 @@ public class DataLogicAdmin extends BeanFactoryDataSingle {
      */
     public final TableDefinition getTablePeople() {
         return m_tpeople;
-    }    
+    }   
+
+    public final List<String> getSectionsList() throws BasicException {
+        return m_sectionList.list();    
+    }	
+	
+	/*
+     *
+     * @return
+     */
+     public final List<DBPermissionsInfo> getAlldbPermissions() throws BasicException  {
+	return new PreparedSentence(s
+		, "SELECT CLASSNAME, SECTION, DISPLAYNAME, DESCRIPTION FROM DBPERMISSIONS ORDER BY DISPLAYNAME"
+		, null               
+		, DBPermissionsInfo.getSerializerRead()).list();
+    }  
 
     /**
      *
@@ -102,6 +198,23 @@ public class DataLogicAdmin extends BeanFactoryDataSingle {
     public final TableDefinition getTableRoles() {
         return m_troles;
     }
+	
+	 /**
+     *
+     * @param sRole
+     * @return
+     */
+    public final String findRolePermissions(String sRole) {    
+        try {
+            return Formats.BYTEA.formatValue(m_rolepermissions.find(sRole));        
+        } catch (BasicException e) {
+            return null;                    
+        }             
+    }
+	
+	public final String getRoleID(String roleName) throws BasicException {
+        return m_roleID.find(roleName).toString();
+    }  
 
     /**
      *
@@ -110,7 +223,15 @@ public class DataLogicAdmin extends BeanFactoryDataSingle {
     public final TableDefinition getTableResources() {
         return m_tresources;
     }
-    
+	
+    public final void insertEntry(Object[] entry) throws BasicException {
+        m_insertentry.exec(entry);
+    }
+	
+	public final Integer getRightsLevel(String roleName) throws BasicException {
+        return Integer.parseInt(m_roleRightsLevel.find(roleName).toString());
+    } 
+	
     /**
      *
      * @return

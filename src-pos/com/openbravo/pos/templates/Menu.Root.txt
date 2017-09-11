@@ -116,6 +116,7 @@ group = menu.addGroup("Menu.Backoffice");
 		submenu.addPanel("/com/openbravo/images/reports.png", "Menu.DailyBreaksReport", "/com/openbravo/reports/dailybreaksreport.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.DailyScheduleReport", "/com/openbravo/reports/dailyschedulereport.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.PerformanceReport", "/com/openbravo/reports/performancereport.bs");
+		submenu.addPanel("/com/openbravo/images/reports.png", "Menu.ComisionSales", "/com/openbravo/reports/comisionsales.bs");
 
  
     group = menu.addGroup("Menu.Utilities");

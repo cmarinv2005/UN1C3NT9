@@ -185,6 +185,7 @@
 		<class name="/com/openbravo/reports/dailybreaksreport.bs" />
         <class name="/com/openbravo/reports/dailyschedulereport.bs" />
         <class name="/com/openbravo/reports/performancereport.bs" />
+		<class name="/com/openbravo/reports/comisionsales.bs" />
     
 <!--    <class name="com.openbravo.possync.ProductsSyncCreate"/> -->
 <!--    <class name="com.openbravo.possync.OrdersSyncCreate"/> -->
