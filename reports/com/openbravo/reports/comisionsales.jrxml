@@ -59,13 +59,16 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 	<variable name="TOTAL" class="java.lang.Double" resetType="Group" resetGroup="bypeople" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
 	</variable>
-	<variable name="VALORCOMPRA" class="java.lang.Double" resetType="Group" resetGroup="bypeople" calculation="Sum">
+	<variable name="VALORCOMPRA" class="java.lang.Double" resetType="Group" resetGroup="byticket" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTALCOMPRA}]]></variableExpression>
 	</variable>
 	<variable name="VALORVENTA" class="java.lang.Double" resetType="Group" resetGroup="bypeople" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
 	</variable>
 	<variable name="COMPRA" class="java.lang.Double" resetType="Group" resetGroup="byticket" calculation="Nothing">
+	</variable>
+	<variable name="TOTAL1" class="java.lang.Double" resetType="Group" resetGroup="bypeople" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALCOMPRA}]]></variableExpression>
 	</variable>
 
 		<group  name="bypeople" >
@@ -247,7 +250,7 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{VALORVENTA}) - ($V{VALORCOMPRA}))*(0.20))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{TOTAL}) - ($V{TOTAL1}))*(0.20))]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -267,7 +270,7 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{VALORVENTA}) - ($V{VALORCOMPRA}))*(0.30))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{TOTAL}) - ($V{TOTAL1}))*(0.30))]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -287,7 +290,7 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{VALORVENTA}) - ($V{VALORCOMPRA}))*(0.40))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{TOTAL}) - ($V{TOTAL1}))*(0.40))]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -307,7 +310,7 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{VALORVENTA}) - ($V{VALORCOMPRA}))*(0.50))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{TOTAL}) - ($V{TOTAL1}))*(0.50))]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -327,7 +330,7 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{VALORVENTA}) - ($V{VALORCOMPRA}))*(0.60))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{TOTAL}) - ($V{TOTAL1}))*(0.60))]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -347,7 +350,7 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{VALORVENTA}) - ($V{VALORCOMPRA}))*(0.70))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{TOTAL}) - ($V{TOTAL1}))*(0.70))]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -360,7 +363,7 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue($V{VALORCOMPRA})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue($V{TOTAL1})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -393,7 +396,7 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue(($V{VALORVENTA}) - ($V{VALORCOMPRA}))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue(($V{TOTAL}) - ($V{TOTAL1}))]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -432,7 +435,7 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="18"  isSplitAllowed="true" >
+			<band height="66"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="307"
@@ -444,7 +447,7 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.subtotal}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.subtotalticket}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -471,6 +474,237 @@ ORDER BY CATEGORIES.NAME, products.NAME, stockcurrent.LOCATION]]></queryString>
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue($V{VALORCOMPRA})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="54"
+						y="37"
+						width="77"
+						height="12"
+						key="staticText-13"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Comisión 20%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="135"
+						y="37"
+						width="77"
+						height="12"
+						key="staticText-14"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Comisión 30%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="216"
+						y="37"
+						width="77"
+						height="12"
+						key="staticText-15"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Comisión 40%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="296"
+						y="37"
+						width="77"
+						height="12"
+						key="staticText-16"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Comisión 50%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="377"
+						y="37"
+						width="77"
+						height="12"
+						key="staticText-17"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Comisión 60%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="457"
+						y="37"
+						width="77"
+						height="12"
+						key="staticText-18"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Comisión 70%]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="54"
+						y="50"
+						width="77"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-55"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{SUBTOTAL}) - ($V{VALORCOMPRA}))*(0.20))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="135"
+						y="50"
+						width="77"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-56"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{SUBTOTAL}) - ($V{VALORCOMPRA}))*(0.30))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="216"
+						y="50"
+						width="77"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-57"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{SUBTOTAL}) - ($V{VALORCOMPRA}))*(0.40))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="296"
+						y="50"
+						width="77"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-58"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{SUBTOTAL}) - ($V{VALORCOMPRA}))*(0.50))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="377"
+						y="50"
+						width="77"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-59"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{SUBTOTAL}) - ($V{VALORCOMPRA}))*(0.60))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="457"
+						y="50"
+						width="77"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-60"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue((($V{SUBTOTAL}) - ($V{VALORCOMPRA}))*(0.70))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="342"
+						y="18"
+						width="108"
+						height="18"
+						key="textField-61"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.ganancia}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="452"
+						y="18"
+						width="82"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-62"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue(($V{SUBTOTAL}) - ($V{VALORCOMPRA}))]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>

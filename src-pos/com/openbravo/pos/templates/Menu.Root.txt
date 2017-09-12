@@ -61,6 +61,7 @@ group = menu.addGroup("Menu.Backoffice");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.BarcodeSheet", "/com/openbravo/reports/barcode_sheet.bs");
 //        submenu.addPanel("/com/openbravo/images/reports.png", "Menu.BarcodeSheet_JM", "/com/openbravo/reports/barcode_sheet_jm.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.ShelfEdgeLabels", "/com/openbravo/reports/barcode_shelfedgelabels.bs");
+		submenu.addPanel("/com/openbravo/images/reports.png", "Menu.Vencimiento", "/com/openbravo/reports/vencimiento.bs");
 
 
     submenu = group.addSubmenu("/com/openbravo/images/sales.png", "Menu.SalesManagement", "com.openbravo.pos.forms.MenuSalesManagement");
