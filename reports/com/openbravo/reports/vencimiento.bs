@@ -47,7 +47,7 @@ report.setSentence("SELECT " +
     "GROUP BY stockcurrent.LOCATION, locations.NAME, products.REFERENCE,products.NAME, " +
         "products.CATEGORY, categories.NAME, products.PRICEBUY, products.PRICESELL, " +
         "products.STOCKVOLUME, products.STOCKCOST, stocklevel.STOCKSECURITY, stocklevel.STOCKMAXIMUM "+
-    "ORDER BY LOCATIONID ASC, SUPPLIERNAME ASC, CATEGORYNAME ASC, PRODUCTNAME ASC");
+    "ORDER BY LOCATIONID ASC, SUPPLIERNAME ASC, CATEGORYNAME ASC, products.EXPIRY DESC");
 
 report.addParameter("products.NAME");
 report.addParameter("products.CATEGORY");

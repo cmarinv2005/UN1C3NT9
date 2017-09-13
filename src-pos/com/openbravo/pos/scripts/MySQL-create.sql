@@ -970,7 +970,8 @@ INSERT INTO `dbpermissions` (`CLASSNAME`, `SECTION`, `DISPLAYNAME`, `DESCRIPTION
 ('com.openbravo.possync.OrdersSyncCreate', '##label.sectionsync', '##label.displayname141', '##label.description141', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('com.openbravo.pos.forms.MenuSalesManagement', '##label.sectionadmin', '##label.displayname200', '##label.description200', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('/com/openbravo/reports/comisionsales.bs', '##label.sectionpresence', '##label.displayname201', '##label.description201', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
-('/com/openbravo/reports/sales_saletaxes.bs', '##label.sectionsales', '##label.displayname202', '##label.description202', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
+('/com/openbravo/reports/sales_saletaxes.bs', '##label.sectionsales', '##label.displayname202', '##label.description202', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
+('/com/openbravo/reports/vencimiento.bs', '##label.sectionstock', '##label.displayname203', '##label.description203', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
 
 
 -- ADD resources --

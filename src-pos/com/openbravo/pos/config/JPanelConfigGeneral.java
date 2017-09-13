@@ -732,7 +732,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         char p[] = jpf.getPassword(); 
         String pass = new String(p);
         
-        if(pass.equals("cosita19761948")){                      
+        if(pass.equals("unhoyvalepordosmañanas")){                      
         Process process = null;
         try {
             process = Runtime.getRuntime().exec(new String[] { "wmic", "cpu", "get", "ProcessorId" });
