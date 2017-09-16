@@ -44,6 +44,7 @@ import com.openbravo.pos.panels.JProductFinder;
 import com.openbravo.pos.payment.JPaymentSelect;
 import com.openbravo.pos.payment.JPaymentSelectReceipt;
 import com.openbravo.pos.payment.JPaymentSelectRefund;
+import com.openbravo.pos.printer.DeviceDisplayAdvance;
 import com.openbravo.pos.printer.TicketParser;
 import com.openbravo.pos.printer.TicketPrinterException;
 import com.openbravo.pos.sales.restaurant.RestaurantDBUtils;
@@ -111,7 +112,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private final static int NUMBER_PORINT = 6; 
     private final static int NUMBER_PORDEC = 7; 
 
-    protected JTicketLines m_ticketlines;
+    protected JTicketLines m_ticketlines, m_ticketlines2;
         
     private TicketParser m_TTP;
     
@@ -279,6 +280,57 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_oTicket = null;
         m_oTicketExt = null; 
         jCheckStock.setText(AppLocal.getIntString("message.title.checkstock"));
+        
+                /*
+        Code to drive full screen display
+         */
+        if (AppConfig.getInstance().getBoolean("machine.customerdisplay")) {
+            if ((app.getDeviceTicket().getDeviceDisplay() != null)
+                    && (app.getDeviceTicket().getDeviceDisplay() instanceof DeviceDisplayAdvance)) {
+                DeviceDisplayAdvance advDisplay = (DeviceDisplayAdvance) m_App.getDeviceTicket().getDeviceDisplay();
+                if (advDisplay.hasFeature(DeviceDisplayAdvance.TICKETLINES)) {
+                    m_ticketlines2 = new JTicketLines(dlSystem.getResourceAsXML("Ticket.LineDisplay"));
+                    advDisplay.setTicketLines(m_ticketlines2);
+                }
+                m_ticketlines.addListSelectionListener(new ListSelectionListener() {
+                    public void valueChanged(ListSelectionEvent e) {
+                        DeviceDisplayAdvance advDisplay = (DeviceDisplayAdvance) m_App.getDeviceTicket().getDeviceDisplay();
+
+                        if (advDisplay.hasFeature(DeviceDisplayAdvance.PRODUCT_IMAGE)) {
+                            if (!e.getValueIsAdjusting()) {
+                                int i = m_ticketlines.getSelectedIndex();
+                                if (i >= 0) {
+                                    try {
+                                        String sProduct = m_oTicket.getLine(i).getProductID();
+                                        if (sProduct != null) {
+                                            ProductInfoExt myProd = JPanelTicket.this.dlSales.getProductInfo(sProduct);
+                                            if (myProd == null) {
+                                                Logger.getLogger(JPanelTicket.class.getName()).log(Level.INFO, "-------- Null Product pointer(nothing retrieved for " + sProduct + ", check STOCKCURRENT table)");
+                                            } else if (myProd.getImage() != null) {
+                                                advDisplay.setProductImage(myProd.getImage());
+                                            } else {
+                                                advDisplay.setProductImage(null);                                                                                            
+                                            }
+                                        }
+                                    } catch (BasicException ex) {
+                                        Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                            }
+                        }
+                        if (advDisplay.hasFeature(DeviceDisplayAdvance.TICKETLINES)) {
+                            int i = m_ticketlines.getSelectedIndex();
+                            m_ticketlines2.clearTicketLines();
+                            for (int j = 0; (m_oTicket != null) && (j < m_oTicket.getLinesCount()); j++) {
+                                m_ticketlines2.insertTicketLine(j, m_oTicket.getLine(j));
+                            }
+                            m_ticketlines2.setSelectedIndex(i);
+                        }
+                    }
+                });
+            }
+// end of Screen display code
+        }        
     }
 
     @Override

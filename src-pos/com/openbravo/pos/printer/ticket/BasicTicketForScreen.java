@@ -35,8 +35,8 @@ public class BasicTicketForScreen extends BasicTicket {
 // Consolas intro'd in v4.1 but causes issue in RightToLeft languages i.e.: Arabic
 //    private static Font BASEFONT = new Font("Consolas", Font.PLAIN, 12).deriveFont(AffineTransform.getScaleInstance(1.0, 1.40));    
 
-    private static int FONTHEIGHT = 20;
-    private static double IMAGE_SCALE = 1.0;
+    private static int FONTHEIGHT = 16;
+    private static double IMAGE_SCALE = 1.2;
 
     /**
      *

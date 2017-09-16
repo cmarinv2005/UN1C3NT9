@@ -578,7 +578,7 @@ public class StockManagement extends JPanel implements JPanelView {
         }
         
         clearStockTable();
-        printTicket(rec);   
+//        printTicket(rec);   
     }
     
     private void printTicket(InventoryRecord invrec) {

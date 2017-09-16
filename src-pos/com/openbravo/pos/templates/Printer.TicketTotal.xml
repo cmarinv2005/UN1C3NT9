@@ -22,11 +22,11 @@
 <output>   
     <display>
         <line>
-            <text align="left" length="8">Total:</text>
-            <text align="right" length="12">${ticket.printTotal()}</text>
+            <text align="left" length="20">Total:</text>
+            <text align="right" length="20">${ticket.printTotal()}</text>
         </line>
         <line>
-           <text align="center" length="20">Thank You for your custom</text>
+            <text align="center" length="40">Gracias por su Compra</text>
         </line>
     </display>
 </output>

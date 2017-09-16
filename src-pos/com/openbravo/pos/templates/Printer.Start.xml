@@ -22,13 +22,16 @@
 
 <output>
 <!-- DISPLAY ANIMATION OPTIONS -->
-<!-- <display animation="flyer"> -->
-<!-- <display animation="scroll"> -->
-<!-- <display animation="blink"> -->
-<!-- <display animation="curtain"> -->
-
-   <display animation="none">
-        <line><text align="center" length="20">uniCenta oPOS</text></line>
-        <line><text align="center" length="20">Touch Friendly POS</text></line>
+<!--             <display animation="flyer">  -->
+                <display animation="scroll"> 
+<!--            <display animation="blink"> -->
+<!--            <display animation="curtain"> -->
+<!--            <display animation="none"> -->
+        <line>
+            <text>......... Executer POS .........</text>
+        </line>
+        <line>
+            <text>El futuro de los puntos de Venta</text>
+        </line>
     </display>
 </output>

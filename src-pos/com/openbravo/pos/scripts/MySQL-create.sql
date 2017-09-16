@@ -1082,6 +1082,11 @@ INSERT INTO resources(id, name, restype, content) VALUES('121', 'script.happyhou
 INSERT INTO resources(id, name, restype, content) VALUES('122', 'event.total', 0, $FILE{/com/openbravo/pos/templates/event.total.txt});
 INSERT INTO resources(id, name, restype, content) VALUES('123', 'abrir.cajon', 0, $FILE{/com/openbravo/pos/templates/abrir.cajon.txt});
 INSERT INTO resources(id, name, restype, content) VALUES('124', 'Printer.Ticket_A4', 0, $FILE{/com/openbravo/pos/templates/Printer.Ticket_A4.xml});
+INSERT INTO resources(id, name, restype, content) VALUES('125', 'Ticket.LineDisplay', 0, $FILE{/com/openbravo/pos/templates/Ticket.LineDisplay.xml});
+INSERT INTO resources(id, name, restype, content) VALUES('126', 'Ticket.CloseTimer', 0, $FILE{/com/openbravo/pos/templates/Ticket.CloseTimer.xml});
+INSERT INTO resources(id, name, restype, content) VALUES('127', 'Display.Message', 0, $FILE{/com/openbravo/pos/templates/Display.Message.xml});
+
+
 -- ADD CATEGORIES
 INSERT INTO categories(id, name) VALUES ('000', 'Category Standard');
 

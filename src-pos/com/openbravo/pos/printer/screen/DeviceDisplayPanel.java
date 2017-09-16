@@ -1,31 +1,36 @@
-//    uniCenta oPOS  - Touch Friendly Point Of Sale
-//    Copyright (c) 2009-2016 uniCenta & previous Openbravo POS works
-//    https://unicenta.com
+//    Chromis POS  - The New Face of Open Source POS
+//    Copyright (c) 2015 
+//    http://www.chromis.co.uk
 //
-//    This file is part of uniCenta oPOS
+//    This file is part of Chromis POS
 //
-//    uniCenta oPOS is free software: you can redistribute it and/or modify
+//     Chromis POS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//   uniCenta oPOS is distributed in the hope that it will be useful,
+//    Chromis POS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with Chromis POS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.printer.screen;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.printer.DeviceDisplay;
 import com.openbravo.pos.printer.DeviceDisplayBase;
 import com.openbravo.pos.printer.DeviceDisplayImpl;
-import java.awt.*;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 /**
  *
@@ -49,14 +54,10 @@ public class DeviceDisplayPanel extends JPanel implements DeviceDisplay, DeviceD
     public DeviceDisplayPanel(double dZoom) {
         initComponents();
         
-        m_sName = AppLocal.getIntString("display.screen");
+        m_sName = AppLocal.getIntString("Display.Screen");
         
         jline1.setFont(new Font("Monospaced", Font.BOLD, (int)(16 * dZoom)));
         jline2.setFont(new Font("Monospaced", Font.BOLD, (int)(16 * dZoom)));
-// JG Feb' 16 - Revert
-// Consolas intro'd in v4.1 but causes issue in RightToLeft languages i.e.: Arabic 
-//        jline1.setFont(new Font("Consolas", Font.BOLD, (int)(16 * dZoom)));
-//        jline2.setFont(new Font("Consolas", Font.BOLD, (int)(16 * dZoom)));        
 
         m_displaylines = new DeviceDisplayBase(this);
     }
@@ -95,8 +96,7 @@ public class DeviceDisplayPanel extends JPanel implements DeviceDisplay, DeviceD
      * @param sLine2
      */
     @Override
-    public void writeVisor(int animation, String sLine1, String sLine2) {
-        
+    public void writeVisor(int animation, String sLine1, String sLine2) {        
         m_displaylines.writeVisor(animation, sLine1, sLine2);
     }
     
@@ -162,7 +162,7 @@ public class DeviceDisplayPanel extends JPanel implements DeviceDisplay, DeviceD
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 16, 16, 16));
-        jPanel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jPanel1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridBagLayout());
 

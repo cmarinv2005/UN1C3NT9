@@ -18,6 +18,7 @@
 //    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 package com.openbravo.pos.printer;
 
+import com.openbravo.pos.forms.AppConfig;
 import com.openbravo.pos.forms.AppProperties;
 import com.openbravo.pos.printer.escpos.*;
 import com.openbravo.pos.printer.javapos.DeviceDisplayJavaPOS;
@@ -27,6 +28,7 @@ import com.openbravo.pos.printer.printer.DevicePrinterPrinter;
 import com.openbravo.pos.printer.screen.DeviceDisplayPanel;
 import com.openbravo.pos.printer.screen.DeviceDisplayWindow;
 import com.openbravo.pos.printer.screen.DevicePrinterPanel;
+import com.openbravo.pos.printer.screen.DeviceDisplayScreen;
 import com.openbravo.pos.util.StringParser;
 import java.awt.Component;
 import java.util.ArrayList;
@@ -92,7 +94,8 @@ public class DeviceTicket {
         } catch (TicketPrinterException e) {
             m_deviceFiscal = new DeviceFiscalPrinterNull(e.getMessage());
         }
-
+        
+    //  StringParser sd = new StringParser(AppConfig.getInstance().getProperty("machine.display")); 
         StringParser sd = new StringParser(props.getProperty("machine.display"));
         String sDisplayType = sd.nextToken(':');
         String sDisplayParam1 = sd.nextToken(',');
@@ -108,10 +111,10 @@ public class DeviceTicket {
 
         try {
          
-            switch (sDisplayType) {
-                case "screen":
-                    m_devicedisplay = new DeviceDisplayPanel();
-                    break;
+            switch (sDisplayType) {                             
+                case "dual screen":
+                    m_devicedisplay = new DeviceDisplayScreen();
+                    break;    
                 case "window":
                     m_devicedisplay = new DeviceDisplayWindow();
                     break;
