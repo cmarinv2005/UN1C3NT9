@@ -578,7 +578,9 @@ public class StockManagement extends JPanel implements JPanelView {
         }
         
         clearStockTable();
-//        printTicket(rec);   
+        if(m_jButtonPrint.isSelected()){
+           printTicket(rec);  
+        }               
     }
     
     private void printTicket(InventoryRecord invrec) {
@@ -788,11 +790,23 @@ public class StockManagement extends JPanel implements JPanelView {
         lbTotalValue = new javax.swing.JLabel();
         webLblQty = new com.alee.laf.label.WebLabel();
         webLblValue = new com.alee.laf.label.WebLabel();
+        m_jButtonPrint = new javax.swing.JToggleButton();
+        jlblPrinterStatus = new javax.swing.JLabel();
         catcontainer = new javax.swing.JPanel();
 
         setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         setMinimumSize(new java.awt.Dimension(550, 250));
         setPreferredSize(new java.awt.Dimension(1000, 350));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
+        addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                formPropertyChange(evt);
+            }
+        });
         setLayout(new java.awt.BorderLayout());
 
         jPanel8.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -1079,7 +1093,7 @@ public class StockManagement extends JPanel implements JPanelView {
                 m_jBtnShowStockActionPerformed(evt);
             }
         });
-        jPanel8.add(m_jBtnShowStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 250, 40, 40));
+        jPanel8.add(m_jBtnShowStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 260, 50, 40));
 
         lblTotalQtyValue.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lblTotalQtyValue.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -1104,6 +1118,25 @@ public class StockManagement extends JPanel implements JPanelView {
         webLblValue.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         webLblValue.setPreferredSize(new java.awt.Dimension(180, 30));
         jPanel8.add(webLblValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 360, 170, -1));
+
+        m_jButtonPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/printer24_off.png"))); // NOI18N
+        m_jButtonPrint.setSelected(true);
+        m_jButtonPrint.setToolTipText("Print Receipt");
+        m_jButtonPrint.setFocusPainted(false);
+        m_jButtonPrint.setFocusable(false);
+        m_jButtonPrint.setMargin(new java.awt.Insets(8, 16, 8, 16));
+        m_jButtonPrint.setPreferredSize(new java.awt.Dimension(80, 45));
+        m_jButtonPrint.setRequestFocusEnabled(false);
+        m_jButtonPrint.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/printer24.png"))); // NOI18N
+        m_jButtonPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jButtonPrintActionPerformed(evt);
+            }
+        });
+        jPanel8.add(m_jButtonPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 320, 50, 40));
+
+        jlblPrinterStatus.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        jPanel8.add(jlblPrinterStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 320, 250, 40));
 
         add(jPanel8, java.awt.BorderLayout.PAGE_START);
 
@@ -1293,6 +1326,24 @@ public class StockManagement extends JPanel implements JPanelView {
         m_jcodebar.setText(null);
     }//GEN-LAST:event_m_jcodebarMouseClicked
 
+    private void m_jButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonPrintActionPerformed
+        if (!m_jButtonPrint.isSelected()) {
+            jlblPrinterStatus.setText("IMPRESORA OFF");
+        } else {
+            jlblPrinterStatus.setText("IMPRESORA ON");
+        }
+    }//GEN-LAST:event_m_jButtonPrintActionPerformed
+
+    private void formPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_formPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formPropertyChange
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+        m_jButtonPrint.setSelected(true);
+        jlblPrinterStatus.setText("IMPRESORA ON");
+    }//GEN-LAST:event_formComponentShown
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel catcontainer;
@@ -1309,10 +1360,12 @@ public class StockManagement extends JPanel implements JPanelView {
     private javax.swing.JScrollPane jScrollPane2;
     private com.alee.laf.table.WebTable jTableProductStock;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jlblPrinterStatus;
     private javax.swing.JLabel lbTotalValue;
     private javax.swing.JLabel lblTotalQtyValue;
     private javax.swing.JButton m_jBtnDelete;
     private javax.swing.JButton m_jBtnShowStock;
+    private javax.swing.JToggleButton m_jButtonPrint;
     private javax.swing.JButton m_jDelete;
     private javax.swing.JButton m_jEditAttributes;
     private javax.swing.JButton m_jEditLine;
