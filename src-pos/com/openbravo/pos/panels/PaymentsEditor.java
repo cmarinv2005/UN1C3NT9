@@ -27,10 +27,16 @@ import com.openbravo.data.user.EditorRecord;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
 import java.awt.Component;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
@@ -48,6 +54,11 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
    
     private final AppView m_App;
     private String m_sNotes;
+    
+    private String fecha;
+    private String tipo;
+    private String valor;
+    private String nota;
     
     /** Creates new form JPanelPayments
      * @param oApp
@@ -167,7 +178,43 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         String snotes = "";
         m_sNotes = m_jNotes.getText();
         payment[6] = m_sNotes == null ? snotes : m_sNotes;
+              
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date datenew = new Date();
+        String fechaCadena = sdf.format(datenew); 
+        fecha = fechaCadena;
+        tipo = reason.toString();
+        valor = dtotal.toString();
+        nota = m_sNotes;
+        
+        if(m_jButtonPrint.isSelected()){
+           consultarDatosBDImpresora();  
+        }       
+        
         return payment;
+    }
+    
+    //METODO SELECCIONAR DATOS A IMPRIMIR
+    public void consultarDatosBDImpresora(){              
+                                
+                        //DATOS QUEMADOS EN LA FACTURA
+                        
+                        String tituloFacturaVenta = "\n********* MOVIMIENTOS DE CAJA *********\n";
+                        String encabezado1 = "\nFecha:               "+fecha;
+                        String encabezado2 = "\nMovimiento:      "+tipo;
+                        String encabezado3 = "\nValor:                "+"$"+valor;
+                        String encabezado4 = "\nDescripcion:      "+nota;              
+  
+                        Impresora imp;                        
+			
+                        String separadores = "***************************************";                                            
+                                                              
+                        String textoBlanco = "\n";		
+                       
+                        imp = new Impresora();
+                            
+                        imp.imprimir(tituloFacturaVenta + " " + encabezado1 + "  " + encabezado2 + " " + encabezado3 + " " 
+                        + encabezado4 + " " + textoBlanco);//IMPRIMIR LO QUE ESCRIBE EL USUARIO                                                                     
     }
     
     /**
@@ -272,10 +319,23 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         jLabel3 = new javax.swing.JLabel();
         jTotal = new com.openbravo.editor.JEditorCurrency();
         m_jNotes = new com.openbravo.editor.JEditorString();
+        m_jButtonPrint = new javax.swing.JToggleButton();
+        jlblPrinterStatus = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         m_jKeys = new com.openbravo.editor.JEditorKeys();
 
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
         setLayout(new java.awt.BorderLayout());
+
+        jPanel3.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jPanel3ComponentShown(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel5.setText(AppLocal.getIntString("label.paymentreason")); // NOI18N
@@ -295,6 +355,24 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         m_jNotes.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jNotes.setPreferredSize(new java.awt.Dimension(132, 100));
 
+        m_jButtonPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/printer24_off.png"))); // NOI18N
+        m_jButtonPrint.setSelected(true);
+        m_jButtonPrint.setToolTipText("Print Receipt");
+        m_jButtonPrint.setFocusPainted(false);
+        m_jButtonPrint.setFocusable(false);
+        m_jButtonPrint.setMargin(new java.awt.Insets(8, 16, 8, 16));
+        m_jButtonPrint.setPreferredSize(new java.awt.Dimension(80, 45));
+        m_jButtonPrint.setRequestFocusEnabled(false);
+        m_jButtonPrint.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/printer24.png"))); // NOI18N
+        m_jButtonPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jButtonPrintActionPerformed(evt);
+            }
+        });
+
+        jlblPrinterStatus.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        jlblPrinterStatus.setText("IMPRESORA ON");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -303,12 +381,15 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jButtonPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(m_jNotes, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                    .addComponent(m_jreason, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(m_jNotes, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                        .addComponent(m_jreason, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jlblPrinterStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -324,7 +405,11 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(m_jNotes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(m_jButtonPrint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jlblPrinterStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -344,6 +429,24 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
     private void m_jKeysPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_m_jKeysPropertyChange
 
     }//GEN-LAST:event_m_jKeysPropertyChange
+
+    private void m_jButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonPrintActionPerformed
+        if (!m_jButtonPrint.isSelected()) {
+            jlblPrinterStatus.setText("IMPRESORA OFF");
+        } else {
+            jlblPrinterStatus.setText("IMPRESORA ON");
+        }
+    }//GEN-LAST:event_m_jButtonPrintActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formComponentShown
+
+    private void jPanel3ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel3ComponentShown
+        // TODO add your handling code here:
+        m_jButtonPrint.setSelected(true);
+        jlblPrinterStatus.setText("IMPRESORA ON");
+    }//GEN-LAST:event_jPanel3ComponentShown
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -352,6 +455,8 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private com.openbravo.editor.JEditorCurrency jTotal;
+    private javax.swing.JLabel jlblPrinterStatus;
+    private javax.swing.JToggleButton m_jButtonPrint;
     private com.openbravo.editor.JEditorKeys m_jKeys;
     private com.openbravo.editor.JEditorString m_jNotes;
     private javax.swing.JComboBox m_jreason;
