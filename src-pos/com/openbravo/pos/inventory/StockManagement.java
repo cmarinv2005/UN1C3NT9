@@ -68,6 +68,8 @@ public class StockManagement extends JPanel implements JPanelView {
     private final AppView m_App;                                                
     private final String user;
     
+    private boolean printselected;
+    
     private final DataLogicSystem m_dlSystem;
     private final DataLogicSales m_dlSales;
     private final DataLogicSuppliers m_dlSuppliers;
@@ -122,7 +124,7 @@ public class StockManagement extends JPanel implements JPanelView {
         m_dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSales");
         m_dlSuppliers = (DataLogicSuppliers) m_App.getBean("com.openbravo.pos.suppliers.DataLogicSuppliers");        
         m_TTP = new TicketParser(m_App.getDeviceTicket(), m_dlSystem);
-
+        
         initComponents();
         
         user = m_App.getAppUserView().getUser().getName();
@@ -165,8 +167,8 @@ public class StockManagement extends JPanel implements JPanelView {
 
         jTableProductStock.setVisible(false); 
         
-    }
-     
+        }           
+    
     /**
      *
      * @return

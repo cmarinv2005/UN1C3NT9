@@ -31,9 +31,9 @@ private void drawString(Graphics g, String text, int x, int y) {//El drawString 
 *	trabajo de impresion, la página. En esta clase hay un método	*
 *	llamado imprimir, el cual recibe una cadena y la imprime.		*
 ********************************************************************/
-
-        Font fuente = new Font("Comic Sans MS", Font.PLAIN, 10);//Se especifica la fuente de la letra y el tamaño de esta
-	PrintJob pj;
+//      Font fuente = new Font("Comic Sans MS", Font.PLAIN, 10);//Se especifica la fuente de la letra y el tamaño de esta
+	Font fuente = new Font("Times New Roman", Font.PLAIN, 10);//Se especifica la fuente de la letra y el tamaño de esta
+        PrintJob pj;
 	Graphics pagina;
  
  
@@ -56,7 +56,7 @@ private void drawString(Graphics g, String text, int x, int y) {//El drawString 
 		try
 		{
                     
-                        int margenIzqdo = 10; // Posición X de cada línea
+                        int margenIzqdo = 10; // Posición X de cada línea   
                         int margenSup = 30;   // Posición Y de la primera línea
                         int pasoLinea = 13;   // Incremento o salto entre líneas
                         

@@ -19,14 +19,23 @@
 
 package com.openbravo.pos.panels;
 
+import com.alee.extended.tree.FileTreeRootType;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ComboBoxValModel;
 import com.openbravo.data.loader.IKeyed;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.data.user.EditorRecord;
+import com.openbravo.pos.config.JPanelConfigCompany;
+import com.openbravo.pos.forms.AppConfig;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
+import com.sun.java.accessibility.util.AWTEventMonitor;
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -38,6 +47,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 /**
@@ -66,9 +76,9 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
     public PaymentsEditor(AppView oApp, DirtyManager dirty) {
         
         m_App = oApp;
-        
+               
         initComponents();
-       
+        
         m_ReasonModel = new ComboBoxValModel();
         m_ReasonModel.add(new PaymentReasonPositive("cashin", AppLocal.getIntString("transpayment.cashin")));
         m_ReasonModel.add(new PaymentReasonNegative("cashout", AppLocal.getIntString("transpayment.cashout")));              
@@ -79,11 +89,11 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         m_jreason.addActionListener(dirty);
         jTotal.addPropertyChangeListener("Text", dirty);
         m_jNotes.addPropertyChangeListener("Text", dirty);
-        m_jNotes.addEditorKeys(m_jKeys);        
-        
+        m_jNotes.addEditorKeys(m_jKeys);     
+                      
         writeValueEOF();
     }
-    
+   
     /**
      *
      */
@@ -156,7 +166,7 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         m_sNotes = (String) payment[6];
         m_jNotes.setEnabled(false);
     }
-    
+      
     /**
      *
      * @return
@@ -195,26 +205,34 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
     }
     
     //METODO SELECCIONAR DATOS A IMPRIMIR
-    public void consultarDatosBDImpresora(){              
-                                
-                        //DATOS QUEMADOS EN LA FACTURA
+    public void consultarDatosBDImpresora(){                                     
+                        //DATOS QUEMADOS EN LA FACTURA  
+                        Impresora imp;                    		                                                                                                                             
+                        String textoBlanco = "\n";		       
+                        imp = new Impresora();                        
+                        String dato1 = "\nFecha:  "+fecha;
+                        String dato2 = "\nPago:    "+tipo;
+                        String dato3 = "\nValor:   "+"$"+valor;
+                        String dato4 = "\nNota:    "+nota; 
                         
-                        String tituloFacturaVenta = "\n********* MOVIMIENTOS DE CAJA *********\n";
-                        String encabezado1 = "\nFecha:               "+fecha;
-                        String encabezado2 = "\nMovimiento:      "+tipo;
-                        String encabezado3 = "\nValor:                "+"$"+valor;
-                        String encabezado4 = "\nDescripcion:      "+nota;              
-  
-                        Impresora imp;                        
-			
-                        String separadores = "***************************************";                                            
-                                                              
-                        String textoBlanco = "\n";		
-                       
-                        imp = new Impresora();
-                            
-                        imp.imprimir(tituloFacturaVenta + " " + encabezado1 + "  " + encabezado2 + " " + encabezado3 + " " 
-                        + encabezado4 + " " + textoBlanco);//IMPRIMIR LO QUE ESCRIBE EL USUARIO                                                                     
+                        if(chb80.isSelected()){
+                          String tituloFacturaVenta1 = "********** MOVIMIENTOS DE CAJA ***********\n";                        
+                          String separadores1 = "******************************************"; 
+                          imp.imprimir(tituloFacturaVenta1 + " " + dato1 + "  " + dato2 + " " + dato3 + " " 
+                        + dato4 + " " + textoBlanco);//IMPRIMIR LO QUE ESCRIBE EL USUARIO 
+                        }      
+                        if(chb76.isSelected()){
+                          String tituloFacturaVenta2 = "*** MOVIMIENTOS DE CAJA ***\n";                        
+                          String separadores2 = "****************************";  
+                          imp.imprimir(tituloFacturaVenta2 + " " + dato1 + "  " + dato2 + " " + dato3 + " " 
+                        + dato4 + " " + textoBlanco);//IMPRIMIR LO QUE ESCRIBE EL USUARIO 
+                        }
+                        if(chb58.isSelected()){
+                          String tituloFacturaVenta3 = "* MOVIMIENTOS DE CAJA *\n";                        
+                          String separadores3 = "**********************";  
+                          imp.imprimir(tituloFacturaVenta3 + " " + dato1 + "  " + dato2 + " " + dato3 + " " 
+                        + dato4 + " " + textoBlanco);//IMPRIMIR LO QUE ESCRIBE EL USUARIO 
+                        }                                                                                         
     }
     
     /**
@@ -313,6 +331,7 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         m_jreason = new javax.swing.JComboBox();
@@ -321,9 +340,20 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         m_jNotes = new com.openbravo.editor.JEditorString();
         m_jButtonPrint = new javax.swing.JToggleButton();
         jlblPrinterStatus = new javax.swing.JLabel();
+        chb80 = new com.alee.extended.button.WebSwitch();
+        chb76 = new com.alee.extended.button.WebSwitch();
+        chb58 = new com.alee.extended.button.WebSwitch();
+        txt80 = new javax.swing.JLabel();
+        txt76 = new javax.swing.JLabel();
+        txt58 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         m_jKeys = new com.openbravo.editor.JEditorKeys();
 
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+        });
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -373,6 +403,39 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         jlblPrinterStatus.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jlblPrinterStatus.setText("IMPRESORA ON");
 
+        chb80.setEnabled(false);
+        chb80.setSelected(true);
+        chb80.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chb80ActionPerformed(evt);
+            }
+        });
+
+        chb76.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chb76ActionPerformed(evt);
+            }
+        });
+
+        chb58.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chb58ActionPerformed(evt);
+            }
+        });
+
+        txt80.setBackground(new java.awt.Color(0, 255, 0));
+        txt80.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txt80.setText("Impresora 80 mm");
+        txt80.setOpaque(true);
+
+        txt76.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txt76.setText("Impresora 76 mm");
+        txt76.setOpaque(true);
+
+        txt58.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txt58.setText("Impresora 58 mm");
+        txt58.setOpaque(true);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -389,8 +452,21 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
                         .addComponent(m_jNotes, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                         .addComponent(m_jreason, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jlblPrinterStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(chb58, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txt58, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(chb76, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txt76, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                            .addComponent(chb80, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txt80, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jlblPrinterStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -409,7 +485,19 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(m_jButtonPrint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jlblPrinterStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chb80, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt80, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chb76, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt76, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chb58, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt58, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -440,6 +528,8 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
+        m_jButtonPrint.setSelected(true);             
+        jlblPrinterStatus.setText("IMPRESORA ON");
     }//GEN-LAST:event_formComponentShown
 
     private void jPanel3ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel3ComponentShown
@@ -447,9 +537,61 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         m_jButtonPrint.setSelected(true);
         jlblPrinterStatus.setText("IMPRESORA ON");
     }//GEN-LAST:event_jPanel3ComponentShown
+
+    private void chb80ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chb80ActionPerformed
+        // TODO add your handling code here:
+        if(chb80.isSelected()){
+            chb80.setEnabled(false);
+            chb76.setEnabled(true);
+            chb58.setEnabled(true);
+            txt80.setBackground(Color.green);
+            txt76.setBackground(null);
+            txt58.setBackground(null);
+            chb76.setSelected(false);
+            chb58.setSelected(false);
+        }
+    }//GEN-LAST:event_chb80ActionPerformed
+
+    private void chb76ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chb76ActionPerformed
+        // TODO add your handling code here:
+        if(chb76.isSelected()){
+            chb76.setEnabled(false);
+            chb80.setEnabled(true);
+            chb58.setEnabled(true);
+            txt76.setBackground(Color.green);
+            txt80.setBackground(null);
+            txt58.setBackground(null);
+            chb80.setSelected(false);
+            chb58.setSelected(false);
+        }
+    }//GEN-LAST:event_chb76ActionPerformed
+
+    private void chb58ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chb58ActionPerformed
+        // TODO add your handling code here:
+        if(chb58.isSelected()){
+            chb58.setEnabled(false);
+            chb80.setEnabled(true);
+            chb76.setEnabled(true);
+            txt58.setBackground(Color.green);
+            txt80.setBackground(null);
+            txt76.setBackground(null);
+            chb80.setSelected(false);
+            chb76.setSelected(false);
+        }
+    }//GEN-LAST:event_chb58ActionPerformed
+
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+        // TODO add your handling code here:
+        m_jButtonPrint.setSelected(true);
+        jlblPrinterStatus.setText("IMPRESORA ON");
+    }//GEN-LAST:event_formFocusGained
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private com.alee.extended.button.WebSwitch chb58;
+    private com.alee.extended.button.WebSwitch chb76;
+    private com.alee.extended.button.WebSwitch chb80;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
@@ -460,6 +602,9 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
     private com.openbravo.editor.JEditorKeys m_jKeys;
     private com.openbravo.editor.JEditorString m_jNotes;
     private javax.swing.JComboBox m_jreason;
+    private javax.swing.JLabel txt58;
+    private javax.swing.JLabel txt76;
+    private javax.swing.JLabel txt80;
     // End of variables declaration//GEN-END:variables
     
 }
