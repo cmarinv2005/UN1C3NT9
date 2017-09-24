@@ -67,6 +67,10 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -82,6 +86,8 @@ import java.util.logging.Logger;
 import javax.print.PrintService;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -113,7 +119,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private final static int NUMBER_PORDEC = 7; 
 
     protected JTicketLines m_ticketlines, m_ticketlines2;
-        
+     
     private TicketParser m_TTP;
     
     protected TicketInfo m_oTicket; 
@@ -209,14 +215,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         }        
  
         jbtnMooring.setVisible(Boolean.valueOf(m_App.getProperties().getProperty("till.marineoption")));
-        
-        jPanel3.setVisible(AppConfig.getInstance().getBoolean("till.bigtotal"));             //Muestro display de total
-        catcontainer.setVisible(Boolean.valueOf(m_App.getProperties().getProperty("till.hidecatalog")));  //Muestro Catálogo
-        jCheckStock.setVisible(AppConfig.getInstance().getBoolean("till.hidestock"));      //Muestro botón de Inventario
-        jPanel6.setVisible(AppConfig.getInstance().getBoolean("till.imagen"));             //Muestro botón de Inventario        
-        
         priceWith00 = ("true".equals(m_App.getProperties().getProperty("till.pricewith00")));
         
+        jPanel3.setVisible(AppConfig.getInstance().getBoolean("till.bigtotal"));             //Muestro display de total
+        jCheckStock.setVisible(AppConfig.getInstance().getBoolean("till.hidestock"));      //Muestro botón de Inventario
+        jPanel6.setVisible(AppConfig.getInstance().getBoolean("till.imagen"));             //Muestro panel de imagen        
+             
         if ("true".equals(m_App.getProperties().getProperty("till.teclado"))) {  
              m_jPanContainer.add(m_jContEntries, java.awt.BorderLayout.WEST);      //Teclado numerico a la izquierda
              m_jPanTicket.add(jPanel5, java.awt.BorderLayout.WEST);                //Panel de edición a la izquierda
@@ -257,14 +261,120 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
         }
     });
-        
+             
+           JPanel jpanelA = new JPanel(new BorderLayout());
+           JPanel jpanelB = new JPanel(new BorderLayout());
+           JPanel jpanelC = new JPanel(new BorderLayout());
+           
+    if ("true".equals(m_App.getProperties().getProperty("till.sales1"))) {              
+        //  INICIO ESTILO 1           
+           this.lblShowTotal.setFont(cf.MyFont(1, 48f));      
+           JSalesLayoutManager.createLayout();           
+           this.m_jPanContainer.add(jpanelA, "East");           
+           jpanelA.add(jpanelB, "South");             
+           this.jPanel4.add(this.m_jPanTotals, "Center");                       //Agregar Campos de Totales            
+           this.m_jPanContainer.add(this.catcontainer, "Center");               //Agregar Panel Categorias                    
+           jpanelA.add(this.m_jPanTicket, "Center");                            //Agregar Panel Ventas 
+           jpanelB.add(this.m_jContEntries, "Center");                          //Agregar Contenedor Teclado Numerico                
+           this.m_jContEntries.add(this.m_jPanEntries, "Center");               //Agregar Teclado Numerico
+           this.m_jPanEntries.setPreferredSize(new Dimension(250, 350));        
+           jpanelB.add(this.jPanel5, "West");   //East                                //Agregar Panel Edición        
+           this.jPanel5.setPreferredSize(new Dimension(80, 0));
+           this.jPanel2.setPreferredSize(new Dimension(70, 250));                                   
+           this.m_jPanTicket.setPreferredSize(new Dimension(390, 316));     
+           this.m_jPanTicket.add(this.m_jTicketId, "First");                    //Agregar Id de Ticket o Cliente
+           this.m_jTicketId.setPreferredSize(new Dimension(390, 16));        
+        // FIN ESTILO 1    
+    }   
+    if ("true".equals(m_App.getProperties().getProperty("till.sales2"))) {  
+        //  INICIO ESTILO 2             
+           this.m_jPanContainer.add(jpanelA, "East");            
+           jpanelA.add(jpanelB, "South");      
+           m_jPanTotals.setLayout(new GridLayout(6,1,5,5));          
+           this.jPanel4.add(m_jPanTotals, "Center");                       
+           this.m_jPanTotals.setPreferredSize(new Dimension(180, 0));           
+           this.m_jPanTotals.add(m_jLblTotalEuros3);
+           this.m_jPanTotals.add(m_jSubtotalEuros);           
+           this.m_jPanTotals.add(m_jLblTotalEuros2);
+           this.m_jPanTotals.add(m_jTaxesEuros);
+           this.m_jPanTotals.add(m_jLblTotalEuros1);
+           this.m_jPanTotals.add(m_jTotalEuros); 
+           this.m_jPanContainer.add(this.m_jPanTicket, "Center");                    
+           jpanelA.add(this.catcontainer, "Center");                                 
+           jpanelB.add(this.m_jContEntries, "Center");                                          
+           this.m_jContEntries.add(this.m_jPanEntries, "Center");               
+           this.m_jPanEntries.setPreferredSize(new Dimension(310, 350));        
+           jpanelB.add(this.jPanel5, "East");                                   
+           jpanelB.add(this.jPanel4, "West");      
+           this.jPanel5.setPreferredSize(new Dimension(80, 0));
+           this.jPanel2.setPreferredSize(new Dimension(70, 300));                                   
+           this.m_jPanTicket.setPreferredSize(new Dimension(350, 0));     
+           this.m_jPanTicket.add(this.m_jTicketId, "First");                   
+           this.m_jTicketId.setPreferredSize(new Dimension(350, 32));
+           Font auxFont=m_jTicketId.getFont();                                  //Modifico tamaño de letra
+           m_jTicketId.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 20));       
+        // FIN ESTILO 2
+    }
+    if ("true".equals(m_App.getProperties().getProperty("till.sales3"))) {    
+     //  INICIO ESTILO 3                
+           this.m_jPanContainer.add(jpanelA, "West"); //east           
+           jpanelA.add(jpanelB, "South");      
+           m_jPanTotals.setLayout(new GridLayout(6,1,5,5));          
+           this.jPanel4.add(m_jPanTotals, "Center");                       
+           this.m_jPanTotals.setPreferredSize(new Dimension(180, 0));           
+           this.m_jPanTotals.add(m_jLblTotalEuros3);
+           this.m_jPanTotals.add(m_jSubtotalEuros);           
+           this.m_jPanTotals.add(m_jLblTotalEuros2);
+           this.m_jPanTotals.add(m_jTaxesEuros);
+           this.m_jPanTotals.add(m_jLblTotalEuros1);
+           this.m_jPanTotals.add(m_jTotalEuros); 
+           this.m_jPanContainer.add(this.m_jPanTicket, "Center");           
+           jpanelA.add(this.catcontainer, "Center");                                 
+           jpanelB.add(this.m_jContEntries, "Center");                                          
+           this.m_jContEntries.add(this.m_jPanEntries, "Center");               
+           this.m_jPanEntries.setPreferredSize(new Dimension(310, 350));        
+           jpanelB.add(this.jPanel5, "West");   //east                                
+           jpanelB.add(this.jPanel4, "East");   //west   
+           this.jPanel5.setPreferredSize(new Dimension(80, 0));
+           this.jPanel2.setPreferredSize(new Dimension(70, 300));                                   
+           this.m_jPanTicket.setPreferredSize(new Dimension(350, 0));     
+           this.m_jPanTicket.add(this.m_jTicketId, "First");                   
+           this.m_jTicketId.setPreferredSize(new Dimension(350, 32));           
+           Font auxFont=m_jTicketId.getFont();                                 
+           m_jTicketId.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 20));
+     // FIN ESTILO 3
+    }      
+    if ("true".equals(m_App.getProperties().getProperty("till.sales4"))) {  
+        //  INICIO ESTILO 4             
+           this.m_jPanContainer.add(jpanelA, "East");  
+           jpanelA.add(jpanelB, "South");               
+           this.jPanel4.add(this.m_jPanTotals, "Center");                                           
+           this.m_jPanContainer.add(this.m_jPanTicket, "Center");                    
+           jpanelA.add(this.catcontainer, "Center");
+           this.catcontainer.setPreferredSize(new Dimension(350, 300));  
+           jpanelB.add(this.m_jContEntries, "Center");                                          
+           this.m_jContEntries.add(this.m_jPanEntries, "Center");               
+           this.m_jPanEntries.setPreferredSize(new Dimension(310, 350));    
+           jpanelB.add(this.jPanel5, "West");           
+           jpanelB.add(jPanel6, "East");                      
+           jPanel6.setPreferredSize(new Dimension(210, 0));
+           jPanel6.setVisible(true);                                            //Muestro panel de imagen
+           this.jPanel5.setPreferredSize(new Dimension(80, 0));
+           this.jPanel2.setPreferredSize(new Dimension(70, 300));                                   
+           this.m_jPanTicket.setPreferredSize(new Dimension(350, 0));   
+           this.m_jPanTicket.add(this.m_jTicketId, "First");                   
+           this.m_jTicketId.setPreferredSize(new Dimension(350, 32));  
+           Font auxFont=m_jTicketId.getFont();                                  //Modifico tamaño de letra
+           m_jTicketId.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 20));
+        // FIN ESTILO 4
+    }
+    
         m_TTP = new TicketParser(m_App.getDeviceTicket(), dlSystem);
                
         m_jbtnconfig = new JPanelButtons("Ticket.Buttons", this);
         m_jButtonsExt.add(m_jbtnconfig);           
-       
-        catcontainer.add(getSouthComponent(), BorderLayout.CENTER);
-        
+               
+        catcontainer.add(getSouthComponent(), BorderLayout.CENTER); 
         senttax = dlSales.getTaxList();
         senttaxcategories = dlSales.getTaxCategoriesList();
         
@@ -3056,7 +3166,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         jPanel4.add(m_jTicketId, java.awt.BorderLayout.CENTER);
 
         m_jPanTotals.setPreferredSize(new java.awt.Dimension(375, 60));
-        m_jPanTotals.setLayout(new java.awt.GridLayout(2, 3, 4, 0));
+        m_jPanTotals.setLayout(new java.awt.GridLayout(2, 3, 5, 0));
 
         m_jLblTotalEuros3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         m_jLblTotalEuros3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -3108,7 +3218,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jTotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         m_jTotalEuros.setLabelFor(m_jTotalEuros);
         m_jTotalEuros.setToolTipText(bundle.getString("tooltip.saletotal")); // NOI18N
-        m_jTotalEuros.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
+        m_jTotalEuros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         m_jTotalEuros.setMaximumSize(new java.awt.Dimension(125, 25));
         m_jTotalEuros.setMinimumSize(new java.awt.Dimension(80, 25));
         m_jTotalEuros.setPreferredSize(new java.awt.Dimension(100, 25));

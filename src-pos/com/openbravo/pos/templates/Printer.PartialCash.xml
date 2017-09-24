@@ -37,21 +37,28 @@
 <!-- END OF SEQUENCE DETAIL -->
 
 <!-- START OF SALES -->
-        <line size="1"><text align="center" length="42" bold="true">Ventas</text></line>       
+        <line size="1"><text align="center" length="42" bold="true">Ventas</text></line>  
         <line>
-            <text align ="left" length="16" bold="true">Nombre</text>
-            <text align ="left" length="6" bold="true">Unid.</text>         
-            <text align ="right" length="10" bold="true">Neto</text>
-            <text align ="right" length="10" bold="true">Total</text>
+            <text align ="left" length="21" bold="true">Nombre del Producto</text>
+            <text align ="right" length="21" bold="true">Unidades</text>      
+        </line>
+        <line>
+            <text align ="left" length="12" bold="true">$ Unitario</text>
+                
+            <text align ="right" length="15" bold="true">$ Neto</text>
+            <text align ="right" length="15" bold="true">$ Total</text>
         </line>
         <line><text>------------------------------------------</text></line>
             #foreach ($line in $payments.getProductSalesLines())
-                <line><text align ="left" length="42">${line.printProductName()}</text></line>
                 <line>
-    <!--           <text align ="left" length="16">${line.printProductName()}</text>       -->
-                    <text align ="right" length="6">${line.printProductUnits()}</text>                  
-                    <text align ="right" length="18">${line.printProductPriceNet()}</text>                    
-                    <text align ="right" length="18">${line.printProductSubValue()}</text>
+                <text align ="left" length="36">${line.printProductName()}</text>
+                <text align ="right" length="6">${line.printProductUnits()}</text>
+                </line>
+                <line>
+    <!--           <text align ="left" length="16">${line.printProductName()}</text>       -->                    
+                    <text align ="right" length="12">${line.printProductPriceTax()}</text>              
+                    <text align ="right" length="15">${line.printProductPriceNet()}</text>                    
+                    <text align ="right" length="15">${line.printProductSubValue()}</text>
                 </line>
             #end
         <line><text>------------------------------------------</text></line>

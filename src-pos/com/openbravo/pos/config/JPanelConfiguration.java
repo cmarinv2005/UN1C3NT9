@@ -90,11 +90,15 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
         panel = new JPanelTicketSetup();
         m_panelconfig.add(panel);
         jPanelTicketSetup.add(panel.getConfigComponent());
+        
+        panel = new JPanelConfigSalesScreen();
+        m_panelconfig.add(panel);
+        jPanelSales.add(panel.getConfigComponent());
 
         panel = new JPanelConfigCompany();
         m_panelconfig.add(panel);
         jPanelCompany.add(panel.getConfigComponent());
-
+        
     }
         
     private void restoreProperties() {
@@ -215,6 +219,7 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
         jPanelSystem = new javax.swing.JPanel();
         jPanelTicketSetup = new javax.swing.JPanel();
         jPanelCompany = new javax.swing.JPanel();
+        jPanelSales = new javax.swing.JPanel();
         jPanelDatabase = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jbtnRestore = new javax.swing.JButton();
@@ -240,42 +245,45 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
         jPanelLocale.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanelLocale.setPreferredSize(new java.awt.Dimension(0, 400));
         jPanelLocale.setLayout(new javax.swing.BoxLayout(jPanelLocale, javax.swing.BoxLayout.LINE_AXIS));
-        jTabbedPane1.addTab("Locale", jPanelLocale);
+        jTabbedPane1.addTab("Local", jPanelLocale);
 
         jPanelPayment.setBackground(new java.awt.Color(255, 255, 255));
         jPanelPayment.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanelPayment.setPreferredSize(new java.awt.Dimension(0, 400));
         jPanelPayment.setLayout(new javax.swing.BoxLayout(jPanelPayment, javax.swing.BoxLayout.LINE_AXIS));
-        jTabbedPane1.addTab("Payment Method", jPanelPayment);
+        jTabbedPane1.addTab("Pagos", jPanelPayment);
 
         jPanelPeripheral.setBackground(new java.awt.Color(255, 255, 255));
         jPanelPeripheral.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanelPeripheral.setPreferredSize(new java.awt.Dimension(0, 400));
         jPanelPeripheral.setLayout(new javax.swing.BoxLayout(jPanelPeripheral, javax.swing.BoxLayout.LINE_AXIS));
-        jTabbedPane1.addTab("Peripherals", jPanelPeripheral);
+        jTabbedPane1.addTab("Periféricos", jPanelPeripheral);
 
         jPanelSystem.setBackground(new java.awt.Color(255, 255, 255));
         jPanelSystem.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanelSystem.setPreferredSize(new java.awt.Dimension(0, 400));
         jPanelSystem.setLayout(new javax.swing.BoxLayout(jPanelSystem, javax.swing.BoxLayout.LINE_AXIS));
-        jTabbedPane1.addTab("System Options", jPanelSystem);
+        jTabbedPane1.addTab("Sistema", jPanelSystem);
 
         jPanelTicketSetup.setBackground(new java.awt.Color(255, 255, 255));
         jPanelTicketSetup.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanelTicketSetup.setPreferredSize(new java.awt.Dimension(0, 400));
         jPanelTicketSetup.setLayout(new javax.swing.BoxLayout(jPanelTicketSetup, javax.swing.BoxLayout.LINE_AXIS));
-        jTabbedPane1.addTab("Ticket Setup", jPanelTicketSetup);
+        jTabbedPane1.addTab("Ticket", jPanelTicketSetup);
 
         jPanelCompany.setBackground(new java.awt.Color(255, 255, 255));
         jPanelCompany.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jPanelCompany.setLayout(new javax.swing.BoxLayout(jPanelCompany, javax.swing.BoxLayout.LINE_AXIS));
-        jTabbedPane1.addTab("Company", jPanelCompany);
+        jTabbedPane1.addTab("Empresa", jPanelCompany);
+
+        jPanelSales.setLayout(new javax.swing.BoxLayout(jPanelSales, javax.swing.BoxLayout.LINE_AXIS));
+        jTabbedPane1.addTab("Panel Ventas", jPanelSales);
 
         jPanelDatabase.setBackground(new java.awt.Color(255, 255, 255));
         jPanelDatabase.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanelDatabase.setPreferredSize(new java.awt.Dimension(0, 400));
         jPanelDatabase.setLayout(new javax.swing.BoxLayout(jPanelDatabase, javax.swing.BoxLayout.LINE_AXIS));
-        jTabbedPane1.addTab("Database Setup", jPanelDatabase);
+        jTabbedPane1.addTab("Base", jPanelDatabase);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -386,6 +394,7 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
     private javax.swing.JPanel jPanelLocale;
     private javax.swing.JPanel jPanelPayment;
     private javax.swing.JPanel jPanelPeripheral;
+    private javax.swing.JPanel jPanelSales;
     private javax.swing.JPanel jPanelSystem;
     private javax.swing.JPanel jPanelTicketSetup;
     private javax.swing.JTabbedPane jTabbedPane1;
