@@ -1041,7 +1041,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         }
     }
     
-       
+    
     private void printPartialTotals(){
                
         if (m_oTicket.getLinesCount() == 0) {
@@ -1356,8 +1356,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                    "Check", JOptionPane.WARNING_MESSAGE);                
                 stateToZero();
             } else {
-//              incProduct(count, oProduct); // Llamo este método para permitir ingresar cantidades desde código de barras
-                incProduct(oProduct);       // Llamo este método para obtener peso desde código de barras
+                if ("true".equals(m_App.getProperties().getProperty("till.pesobalanza"))) {
+                 incProduct(oProduct);        // Llamo este método para obtener peso desde código de barras 
+                }
+                else{                  
+                 incProduct(count, oProduct); // Llamo este método para permitir ingresar cantidades desde código de barras
+                }              
             }
         } catch (BasicException eData) {
             stateToZero();           

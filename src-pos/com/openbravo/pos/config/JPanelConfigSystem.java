@@ -77,94 +77,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         chbHideStock.addActionListener(dirty);
         chbTeclado.addActionListener(dirty); 
         chbImagen.addActionListener(dirty); 
-        jchkAtajos.addActionListener(dirty);        
-    }
-    
-    private void actualizarCheckbox(){
-        if (jTaxIncluded.isSelected()) {
-            jTaxIncluded.setBackground(Color.green);          
-        }
-        else{
-            jTaxIncluded.setBackground(Color.red);
-        }
-        if (jchkInstance.isSelected()) {
-            jchkInstance.setBackground(Color.green);          
-        }
-        else{
-            jchkInstance.setBackground(Color.red);
-        }
-        if (jchkTextOverlay.isSelected()) {
-            jchkTextOverlay.setBackground(Color.green);          
-        }
-        else{
-            jchkTextOverlay.setBackground(Color.red);
-        }        
-        if (jConsolidate.isSelected()) {
-            jConsolidate.setBackground(Color.green);          
-        }
-        else{
-            jConsolidate.setBackground(Color.red);
-        }
-        if (jchkPriceUpdate.isSelected()) {
-            jchkPriceUpdate.setBackground(Color.green);          
-        }
-        else{
-            jchkPriceUpdate.setBackground(Color.red);
-        }
-        if (jCheckPrice00.isSelected()) {
-            jCheckPrice00.setBackground(Color.green);          
-        }
-        else{
-            jCheckPrice00.setBackground(Color.red);
-        }
-        if (jMoveAMountBoxToTop.isSelected()) {
-            jMoveAMountBoxToTop.setBackground(Color.green);          
-        }
-        else{
-            jMoveAMountBoxToTop.setBackground(Color.red);
-        }
-        if (jCloseCashbtn.isSelected()) {
-            jCloseCashbtn.setBackground(Color.green);          
-        }
-        else{
-            jCloseCashbtn.setBackground(Color.red);
-        }
-        if (jchkBarcodetype.isSelected()) {
-            jchkBarcodetype.setBackground(Color.green);          
-        }
-        else{
-            jchkBarcodetype.setBackground(Color.red);
-        }
-        if (BigTotal.isSelected()) {  
-            BigTotal.setBackground(Color.green);                      
-        } 
-        else {        
-            BigTotal.setBackground(Color.red);                     
-        }   
-        if (chbHideStock.isSelected()) {  
-            chbHideStock.setBackground(Color.green);                      
-        } 
-        else {        
-            chbHideStock.setBackground(Color.red);                     
-        } 
-        if (chbTeclado.isSelected()) {  
-            chbTeclado.setBackground(Color.green);                      
-        } 
-        else {        
-            chbTeclado.setBackground(Color.red);                     
-        } 
-        if (chbImagen.isSelected()) {  
-            chbImagen.setBackground(Color.green);                      
-        } 
-        else {        
-            chbImagen.setBackground(Color.red);                     
-        } 
-        if (jchkAtajos.isSelected()) {  
-            jchkAtajos.setBackground(Color.green);                      
-        } 
-        else {        
-            jchkAtajos.setBackground(Color.red);                     
-        } 
+        jchkAtajos.addActionListener(dirty);    
+        chbReadCode  .addActionListener(dirty);
     }
         
     /**
@@ -225,8 +139,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jchkAtajos.setSelected(Boolean.parseBoolean(config.getProperty("till.atajos")));
         
         jchkautoRefreshTableMap.setSelected(Boolean.parseBoolean(config.getProperty("till.autoRefreshTableMap")));  
-                
-        
+        chbReadCode.setSelected(Boolean.parseBoolean(config.getProperty("till.pesobalanza")));            
 /** Added: JG 23 July 13 */      
         String SCCheck =(config.getProperty("till.SCRate"));
         if (SCCheck == null){
@@ -289,7 +202,6 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jchkTransBtn.setSelected(Boolean.parseBoolean(config.getProperty("table.transbtn")));  
                   
         dirty.setDirty(false);
-        actualizarCheckbox();
     }
    
     /**
@@ -326,6 +238,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         config.setProperty("till.teclado", Boolean.toString(chbTeclado.isSelected())); 
         config.setProperty("till.imagen", Boolean.toString(chbImagen.isSelected())); 
         config.setProperty("till.atajos", Boolean.toString(jchkAtajos.isSelected())); 
+        config.setProperty("till.pesobalanza", Boolean.toString(chbReadCode.isSelected()));       
         dirty.setDirty(false);
     }
     
@@ -392,6 +305,9 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         chbTeclado = new com.alee.extended.button.WebSwitch();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        chbReadCode = new com.alee.extended.button.WebSwitch();
+        jLabel19 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -727,7 +643,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jchkPriceUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE))
+                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 1056, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jchkAtajos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -760,7 +676,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jchkAtajos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(bundle.getString("label.configOptionStartup"), jPanel2);
@@ -838,7 +754,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jchkBarcodetype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE))
+                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 1056, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jCloseCashbtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -863,7 +779,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jCloseCashbtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(bundle.getString("label.configOptionKeypad"), jPanel3);
@@ -911,7 +827,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         });
 
         jLabel5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel5.setText("Mostrar boton de Inventario");
+        jLabel5.setText("Mostrar botón de Inventario");
 
         chbImagen.setOpaque(true);
         chbImagen.addActionListener(new java.awt.event.ActionListener() {
@@ -942,18 +858,18 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(BigTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(chbHideStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(chbTeclado, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
                     .addComponent(chbImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))
+                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE))
                 .addGap(758, 758, 758))
         );
         jPanel1Layout.setVerticalGroup(
@@ -973,10 +889,47 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(chbHideStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 56, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(bundle.getString("label.apariencia"), jPanel1);
+
+        chbReadCode.setOpaque(true);
+        chbReadCode.setPreferredSize(new java.awt.Dimension(80, 30));
+        chbReadCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbReadCodeActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel19.setText("Obtener peso de balanza usando pistola lectora de código barras");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chbReadCode, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1020, 1020, 1020))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(chbReadCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(110, 110, 110))))
+        );
+
+        jTabbedPane1.addTab("Balanza", jPanel4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -1147,22 +1100,18 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
 
     private void BigTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BigTotalActionPerformed
         // TODO add your handling code here:
-        if (BigTotal.isSelected()) {  
-            BigTotal.setBackground(Color.green);          
+        if (BigTotal.isSelected()) {           
             jLabel1.setText(AppLocal.getIntString("label.bigtotalyes"));              
         } else {        
-            BigTotal.setBackground(Color.red); 
             jLabel1.setText(AppLocal.getIntString("label.bigtotalno"));             
         }
     }//GEN-LAST:event_BigTotalActionPerformed
 
     private void chbHideStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbHideStockActionPerformed
         // TODO add your handling code here:
-        if (chbHideStock.isSelected()) {  
-            chbHideStock.setBackground(Color.green);            
+        if (chbHideStock.isSelected()) {             
             jLabel5.setText(AppLocal.getIntString("label.showstockyes"));              
         } else {      
-            chbHideStock.setBackground(Color.red);
             jLabel5.setText(AppLocal.getIntString("label.showstockno"));             
         }
     }//GEN-LAST:event_chbHideStockActionPerformed
@@ -1177,11 +1126,9 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
 
     private void jConsolidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConsolidateActionPerformed
         // TODO add your handling code here:
-        if (jConsolidate.isSelected()) {
-            jConsolidate.setBackground(Color.green);          
+        if (jConsolidate.isSelected()) {         
             jLabel6.setText(AppLocal.getIntString("Label.ConsolidatedScreenyes"));              
-        } else {        
-            jConsolidate.setBackground(Color.red); 
+        } else {         
             jLabel6.setText(AppLocal.getIntString("Label.ConsolidatedScreenno"));             
         }
     }//GEN-LAST:event_jConsolidateActionPerformed
@@ -1216,7 +1163,6 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
 
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
         // TODO add your handling code here:
-        actualizarCheckbox();
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
@@ -1225,145 +1171,130 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
         // TODO add your handling code here:
-        actualizarCheckbox();
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
         // TODO add your handling code here:
-        actualizarCheckbox();
     }//GEN-LAST:event_jPanel3MouseClicked
 
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
-        // TODO add your handling code here:
-        actualizarCheckbox(); 
+        // TODO add your handling code here: 
     }//GEN-LAST:event_jPanel1MouseClicked
 
     private void jchkInstanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkInstanceActionPerformed
         // TODO add your handling code here:
-         if (jchkInstance.isSelected()) {
-            jchkInstance.setBackground(Color.green);          
+         if (jchkInstance.isSelected()) {                    
             jLabel7.setText(AppLocal.getIntString("label.instanceyes"));              
-        } else {        
-            jchkInstance.setBackground(Color.red); 
+        } else {                 
             jLabel7.setText(AppLocal.getIntString("label.instanceno"));             
         }
     }//GEN-LAST:event_jchkInstanceActionPerformed
 
     private void jTaxIncludedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTaxIncludedActionPerformed
         // TODO add your handling code here:
-        if (jTaxIncluded.isSelected()) {
-            jTaxIncluded.setBackground(Color.green);          
+        if (jTaxIncluded.isSelected()) {                     
             jLabel8.setText(AppLocal.getIntString("label.taxincludedyes"));              
-        } else {        
-            jTaxIncluded.setBackground(Color.red); 
+        } else {             
             jLabel8.setText(AppLocal.getIntString("label.taxincludedno"));             
         }
     }//GEN-LAST:event_jTaxIncludedActionPerformed
 
     private void jchkTextOverlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkTextOverlayActionPerformed
         // TODO add your handling code here:
-         if (jchkTextOverlay.isSelected()) {
-            jchkTextOverlay.setBackground(Color.green);          
+         if (jchkTextOverlay.isSelected()) {                 
             jLabel9.setText(AppLocal.getIntString("label.currencybuttonno"));              
         } else {        
-            jchkTextOverlay.setBackground(Color.red); 
             jLabel9.setText(AppLocal.getIntString("label.currencybuttonyes"));             
         }
     }//GEN-LAST:event_jchkTextOverlayActionPerformed
 
     private void jchkPriceUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkPriceUpdateActionPerformed
         // TODO add your handling code here:
-        if (jchkPriceUpdate.isSelected()) {
-            jchkPriceUpdate.setBackground(Color.green);          
+        if (jchkPriceUpdate.isSelected()) {         
             jLabel10.setText(AppLocal.getIntString("label.priceupdateyes"));              
-        } else {        
-            jchkPriceUpdate.setBackground(Color.red); 
+        } else {         
             jLabel10.setText(AppLocal.getIntString("label.priceupdateno"));             
         }
     }//GEN-LAST:event_jchkPriceUpdateActionPerformed
 
     private void jCheckPrice00ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckPrice00ActionPerformed
         // TODO add your handling code here:
-        if (jCheckPrice00.isSelected()) {
-            jCheckPrice00.setBackground(Color.green);          
+        if (jCheckPrice00.isSelected()) {        
             jLabel11.setText(AppLocal.getIntString("label.pricewith00yes"));              
         } else {        
-            jCheckPrice00.setBackground(Color.red); 
             jLabel11.setText(AppLocal.getIntString("label.pricewith00no"));             
         }
     }//GEN-LAST:event_jCheckPrice00ActionPerformed
 
     private void jMoveAMountBoxToTopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMoveAMountBoxToTopActionPerformed
         // TODO add your handling code here:
-        if (jMoveAMountBoxToTop.isSelected()) {
-            jMoveAMountBoxToTop.setBackground(Color.green);          
+        if (jMoveAMountBoxToTop.isSelected()) {         
             jLabel12.setText(AppLocal.getIntString("label.inputamountyes"));              
         } else {        
-            jMoveAMountBoxToTop.setBackground(Color.red); 
             jLabel12.setText(AppLocal.getIntString("label.inputamountno"));             
         }
     }//GEN-LAST:event_jMoveAMountBoxToTopActionPerformed
 
     private void jCloseCashbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCloseCashbtnActionPerformed
         // TODO add your handling code here:
-        if (jCloseCashbtn.isSelected()) {
-            jCloseCashbtn.setBackground(Color.green);          
+        if (jCloseCashbtn.isSelected()) {         
             jLabel13.setText(AppLocal.getIntString("message.systemclosecashyes"));              
         } else {        
-            jCloseCashbtn.setBackground(Color.red); 
             jLabel13.setText(AppLocal.getIntString("message.systemclosecashno"));             
         }
     }//GEN-LAST:event_jCloseCashbtnActionPerformed
 
     private void jchkBarcodetypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkBarcodetypeActionPerformed
         // TODO add your handling code here:
-        if (jchkBarcodetype.isSelected()) {
-            jchkBarcodetype.setBackground(Color.green);          
+        if (jchkBarcodetype.isSelected()) {        
             jLabel14.setText(AppLocal.getIntString("label.barcodetypeyes"));              
         } else {        
-            jchkBarcodetype.setBackground(Color.red); 
             jLabel14.setText(AppLocal.getIntString("label.barcodetypeno"));             
         }
     }//GEN-LAST:event_jchkBarcodetypeActionPerformed
 
     private void chbTecladoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbTecladoActionPerformed
         // TODO add your handling code here:
-        if (chbTeclado.isSelected()) {  
-            chbTeclado.setBackground(Color.green);            
+        if (chbTeclado.isSelected()) {             
             jLabel16.setText(AppLocal.getIntString("label.tecladoizq"));              
         } else {      
-            chbTeclado.setBackground(Color.red);
             jLabel16.setText(AppLocal.getIntString("label.tecladoder"));             
         }
     }//GEN-LAST:event_chbTecladoActionPerformed
 
     private void chbImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbImagenActionPerformed
         // TODO add your handling code here:
-        if (chbImagen.isSelected()) {  
-            chbImagen.setBackground(Color.green);            
+        if (chbImagen.isSelected()) {             
             jLabel15.setText(AppLocal.getIntString("label.imagenyes"));              
         } else {      
-            chbImagen.setBackground(Color.red);
             jLabel15.setText(AppLocal.getIntString("label.imagenno"));             
         }
     }//GEN-LAST:event_chbImagenActionPerformed
 
     private void jchkAtajosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkAtajosActionPerformed
         // TODO add your handling code here:
-        if (jchkAtajos.isSelected()) {  
-            jchkAtajos.setBackground(Color.green);            
+        if (jchkAtajos.isSelected()) {             
             jLabel17.setText(AppLocal.getIntString("label.atajosyes"));              
         } else {      
-            jchkAtajos.setBackground(Color.red);
             jLabel17.setText(AppLocal.getIntString("label.atajosno"));             
         }
     }//GEN-LAST:event_jchkAtajosActionPerformed
+
+    private void chbReadCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbReadCodeActionPerformed
+        // TODO add your handling code here:
+        if (chbReadCode.isSelected()) {             
+            jLabel19.setText(AppLocal.getIntString("label.pesobalanzayes"));              
+        } else {      
+            jLabel19.setText(AppLocal.getIntString("label.pesobalanzano"));             
+        }
+    }//GEN-LAST:event_chbReadCodeActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.alee.extended.button.WebSwitch BigTotal;
     private com.alee.extended.button.WebSwitch chbHideStock;
     private com.alee.extended.button.WebSwitch chbImagen;
+    private com.alee.extended.button.WebSwitch chbReadCode;
     private com.alee.extended.button.WebSwitch chbTeclado;
     private com.alee.extended.button.WebSwitch jCheckPrice00;
     private com.alee.extended.button.WebSwitch jCloseCashbtn;
@@ -1378,6 +1309,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1396,6 +1328,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private com.alee.extended.colorchooser.WebColorChooserField jTableNameColour1;
     private com.alee.extended.button.WebSwitch jTaxIncluded;
