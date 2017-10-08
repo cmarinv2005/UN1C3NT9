@@ -238,30 +238,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_ticketlines = new JTicketLines(dlSystem.getResourceAsXML("Ticket.Line"));
         m_jPanelCentral.add(m_ticketlines, java.awt.BorderLayout.CENTER);
         
-        m_ticketlines.addListSelectionListener(new ListSelectionListener() {    // 22 lineas agregadas por Carlos Marin
-        public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                int i = m_ticketlines.getSelectedIndex();
- 
-                if (i >= 0) {
-                    try {
-                        String sProduct = m_oTicket.getLine(i).getProductID();
-                        if (sProduct != null) {
-                            ProductInfoExt prod = JPanelTicket.this.dlSales.getProductInfo(sProduct);
-                            if (prod.getImage() != null) {
-                                m_jImage.setImage(prod.getImage());   //Coloco la imagen en el cuadro de ventas                                
-                            } else {
-                                m_jImage.setImage(null);              // producto sin imagen			
-                            }
-                        }
-                    } catch (BasicException ex) {
-                        Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        }
-    });
-             
+        Consultarimagen();
+               
            JPanel jpanelA = new JPanel(new BorderLayout());
            JPanel jpanelB = new JPanel(new BorderLayout());
            JPanel jpanelC = new JPanel(new BorderLayout());
@@ -365,7 +343,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
            this.m_jPanTicket.add(this.m_jTicketId, "First");                   
            this.m_jTicketId.setPreferredSize(new Dimension(350, 32));  
            Font auxFont=m_jTicketId.getFont();                                  //Modifico tamaño de letra
-           m_jTicketId.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 20));
+           m_jTicketId.setFont(new Font(auxFont.getFontName(), auxFont.getStyle(), 20));           
         // FIN ESTILO 4
     }
     
@@ -441,6 +419,32 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
 // end of Screen display code
         }        
+    }
+    
+    public void Consultarimagen() {      
+        m_ticketlines.addListSelectionListener(new ListSelectionListener() {    // 22 lineas agregadas por Carlos Marin
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                int i = m_ticketlines.getSelectedIndex();
+ 
+                if (i >= 0) {
+                    try {
+                        String sProduct = m_oTicket.getLine(i).getProductID();
+                        if (sProduct != null) {
+                            ProductInfoExt prod = JPanelTicket.this.dlSales.getProductInfo(sProduct);
+                            if (prod.getImage() != null) {
+                                m_jImage.setImage(prod.getImage());   //Coloco la imagen en el cuadro de ventas                                
+                            } else {
+                                m_jImage.setImage(null);              // producto sin imagen			
+                            }
+                        }
+                    } catch (BasicException ex) {
+                        Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+    });
     }
 
     @Override
@@ -1287,7 +1291,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         oProduct.setID("xxx999_999xxx_x9x9x9");
         oProduct.setReference(null);
         oProduct.setCode(null);
-        oProduct.setName("***");
+        oProduct.setName("PRODUCTO GENERICO");
         oProduct.setTaxCategoryID(((TaxCategoryInfo) taxcategoriesmodel
             .getSelectedItem()).getID());
         oProduct.setPriceSell(includeTaxes(oProduct.getTaxCategoryID(), getInputValue())); 

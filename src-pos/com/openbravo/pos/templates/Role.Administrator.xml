@@ -118,6 +118,8 @@
             <class name="/com/openbravo/reports/barcode_shelfedgelabels.bs"/>
             <class name="/com/openbravo/reports/inventory.bs"/>
             <class name="/com/openbravo/reports/inventoryb.bs"/>
+			<class name="/com/openbravo/reports/inventoryc.bs"/>
+			<class name="/com/openbravo/reports/inventoryd.bs"/>
             <class name="/com/openbravo/reports/inventory_diary.bs"/>            
             <class name="/com/openbravo/reports/inventorybroken.bs"/>
             <class name="/com/openbravo/reports/inventorydiff.bs"/>

@@ -971,7 +971,9 @@ INSERT INTO `dbpermissions` (`CLASSNAME`, `SECTION`, `DISPLAYNAME`, `DESCRIPTION
 ('com.openbravo.pos.forms.MenuSalesManagement', '##label.sectionadmin', '##label.displayname200', '##label.description200', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('/com/openbravo/reports/comisionsales.bs', '##label.sectionpresence', '##label.displayname201', '##label.description201', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('/com/openbravo/reports/sales_saletaxes.bs', '##label.sectionsales', '##label.displayname202', '##label.description202', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
-('/com/openbravo/reports/vencimiento.bs', '##label.sectionstock', '##label.displayname203', '##label.description203', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
+('/com/openbravo/reports/vencimiento.bs', '##label.sectionstock', '##label.displayname203', '##label.description203', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
+('/com/openbravo/reports/inventoryc.bs', '##label.sectionstock', '##label.displayname204', '##label.description204', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
+('/com/openbravo/reports/inventoryd.bs', '##label.sectionstock', '##label.displayname205', '##label.description205', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
 
 
 -- ADD resources --
@@ -1100,7 +1102,7 @@ INSERT INTO taxes(id, name, category, custcategory, parentid, rate, ratecascade,
 
 -- ADD PRODUCTS
 INSERT INTO products(id, reference, code, name, category, taxcat, isservice, display, printto) 
-VALUES ('xxx999_999xxx_x9x9x9', 'xxx999', 'xxx999', '***', '000', '001', 1, '<html><center>***', '1');
+VALUES ('xxx999_999xxx_x9x9x9', 'xxx999', 'xxx999', 'PRODUCTO GENERICO', '000', '001', 1, '<html><center>PRODUCTO GENERICO', '1');
 INSERT INTO products(id, reference, code, name, category, taxcat, isservice, display, printto) 
 VALUES ('xxx998_998xxx_x8x8x8', 'xxx998', 'xxx998', '****', '000', '001', 1, '<html><center>****', '1');
 

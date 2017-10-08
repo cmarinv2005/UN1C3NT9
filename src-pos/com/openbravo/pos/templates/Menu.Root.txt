@@ -49,6 +49,8 @@ group = menu.addGroup("Menu.Backoffice");
     submenu.addTitle("Menu.Panel.Stock.Reports");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.Inventory", "/com/openbravo/reports/inventory.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.Inventory2", "/com/openbravo/reports/inventoryb.bs");
+		submenu.addPanel("/com/openbravo/images/reports.png", "Menu.Inventory3", "/com/openbravo/reports/inventoryc.bs");
+		submenu.addPanel("/com/openbravo/images/reports.png", "Menu.Inventory4", "/com/openbravo/reports/inventoryd.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.Inventory.Reports.Diary", "/com/openbravo/reports/inventory_diary.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.InventoryBroken", "/com/openbravo/reports/inventorybroken.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.InventoryDiff", "/com/openbravo/reports/inventorydiff.bs");

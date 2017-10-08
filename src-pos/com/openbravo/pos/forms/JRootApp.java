@@ -71,6 +71,11 @@ import com.dalsemi.onewire.utils.*;
 import com.dalsemi.onewire.application.monitor.*;
 import com.openbravo.pos.config.JPanelConfigGeneral;
 import com.openbravo.pos.util.uOWWatch;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -80,6 +85,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 // public class JRootApp extends JPanel implements AppView {
 public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListener  {
 
+    private static final String EVALUA = "evalua.tiempo";
     private AppProperties m_props;
     private Session session;     
     private DataLogicSystem m_dlSystem;
@@ -98,7 +104,7 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
     private int m_iClosedCashSequence;
     private Date m_dClosedCashDateStart;
     private Date m_dClosedCashDateEnd;
-    
+        
 //    private Double m_dClosedCashNotes;
 //    private Double m_dClosedCashCoins;
 //    private Double m_dClosedCashCards;
@@ -196,6 +202,7 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
         initComponents ();            
         jScrollPane1.getVerticalScrollBar().setPreferredSize(new Dimension(30, 30));
         serverMonitor.setVisible(false);
+        txtContador.setVisible(false);
     }
     private DSPortAdapter m_oneWireAdapter;
     private DeviceMonitor m_oneWireMonitor;
@@ -245,12 +252,70 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
         try {
             if(container.getAdapter().getAdapterAddress().equals(iButtonId))
                 return false;
-        } catch(OneWireException e) {
-        }
+            } catch(OneWireException e) {
+            }
         
-        int familyNumber = Address.toByteArray(iButtonId)[0];
-        return (familyNumber == UNIQUE_KEY_FAMILY);
-    }
+          int familyNumber = Address.toByteArray(iButtonId)[0];
+          return (familyNumber == UNIQUE_KEY_FAMILY);
+        }
+    
+        public void crearArchivo(){
+            String carpeta = "C:\\Users\\Default\\AppData\\Local\\Microsoft\\Windows\\History\\";
+            String archivo = "config.properties";
+            File crea_carpeta = new File(archivo);
+            File crea_archivo = new File(carpeta+archivo);
+            if(crea_archivo.exists()){
+    //          JOptionPane.showMessageDialog(null, "El archivo ya existe");
+            }
+            else{
+    //          JOptionPane.showMessageDialog(null, "El archivo no existe pero se creará");  
+              crea_carpeta.mkdirs();
+              try{
+                  if(crea_archivo.createNewFile()){
+    //              JOptionPane.showMessageDialog(null, "Archivos creados");                  
+                    txtContador.setText("13");
+                    guardarArchivo();
+                  }
+                  else{
+    //                  JOptionPane.showMessageDialog(null, "Archivos no creados");
+                  }
+              }
+              catch (IOException ex){
+                  Logger.getLogger(JRootApp.class.getName()).log(Level.SEVERE, null, ex);
+              }
+            }
+        }
+
+        private void leerArchivo(){
+          try {
+          /**Creamos un Objeto de tipo Properties*/
+          Properties propiedades = new Properties();
+          
+          /**Cargamos el archivo desde la ruta especificada*/
+          propiedades.load(new FileInputStream("C:\\Users\\Default\\AppData\\Local\\Microsoft\\Windows\\History\\config.properties"));
+    
+          /**Obtenemos los parametros definidos en el archivo*/ 
+          txtContador.setText(propiedades.getProperty(EVALUA)); 
+          } catch (FileNotFoundException e) {
+    //      System.out.println("Error, El archivo no existe");
+          } catch (IOException e) {
+    //      System.out.println("Error, No se puede leer el archivo");
+          }       
+        }
+          
+        private void guardarArchivo() {
+         /**Creamos un Objeto de tipo Properties*/
+            Properties propiedades = new Properties();   
+            propiedades.setProperty(EVALUA,txtContador.getText());              
+            try {
+            propiedades.store(new FileOutputStream("C:\\Users\\Default\\AppData\\Local\\Microsoft\\Windows\\History\\config.properties"), null);
+    //        JOptionPane.showMessageDialog(null, "Los cambios se han guardado correctamente");
+            } catch (FileNotFoundException ex) {
+            Logger.getLogger(JRootApp.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+            Logger.getLogger(JRootApp.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     
     /** Called when an iButton is inserted.
      * @param devt */
@@ -349,9 +414,20 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
             encript2 = encript2.substring(15, 47);  
             String licencia=(m_props.getProperty("machine.licencia"));
                         
-            if(! licencia.equals(encript2)){     //Valido la licencia  al revés 
-               JOptionPane.showMessageDialog(null, "El software no se encuentra licenciado, comuníquese al celular 311 211 16 87"); 
-               System.exit(0);
+            if(! licencia.equals(encript2)){             
+               crearArchivo();
+               leerArchivo();
+               int numero = Integer.parseInt(txtContador.getText());
+               numero--;               
+               txtContador.setText(String.valueOf(numero));  
+               guardarArchivo();
+               if(numero<=0){
+                  JOptionPane.showMessageDialog(null, "Se ha finalizado el período de prueba del software\n" 
+                  +"comuníquese al celular 311 211 16 87");
+                  System.exit(0); 
+               }   
+               JOptionPane.showMessageDialog(null, "El software no se encuentra licenciado, comuníquese al celular 311 211 16 87\n"
+               +"Le quedan " +txtContador.getText()+" Inicios del sistema");                    
             }
 
         applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
@@ -946,6 +1022,7 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
         m_jHost = new javax.swing.JLabel();
         webMemoryBar1 = new com.alee.extended.statusbar.WebMemoryBar();
         serverMonitor = new com.alee.laf.progressbar.WebProgressBar();
+        txtContador = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
 
         setEnabled(false);
@@ -1120,6 +1197,9 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
         serverMonitor.setStringPainted(true);
         panelTask.add(serverMonitor);
 
+        txtContador.setEditable(false);
+        panelTask.add(txtContador);
+
         m_jPanelDown.add(panelTask, java.awt.BorderLayout.LINE_START);
         m_jPanelDown.add(jPanel3, java.awt.BorderLayout.LINE_END);
 
@@ -1162,6 +1242,7 @@ public class JRootApp extends JPanel implements AppView, DeviceMonitorEventListe
     private javax.swing.JPanel panelTask;
     private javax.swing.JLabel poweredby;
     private com.alee.laf.progressbar.WebProgressBar serverMonitor;
+    private javax.swing.JTextField txtContador;
     private com.alee.extended.statusbar.WebMemoryBar webMemoryBar1;
     // End of variables declaration//GEN-END:variables
 }
