@@ -140,18 +140,42 @@ public class StockManagement extends JPanel implements JPanelView {
         
         m_ReasonModel = new ComboBoxValModel();
 
-        m_ReasonModel.add(MovementReason.IN_PURCHASE);                          //Supplier Purchase
-        m_ReasonModel.add(MovementReason.OUT_SALE);                             //Sale
-        m_ReasonModel.add(MovementReason.IN_REFUND);                            //Customer Refund
-        m_ReasonModel.add(MovementReason.OUT_REFUND);                           //Supplier Return
-        m_ReasonModel.add(MovementReason.IN_MOVEMENT);                          //Adjust Add
-        m_ReasonModel.add(MovementReason.OUT_MOVEMENT);                         //Adjust Subtract
-        m_ReasonModel.add(MovementReason.OUT_SUBTRACT);                         //Rectify error per JM requirement        
-        m_ReasonModel.add(MovementReason.OUT_BREAK);                            //Breakage
-        m_ReasonModel.add(MovementReason.OUT_FREE);                             //Given Free   
-        m_ReasonModel.add(MovementReason.OUT_SAMPLE);                           //Given Sample
-        m_ReasonModel.add(MovementReason.OUT_USED);                             //Used item   
-        m_ReasonModel.add(MovementReason.OUT_CROSSING);                         //Inter-Location move
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradacompra"))){
+            m_ReasonModel.add(MovementReason.IN_PURCHASE);                          //Supplier Purchase
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidacompra"))){
+            m_ReasonModel.add(MovementReason.OUT_SALE);                             //Sale
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradadevolucion"))){
+            m_ReasonModel.add(MovementReason.IN_REFUND);                            //Customer Refund
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidadevolucion"))){
+            m_ReasonModel.add(MovementReason.OUT_REFUND);                           //Supplier Return
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradatraspaso"))){
+            m_ReasonModel.add(MovementReason.IN_MOVEMENT);                          //Adjust Add
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidatraspaso"))){
+            m_ReasonModel.add(MovementReason.OUT_MOVEMENT);                         //Adjust Subtract
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.sustraer"))){
+            m_ReasonModel.add(MovementReason.OUT_SUBTRACT);                         //Rectify error per JM requirement   
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidarotura"))){
+            m_ReasonModel.add(MovementReason.OUT_BREAK);                            //Breakage
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entregadogratis"))){
+            m_ReasonModel.add(MovementReason.OUT_FREE);                             //Given Free   
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.muestraentregada"))){
+            m_ReasonModel.add(MovementReason.OUT_SAMPLE);                           //Given Sample
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.articuloparauso"))){
+            m_ReasonModel.add(MovementReason.OUT_USED);                             //Used item  
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.traspaso"))){
+            m_ReasonModel.add(MovementReason.OUT_CROSSING);                         //Inter-Location move 
+        }
         
         m_jreason.setModel(m_ReasonModel);
         
@@ -215,12 +239,47 @@ public class StockManagement extends JPanel implements JPanelView {
     /**
      *
      */
-    public void stateToInsert() {
-
-        m_jdate.setText(Formats.TIMESTAMP.formatValue(DateUtils.getTodayMinutes()));
-        m_ReasonModel.setSelectedItem(MovementReason.IN_PURCHASE); 
+    public void stateToInsert() {        
+        
+        m_jdate.setText(Formats.TIMESTAMP.formatValue(DateUtils.getTodayMinutes()));        
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.traspaso"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_CROSSING);          //Inter-Location move                          
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.articuloparauso"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_USED);              //Used item                                     
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.muestraentregada"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_SAMPLE);            //Given Sample
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entregadogratis"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_FREE);              //Given Free                               
+        }
+         if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidarotura"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_BREAK);             //Breakage
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.sustraer"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_SUBTRACT);          //Rectify error per JM requirement   
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidatraspaso"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_MOVEMENT);          //Adjust Subtract
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradatraspaso"))){
+            m_ReasonModel.setSelectedItem(MovementReason.IN_MOVEMENT);           //Adjust Add
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidadevolucion"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_REFUND);            //Supplier Return
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradadevolucion"))){
+            m_ReasonModel.setSelectedItem(MovementReason.IN_REFUND);             //Customer Refund
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidacompra"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_SALE);              //Sale
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradacompra"))){
+            m_ReasonModel.setSelectedItem(MovementReason.IN_PURCHASE);           //Supplier Purchase
+        }         
         m_LocationsModel.setSelectedKey(m_App.getInventoryLocation());     
-        m_LocationsModel.setSelectedFirst();
+        m_LocationsModel.setSelectedFirst();        
         m_LocationsModelDes.setSelectedKey(m_App.getInventoryLocation());         
         m_jcodebar.setText(null);
         m_SuppliersModel.setSelectedFirst();            

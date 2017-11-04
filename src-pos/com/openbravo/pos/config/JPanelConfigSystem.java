@@ -78,7 +78,19 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         chbTeclado.addActionListener(dirty); 
         chbImagen.addActionListener(dirty); 
         jchkAtajos.addActionListener(dirty);    
-        chbReadCode  .addActionListener(dirty);
+        chbReadCode.addActionListener(dirty);
+        chkInBuy.addActionListener(dirty);
+        chkOutBuy.addActionListener(dirty);  
+        chkInDevolution.addActionListener(dirty);
+        chkOutDevolution.addActionListener(dirty);
+        chkInTransfer.addActionListener(dirty);
+        chkOutTransfer.addActionListener(dirty);
+        chkSubstract.addActionListener(dirty);
+        chkOutBreak.addActionListener(dirty);
+        chkGivenFree.addActionListener(dirty);
+        chkGivenSample.addActionListener(dirty);
+        chkUsedItem.addActionListener(dirty);        
+        chkTransfer.addActionListener(dirty);        
     }
         
     /**
@@ -139,7 +151,21 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jchkAtajos.setSelected(Boolean.parseBoolean(config.getProperty("till.atajos")));
         
         jchkautoRefreshTableMap.setSelected(Boolean.parseBoolean(config.getProperty("till.autoRefreshTableMap")));  
-        chbReadCode.setSelected(Boolean.parseBoolean(config.getProperty("till.pesobalanza")));            
+        chbReadCode.setSelected(Boolean.parseBoolean(config.getProperty("till.pesobalanza")));  
+        
+        chkInBuy.setSelected(Boolean.parseBoolean(config.getProperty("till.entradacompra"))); 
+        chkOutBuy.setSelected(Boolean.parseBoolean(config.getProperty("till.salidacompra")));   
+        chkInDevolution.setSelected(Boolean.parseBoolean(config.getProperty("till.entradadevolucion"))); 
+        chkOutDevolution.setSelected(Boolean.parseBoolean(config.getProperty("till.salidadevolucion"))); 
+        chkInTransfer.setSelected(Boolean.parseBoolean(config.getProperty("till.entradatraspaso"))); 
+        chkOutTransfer.setSelected(Boolean.parseBoolean(config.getProperty("till.salidatraspaso"))); 
+        chkSubstract.setSelected(Boolean.parseBoolean(config.getProperty("till.sustraer"))); 
+        chkOutBreak.setSelected(Boolean.parseBoolean(config.getProperty("till.salidarotura"))); 
+        chkGivenFree.setSelected(Boolean.parseBoolean(config.getProperty("till.entregadogratis"))); 
+        chkGivenSample.setSelected(Boolean.parseBoolean(config.getProperty("till.muestraentregada"))); 
+        chkUsedItem.setSelected(Boolean.parseBoolean(config.getProperty("till.articuloparauso")));         
+        chkTransfer.setSelected(Boolean.parseBoolean(config.getProperty("till.traspaso")));  
+        
 /** Added: JG 23 July 13 */      
         String SCCheck =(config.getProperty("till.SCRate"));
         if (SCCheck == null){
@@ -238,7 +264,20 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         config.setProperty("till.teclado", Boolean.toString(chbTeclado.isSelected())); 
         config.setProperty("till.imagen", Boolean.toString(chbImagen.isSelected())); 
         config.setProperty("till.atajos", Boolean.toString(jchkAtajos.isSelected())); 
-        config.setProperty("till.pesobalanza", Boolean.toString(chbReadCode.isSelected()));       
+        config.setProperty("till.pesobalanza", Boolean.toString(chbReadCode.isSelected()));   
+        
+        config.setProperty("till.entradacompra", Boolean.toString(chkInBuy.isSelected()));   
+        config.setProperty("till.salidacompra", Boolean.toString(chkOutBuy.isSelected()));   
+        config.setProperty("till.entradadevolucion", Boolean.toString(chkInDevolution.isSelected()));   
+        config.setProperty("till.salidadevolucion", Boolean.toString(chkOutDevolution.isSelected()));   
+        config.setProperty("till.entradatraspaso", Boolean.toString(chkInTransfer.isSelected()));   
+        config.setProperty("till.salidatraspaso", Boolean.toString(chkOutTransfer.isSelected()));   
+        config.setProperty("till.sustraer", Boolean.toString(chkSubstract.isSelected()));   
+        config.setProperty("till.salidarotura", Boolean.toString(chkOutBreak.isSelected()));   
+        config.setProperty("till.entregadogratis", Boolean.toString(chkGivenFree.isSelected()));   
+        config.setProperty("till.muestraentregada", Boolean.toString(chkGivenSample.isSelected()));   
+        config.setProperty("till.articuloparauso", Boolean.toString(chkUsedItem.isSelected()));   
+        config.setProperty("till.traspaso", Boolean.toString(chkTransfer.isSelected()));   
         dirty.setDirty(false);
     }
     
@@ -308,6 +347,31 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jPanel4 = new javax.swing.JPanel();
         chbReadCode = new com.alee.extended.button.WebSwitch();
         jLabel19 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        chkInBuy = new com.alee.extended.button.WebSwitch();
+        chkOutBuy = new com.alee.extended.button.WebSwitch();
+        chkInDevolution = new com.alee.extended.button.WebSwitch();
+        chkOutDevolution = new com.alee.extended.button.WebSwitch();
+        chkInTransfer = new com.alee.extended.button.WebSwitch();
+        chkOutTransfer = new com.alee.extended.button.WebSwitch();
+        chkSubstract = new com.alee.extended.button.WebSwitch();
+        chkOutBreak = new com.alee.extended.button.WebSwitch();
+        chkGivenFree = new com.alee.extended.button.WebSwitch();
+        chkGivenSample = new com.alee.extended.button.WebSwitch();
+        chkUsedItem = new com.alee.extended.button.WebSwitch();
+        chkTransfer = new com.alee.extended.button.WebSwitch();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -676,7 +740,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jchkAtajos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(bundle.getString("label.configOptionStartup"), jPanel2);
@@ -779,7 +843,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jCloseCashbtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(bundle.getString("label.configOptionKeypad"), jPanel3);
@@ -889,7 +953,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(chbHideStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(bundle.getString("label.apariencia"), jPanel1);
@@ -920,16 +984,263 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(chbReadCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(110, 110, 110))))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(chbReadCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(116, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Balanza", jPanel4);
+
+        chkInBuy.setOpaque(true);
+        chkInBuy.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkInBuy.setSelected(true);
+        chkInBuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkInBuyActionPerformed(evt);
+            }
+        });
+
+        chkOutBuy.setOpaque(true);
+        chkOutBuy.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkOutBuy.setSelected(true);
+        chkOutBuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkOutBuyActionPerformed(evt);
+            }
+        });
+
+        chkInDevolution.setOpaque(true);
+        chkInDevolution.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkInDevolution.setSelected(true);
+        chkInDevolution.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkInDevolutionActionPerformed(evt);
+            }
+        });
+
+        chkOutDevolution.setOpaque(true);
+        chkOutDevolution.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkOutDevolution.setSelected(true);
+        chkOutDevolution.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkOutDevolutionActionPerformed(evt);
+            }
+        });
+
+        chkInTransfer.setOpaque(true);
+        chkInTransfer.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkInTransfer.setSelected(true);
+        chkInTransfer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkInTransferActionPerformed(evt);
+            }
+        });
+
+        chkOutTransfer.setOpaque(true);
+        chkOutTransfer.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkOutTransfer.setSelected(true);
+        chkOutTransfer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkOutTransferActionPerformed(evt);
+            }
+        });
+
+        chkSubstract.setOpaque(true);
+        chkSubstract.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkSubstract.setSelected(true);
+        chkSubstract.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkSubstractActionPerformed(evt);
+            }
+        });
+
+        chkOutBreak.setOpaque(true);
+        chkOutBreak.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkOutBreak.setSelected(true);
+        chkOutBreak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkOutBreakActionPerformed(evt);
+            }
+        });
+
+        chkGivenFree.setOpaque(true);
+        chkGivenFree.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkGivenFree.setSelected(true);
+        chkGivenFree.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkGivenFreeActionPerformed(evt);
+            }
+        });
+
+        chkGivenSample.setOpaque(true);
+        chkGivenSample.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkGivenSample.setSelected(true);
+        chkGivenSample.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkGivenSampleActionPerformed(evt);
+            }
+        });
+
+        chkUsedItem.setOpaque(true);
+        chkUsedItem.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkUsedItem.setSelected(true);
+        chkUsedItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkUsedItemActionPerformed(evt);
+            }
+        });
+
+        chkTransfer.setOpaque(true);
+        chkTransfer.setPreferredSize(new java.awt.Dimension(80, 30));
+        chkTransfer.setSelected(true);
+        chkTransfer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkTransferActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel2.setText("Entrada (Compra)");
+
+        jLabel18.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel18.setText("Salida (Venta)");
+
+        jLabel20.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel20.setText("Entrada (Devolución)");
+
+        jLabel21.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel21.setText("Salida (Devolución)");
+
+        jLabel22.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel22.setText("Entrada (Traspaso)");
+
+        jLabel23.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel23.setText("Salida (Traspaso)");
+
+        jLabel24.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel24.setText("Sustraer");
+
+        jLabel25.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel25.setText("Salida (Rotura)");
+
+        jLabel26.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel26.setText("Entregado Gratis");
+
+        jLabel27.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel27.setText("Muestra Entregada");
+
+        jLabel28.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel28.setText("Artículo para Uso");
+
+        jLabel29.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel29.setText("Traspaso");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(chkOutDevolution, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(chkInDevolution, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(chkOutBuy, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(chkInBuy, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(chkOutBreak, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(chkSubstract, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(chkOutTransfer, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(chkInTransfer, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(chkTransfer, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(chkUsedItem, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(chkGivenSample, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(chkGivenFree, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(chkInTransfer, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkOutTransfer, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkSubstract, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addGap(6, 6, 6)
+                        .addComponent(chkOutBreak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkInBuy, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(chkOutBuy, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(5, 5, 5)))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(chkInDevolution, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                                .addGap(6, 6, 6))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkOutDevolution, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(chkGivenFree, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkGivenSample, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkUsedItem, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                        .addGap(6, 6, 6)
+                        .addComponent(chkTransfer, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+
+        jTabbedPane1.addTab("Inventario", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -992,8 +1303,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1287,6 +1598,54 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
             jLabel19.setText(AppLocal.getIntString("label.pesobalanzano"));             
         }
     }//GEN-LAST:event_chbReadCodeActionPerformed
+
+    private void chkInBuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkInBuyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkInBuyActionPerformed
+
+    private void chkOutBuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkOutBuyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkOutBuyActionPerformed
+
+    private void chkInDevolutionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkInDevolutionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkInDevolutionActionPerformed
+
+    private void chkOutDevolutionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkOutDevolutionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkOutDevolutionActionPerformed
+
+    private void chkInTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkInTransferActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkInTransferActionPerformed
+
+    private void chkOutTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkOutTransferActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkOutTransferActionPerformed
+
+    private void chkSubstractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSubstractActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkSubstractActionPerformed
+
+    private void chkOutBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkOutBreakActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkOutBreakActionPerformed
+
+    private void chkGivenFreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkGivenFreeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkGivenFreeActionPerformed
+
+    private void chkGivenSampleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkGivenSampleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkGivenSampleActionPerformed
+
+    private void chkUsedItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUsedItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkUsedItemActionPerformed
+
+    private void chkTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkTransferActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkTransferActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1295,6 +1654,18 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private com.alee.extended.button.WebSwitch chbImagen;
     private com.alee.extended.button.WebSwitch chbReadCode;
     private com.alee.extended.button.WebSwitch chbTeclado;
+    private com.alee.extended.button.WebSwitch chkGivenFree;
+    private com.alee.extended.button.WebSwitch chkGivenSample;
+    private com.alee.extended.button.WebSwitch chkInBuy;
+    private com.alee.extended.button.WebSwitch chkInDevolution;
+    private com.alee.extended.button.WebSwitch chkInTransfer;
+    private com.alee.extended.button.WebSwitch chkOutBreak;
+    private com.alee.extended.button.WebSwitch chkOutBuy;
+    private com.alee.extended.button.WebSwitch chkOutDevolution;
+    private com.alee.extended.button.WebSwitch chkOutTransfer;
+    private com.alee.extended.button.WebSwitch chkSubstract;
+    private com.alee.extended.button.WebSwitch chkTransfer;
+    private com.alee.extended.button.WebSwitch chkUsedItem;
     private com.alee.extended.button.WebSwitch jCheckPrice00;
     private com.alee.extended.button.WebSwitch jCloseCashbtn;
     private com.alee.extended.button.WebSwitch jConsolidate;
@@ -1308,7 +1679,19 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1328,6 +1711,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JTabbedPane jTabbedPane1;
     private com.alee.extended.colorchooser.WebColorChooserField jTableNameColour1;
     private com.alee.extended.button.WebSwitch jTaxIncluded;

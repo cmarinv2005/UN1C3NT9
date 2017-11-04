@@ -103,15 +103,31 @@ public final class StockDiaryEditor extends javax.swing.JPanel implements Editor
         m_SuppliersModel = new ComboBoxValModel();
       
         m_ReasonModel = new ComboBoxValModel();
-        m_ReasonModel.add(MovementReason.IN_PURCHASE);
-        m_ReasonModel.add(MovementReason.IN_REFUND);
-        m_ReasonModel.add(MovementReason.IN_MOVEMENT);
-        m_ReasonModel.add(MovementReason.OUT_SALE);
-        m_ReasonModel.add(MovementReason.OUT_REFUND);
-        m_ReasonModel.add(MovementReason.OUT_BREAK);
-        m_ReasonModel.add(MovementReason.OUT_MOVEMENT);   
-        m_ReasonModel.add(MovementReason.OUT_CROSSING);          
-
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradacompra"))){
+            m_ReasonModel.add(MovementReason.IN_PURCHASE);                          //Supplier Purchase
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradadevolucion"))){
+            m_ReasonModel.add(MovementReason.IN_REFUND);                            //Customer Refund
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradatraspaso"))){
+            m_ReasonModel.add(MovementReason.IN_MOVEMENT);                          //Adjust Add
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidacompra"))){
+            m_ReasonModel.add(MovementReason.OUT_SALE);                             //Sale
+        }      
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidadevolucion"))){
+            m_ReasonModel.add(MovementReason.OUT_REFUND);                           //Supplier Return
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidarotura"))){
+            m_ReasonModel.add(MovementReason.OUT_BREAK);                            //Breakage
+        } 
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidatraspaso"))){
+            m_ReasonModel.add(MovementReason.OUT_MOVEMENT);                         //Adjust Subtract
+        }   
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.traspaso"))){
+            m_ReasonModel.add(MovementReason.OUT_CROSSING);                         //Inter-Location move 
+        }
+        
         m_jreason.setModel(m_ReasonModel);
 
         m_cat = new JCatalog(m_dlSales);
@@ -209,7 +225,33 @@ public final class StockDiaryEditor extends javax.swing.JPanel implements Editor
     public void writeValueInsert() {
         m_sID = UUID.randomUUID().toString();
         m_jdate.setText(Formats.TIMESTAMP.formatValue(DateUtils.getTodayMinutes()));
-        m_ReasonModel.setSelectedItem(MovementReason.IN_PURCHASE);
+ //       if (Boolean.valueOf(m_App.getProperties().getProperty("till.traspaso"))){
+ //           m_ReasonModel.setSelectedItem(MovementReason.OUT_CROSSING);          //Inter-Location move                          
+ //       }  
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidatraspaso"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_MOVEMENT);          //Adjust Subtract
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidarotura"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_BREAK);             //Breakage
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidadevolucion"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_REFUND);            //Supplier Return
+        }
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.salidacompra"))){
+            m_ReasonModel.setSelectedItem(MovementReason.OUT_SALE);              //Sale
+        }
+       
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradatraspaso"))){
+            m_ReasonModel.setSelectedItem(MovementReason.IN_MOVEMENT);           //Adjust Add
+        }
+        
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradadevolucion"))){
+            m_ReasonModel.setSelectedItem(MovementReason.IN_REFUND);             //Customer Refund
+        }
+        
+        if (Boolean.valueOf(m_App.getProperties().getProperty("till.entradacompra"))){
+            m_ReasonModel.setSelectedItem(MovementReason.IN_PURCHASE);           //Supplier Purchase
+        }   
         m_LocationsModel.setSelectedKey(m_App.getInventoryLocation());
         m_LocationsModelDes.setSelectedKey(m_App.getInventoryLocation());        
         m_SuppliersModel.setSelectedKey(null);        
@@ -954,7 +996,7 @@ public final class StockDiaryEditor extends javax.swing.JPanel implements Editor
         }
 */
         if (m_ReasonModel.getSelectedItem() == MovementReason.OUT_CROSSING) {        
-            JOptionPane.showMessageDialog(this, "Transfer option in development. Please us (In) + (Out) Movement options");
+            JOptionPane.showMessageDialog(this, "Opción de Transferencia en desarrollo. Por favor use entradas y salidas en las opciones de movimiento");
         }
     }//GEN-LAST:event_m_jreasonActionPerformed
     

@@ -22,9 +22,9 @@
 
 report = new com.openbravo.pos.reports.PanelReportBean();
 
-report.setTitleKey("Menu.SalesProfit");
-report.setReport("/com/openbravo/reports/sales_productsalesprofit");
-report.setResourceBundle("com/openbravo/reports/sales_productsalesprofit_messages");
+report.setTitleKey("Menu.SalesProfit1");
+report.setReport("/com/openbravo/reports/sales_productsalesprofit_summary");
+report.setResourceBundle("com/openbravo/reports/sales_productsalesprofit_summary_messages");
 
 // Amend: JG uniCenta May 2014
 // Amend: JG uniCenta July 2014
