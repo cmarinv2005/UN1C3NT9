@@ -974,8 +974,8 @@ INSERT INTO `dbpermissions` (`CLASSNAME`, `SECTION`, `DISPLAYNAME`, `DESCRIPTION
 ('/com/openbravo/reports/vencimiento.bs', '##label.sectionstock', '##label.displayname203', '##label.description203', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('/com/openbravo/reports/inventoryc.bs', '##label.sectionstock', '##label.displayname204', '##label.description204', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('/com/openbravo/reports/inventoryd.bs', '##label.sectionstock', '##label.displayname205', '##label.description205', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
-('/com/openbravo/reports/sales_productsalesprofit_summary.bs', '##label.sectionsales', '##label.displayname206', '##label.description206', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
-
+('/com/openbravo/reports/sales_productsalesprofit_summary.bs', '##label.sectionsales', '##label.displayname206', '##label.description206', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
+('/com/openbravo/reports/itemsremovalreport.bs', '##label.sectionsales', '##label.displayname207', '##label.description207', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
 
 -- ADD resources --
 -- MENU

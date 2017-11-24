@@ -81,6 +81,7 @@ group = menu.addGroup("Menu.Backoffice");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.ExtendedByProducts", "/com/openbravo/reports/sales_extproducts.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.SalesProfit", "/com/openbravo/reports/sales_productsalesprofit.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.SalesProfit1", "/com/openbravo/reports/sales_productsalesprofit_summary.bs");
+        submenu.addPanel("/com/openbravo/images/reports.png", "Menu.LinesRemoved", "/com/openbravo/reports/itemsremovalreport.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.SaleTaxes", "/com/openbravo/reports/sales_saletaxes.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.TaxCatSales", "/com/openbravo/reports/sales_taxcatsales.bs");
         submenu.addPanel("/com/openbravo/images/reports.png", "Menu.ReportTaxes", "/com/openbravo/reports/sales_taxes.bs");
