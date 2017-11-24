@@ -99,7 +99,8 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
     private String productName;
     private Double productBuyPrice;
     private Double productSellPrice;
-    private String productTax;    
+    private String productTax;   
+    private Double units;
     
     private String Supplier;
     private String supplierName;
@@ -230,6 +231,7 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
             jComboTax.addItem("");            
             jComboCategory.addItem("");
             jComboSupplier.addItem("");
+            jComboUnits.addItem("");
             
             while (i < products.getHeaderCount()) {
                 jComboName.addItem(products.getHeader(i));
@@ -240,6 +242,7 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                 jComboTax.addItem(products.getHeader(i));
                 jComboCategory.addItem(products.getHeader(i));
                 jComboSupplier.addItem(products.getHeader(i));
+                jComboUnits.addItem(products.getHeader(i));
                 
                 Headers.add(products.getHeader(i));
                 ++i;
@@ -282,7 +285,8 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
         jComboDefaultCategory.setEnabled(true);
         jComboSupplier.setEnabled(true);
         jComboDefaultSupplier.setEnabled(true);        
-
+        jComboUnits.setEnabled(true);
+                
         jCheckInCatalogue.setEnabled(true);
         jCheckSellIncTax.setEnabled(true);
     }
@@ -369,8 +373,11 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                 productTax = products.get((String) jComboTax.getSelectedItem());                
                 
                 Category = products.get((String) jComboCategory.getSelectedItem());
-                Supplier = products.get((String) jComboSupplier.getSelectedItem());                
+                Supplier = products.get((String) jComboSupplier.getSelectedItem()); 
                 
+                String ProductUnits = products.get((String) jComboUnits.getSelectedItem());                
+                units = Double.parseDouble(ProductUnits);
+                            
                 currentRecord++;
                 progress = currentRecord;                
                 
@@ -749,7 +756,10 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
         
         jComboSupplier.removeAllItems();
         jComboSupplier.setEnabled(false);
-        jComboDefaultSupplier.setEnabled(false);        
+        jComboDefaultSupplier.setEnabled(false);   
+        
+        jComboUnits.removeAllItems();        
+        jComboUnits.setEnabled(false);
 
         jImport.setEnabled(false);
         jbtnReset.setEnabled(true);        
@@ -794,6 +804,7 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                 & jComboSell.getSelectedItem() != "" 
                 & jComboTax.getSelectedItem() != ""                 
                 & jComboCategory.getSelectedItem() != ""
+                & jComboUnits.getSelectedItem() != ""
                 & m_CategoryModel.getSelectedText() != null) {
             jImport.setEnabled(true);
             jbtnReset.setEnabled(true);            
@@ -870,7 +881,7 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
      */
     public void createProduct(String pType) {
 
-        Object[] myprod = new Object[33];
+        Object[] myprod = new Object[34];   //33
         if("new".equals(pType)) {
             myprod[0] = UUID.randomUUID().toString();
         } else {
@@ -907,12 +918,13 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
         myprod[29] = dSupplier;                                                 // Supplier
         myprod[30] = "0";                                                       // UOM        
         myprod[31] = jCheckInCatalogue.isSelected();                            // In catalog flag
-        myprod[32] = null;                                                      // catalog order                
+        myprod[32] = null;                                                      // catalog order  
+        myprod[33] = units;                                                     // units
         
         try {
             if ("new".equals(pType)) {
                 spr.insertData(myprod);
-                addStockCurrent("0", myprod[0].toString(), 0.0);  
+                addStockCurrent("0", myprod[0].toString(), (Double) myprod[33]);       
                 webPBar.setString("Adding record " + progress);                 
             } else {
                 spr.updateData(myprod);
@@ -931,7 +943,7 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
         values[1] = ProductID;                                      
         values[2] = (double) Units;
 
-        PreparedSentence sentence = new PreparedSentence(s, 
+        PreparedSentence sentence = new PreparedSentence(s,             
                 "INSERT INTO stockcurrent ( "
                 + "LOCATION, PRODUCT, UNITS) VALUES (?, ?, ?)"
                 , new SerializerWriteBasicExt((new Datas[]{
@@ -949,7 +961,7 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
      */
     public void createCSVEntry(String csvError, Double previousBuy, Double previousSell) {
 
-        Object[] myprod = new Object[13];
+        Object[] myprod = new Object[14];
         myprod[0] = UUID.randomUUID().toString();                               // ID string
         myprod[1] = Integer.toString(currentRecord);                            // Record number
         myprod[2] = csvError;                                                   // Error description
@@ -963,6 +975,7 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
         myprod[10] = Category;                                                  // Category
         myprod[11] = productTax;                                                // Tax
         myprod[12] = Supplier;                                                  // Supplier
+        myprod[13] = units;                                                     // Stock Inicial
         try {
             m_dlSystem.execAddCSVEntry(myprod);
         } catch (BasicException ex) {
@@ -1027,6 +1040,8 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jComboDefaultSupplier = new javax.swing.JComboBox();
+        jComboUnits = new javax.swing.JComboBox<>();
+        jLabel23 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jHeaderRead = new javax.swing.JButton();
@@ -1337,6 +1352,22 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
             }
         });
 
+        jComboUnits.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jComboUnits.setEnabled(false);
+        jComboUnits.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboUnitsItemStateChanged(evt);
+            }
+        });
+        jComboUnits.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jComboUnitsFocusGained(evt);
+            }
+        });
+
+        jLabel23.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel23.setText(bundle.getString("label.units2"));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -1396,10 +1427,15 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboDefaultSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jComboUnits, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jComboDefaultSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -1445,7 +1481,11 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboDefaultSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboUnits, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(4, 4, 4)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCheckSellIncTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1659,7 +1699,7 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 655, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel17))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1696,8 +1736,8 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1772,7 +1812,8 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                     & (Headers.get(i) != jComboBuy.getSelectedItem())
                     & (Headers.get(i) != jComboSell.getSelectedItem())
                     & (Headers.get(i) != jComboTax.getSelectedItem())
-                    & (Headers.get(i) != jComboSupplier.getSelectedItem())) {
+                    & (Headers.get(i) != jComboSupplier.getSelectedItem())
+                    & (Headers.get(i) != jComboUnits.getSelectedItem())){ 
                 jComboCategory.addItem(Headers.get(i));
             }
             ++i;
@@ -1839,7 +1880,8 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                     & (Headers.get(i) != jComboBarcode.getSelectedItem()) 
                     & (Headers.get(i) != jComboSell.getSelectedItem())
                     & (Headers.get(i) != jComboTax.getSelectedItem())
-                    & (Headers.get(i) != jComboSupplier.getSelectedItem())) {                    
+                    & (Headers.get(i) != jComboSupplier.getSelectedItem())
+                    & (Headers.get(i) != jComboUnits.getSelectedItem())){ 
                 jComboBuy.addItem(Headers.get(i));
             }
             ++i;
@@ -1861,7 +1903,8 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                     & (Headers.get(i) != jComboBuy.getSelectedItem()) 
                     & (Headers.get(i) != jComboSell.getSelectedItem())
                     & (Headers.get(i) != jComboTax.getSelectedItem())
-                    & (Headers.get(i) != jComboSupplier.getSelectedItem())) {                
+                    & (Headers.get(i) != jComboSupplier.getSelectedItem())
+                    & (Headers.get(i) != jComboUnits.getSelectedItem())){ 
                 jComboName.addItem(Headers.get(i));
             }
             ++i;
@@ -1883,7 +1926,8 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                     & (Headers.get(i) != jComboBuy.getSelectedItem()) 
                     & (Headers.get(i) != jComboSell.getSelectedItem())
                     & (Headers.get(i) != jComboTax.getSelectedItem())
-                    & (Headers.get(i) != jComboSupplier.getSelectedItem())) {                
+                    & (Headers.get(i) != jComboSupplier.getSelectedItem())
+                    & (Headers.get(i) != jComboUnits.getSelectedItem())){ 
                 jComboBarcode.addItem(Headers.get(i));
             }
             ++i;
@@ -1905,7 +1949,8 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                     & (Headers.get(i) != jComboBuy.getSelectedItem()) 
                     & (Headers.get(i) != jComboSell.getSelectedItem())
                     & (Headers.get(i) != jComboTax.getSelectedItem())
-                    & (Headers.get(i) != jComboSupplier.getSelectedItem())) {                
+                    & (Headers.get(i) != jComboSupplier.getSelectedItem())
+                    & (Headers.get(i) != jComboUnits.getSelectedItem())){                
                 jComboReference.addItem(Headers.get(i));
             }
             ++i;
@@ -1933,7 +1978,9 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                     & (Headers.get(i) != jComboName.getSelectedItem())                     
                     & (Headers.get(i) != jComboBuy.getSelectedItem()) 
                     & (Headers.get(i) != jComboSell.getSelectedItem())
-                    & (Headers.get(i) != jComboSupplier.getSelectedItem())) {
+                    & (Headers.get(i) != jComboSupplier.getSelectedItem())
+                    & (Headers.get(i) != jComboUnits.getSelectedItem())
+                    & (Headers.get(i) != jComboUnits.getSelectedItem())){ 
                 jComboTax.addItem(Headers.get(i));
             }
             ++i;
@@ -1972,7 +2019,8 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
                     & (Headers.get(i) != jComboName.getSelectedItem())                     
                     & (Headers.get(i) != jComboBuy.getSelectedItem())
                     & (Headers.get(i) != jComboSell.getSelectedItem())                    
-                    & (Headers.get(i) != jComboTax.getSelectedItem())) {
+                    & (Headers.get(i) != jComboTax.getSelectedItem())
+                    & (Headers.get(i) != jComboUnits.getSelectedItem())){ 
 
                 jComboSupplier.addItem(Headers.get(i));
             }
@@ -1992,6 +2040,31 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboSupplierActionPerformed
 
+    private void jComboUnitsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboUnitsItemStateChanged
+        // TODO add your handling code here:
+        checkFieldMapping();
+    }//GEN-LAST:event_jComboUnitsItemStateChanged
+
+    private void jComboUnitsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboUnitsFocusGained
+        // TODO add your handling code here:
+        jComboUnits.removeAllItems();
+        int i = 1;
+        jComboUnits.addItem("");
+        while (i < Headers.size()) {
+            if ((Headers.get(i) != jComboCategory.getSelectedItem()) 
+                    & (Headers.get(i) !=jComboBarcode.getSelectedItem()) 
+                    & (Headers.get(i) != jComboReference.getSelectedItem()) 
+                    & (Headers.get(i) != jComboName.getSelectedItem()) 
+                    & (Headers.get(i) != jComboBuy.getSelectedItem()) 
+                    & (Headers.get(i) != jComboSell.getSelectedItem())
+                    & (Headers.get(i) != jComboTax.getSelectedItem())
+                    & (Headers.get(i) != jComboSupplier.getSelectedItem())) {                
+                jComboUnits.addItem(Headers.get(i));
+            }
+            ++i;
+        }
+    }//GEN-LAST:event_jComboUnitsFocusGained
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jCheckInCatalogue;
     private javax.swing.JCheckBox jCheckSellIncTax;
@@ -2006,6 +2079,7 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
     private javax.swing.JComboBox jComboSeparator;
     private javax.swing.JComboBox jComboSupplier;
     private javax.swing.JComboBox jComboTax;
+    private javax.swing.JComboBox<String> jComboUnits;
     private javax.swing.JPanel jFileChooserPanel;
     private javax.swing.JTextField jFileName;
     private javax.swing.JButton jHeaderRead;
@@ -2025,6 +2099,7 @@ public class JPanelCSVImport extends JPanel implements JPanelView {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

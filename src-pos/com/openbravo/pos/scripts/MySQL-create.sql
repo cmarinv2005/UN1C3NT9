@@ -825,7 +825,7 @@ INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('0', 'Ad
 INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('1', 'Gerente', NULL, '1', TRUE, NULL);
 INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('2', 'Empleado', NULL, '2', TRUE, NULL);
 INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('3', 'Invitado', NULL, '3', TRUE, NULL);
-INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('4', 'Soporte Técnico', NULL, '0', TRUE, NULL);
+INSERT INTO people(id, name, apppassword, role, visible, image) VALUES ('4', 'Soporte Técnico', 'sha1:860F424F34E69DB63EDEAD53DDF72E6D2C43C5C4', '0', TRUE, NULL);
 
 -- ADD permisos --
 INSERT INTO `dbpermissions` (`CLASSNAME`, `SECTION`, `DISPLAYNAME`, `DESCRIPTION`, `SITEGUID`, `SFLAG`) VALUES
