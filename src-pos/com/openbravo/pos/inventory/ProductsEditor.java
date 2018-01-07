@@ -38,6 +38,10 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,9 +51,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -105,7 +111,10 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
         m_dlSuppliers = (DataLogicSuppliers) app.getBean("com.openbravo.pos.suppliers.DataLogicSuppliers");
             
-        initComponents();
+        initComponents();        
+        
+        Evento_combo mievento = new Evento_combo();  //Coloco Combo a la escucha      
+        cmbScripts.addActionListener(mievento); 
         
         txtWarning.setVisible(false);
         txtExpiry.setVisible(false);
@@ -213,6 +222,91 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
        
             init();
     }
+    
+    private class Evento_combo implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        if(cmbScripts.getSelectedItem().equals("Vencimiento")){
+        txtAttributes.setText("");
+        txtAttributes.setText("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+        "<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">\n" +
+        "\n" +
+        "<properties>\n" +
+        "<!-- fecha de advertencia sobre vencimiento del producto -->\n" +
+        "<entry key=\"WARNING_DATO\">02-08-2018</entry>\n" +
+        "\n" +
+        "<!-- fecha de vencimiento del producto -->\n" +
+        "<entry key=\"EXPIRY_DATO\">03-08-2018</entry>\n" +
+        "\n" +
+        "</properties>"); 
+        }   
+        else if(cmbScripts.getSelectedItem().equals("Multiples Precios")){
+        txtAttributes.setText("");
+        txtAttributes.setText("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+        "<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">\n" +
+        "\n" +
+        "<properties>\n" +        
+        "<entry key=\"Precio 1\">1000</entry>\n" +        
+        "<entry key=\"Precio 2\">2000</entry>\n" +
+        "<entry key=\"Precio 3\">3000</entry>\n" +        
+        "</properties>"); 
+        }
+        else if(cmbScripts.getSelectedItem().equals("Precio por Mayor")){
+        txtAttributes.setText("");
+        txtAttributes.setText("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+        "<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">\n" +
+        "\n" +
+        "<properties>\n" +       
+        "<entry key=\"wsqty\">5</entry>\n" +     
+        "<entry key=\"wsprice\">1000</entry>\n" +       
+        "</properties>"); 
+        } 
+        else if(cmbScripts.getSelectedItem().equals("Hora Feliz")){
+        txtAttributes.setText("");
+        txtAttributes.setText("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+        "<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">\n" +
+        "\n" +
+        "<properties>\n" +       
+        "<entry key=\"hhprice\">1000</entry>\n" +         
+        "</properties>"); 
+        }
+        else if(cmbScripts.getSelectedItem().equals("Todos")){
+        txtAttributes.setText("");
+        txtAttributes.setText("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+        "<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">\n" +
+        "\n" +
+        "<properties>\n" +
+        "<!-- fecha de advertencia sobre vencimiento del producto -->\n" +
+        "<entry key=\"WARNING_DATO\">02-08-2018</entry>\n" +
+        "\n" +
+        "<!-- fecha de vencimiento del producto -->\n" +
+        "<entry key=\"EXPIRY_DATO\">03-08-2018</entry>\n" +
+        "\n" +      
+              
+        "<entry key=\"Precio 1\">1000</entry>\n" +        
+        "<entry key=\"Precio 2\">2000</entry>\n" +
+        "<entry key=\"Precio 3\">3000</entry>\n" +        
+        "\n" +        
+             
+        "<entry key=\"wsqty\">5</entry>\n" +     
+        "<entry key=\"wsprice\">1000</entry>\n" + 
+                
+        "<entry key=\"hhprice\">1000</entry>\n" +         
+                
+        "</properties>");        
+        } 
+        else if(cmbScripts.getSelectedItem().equals("Reset")){
+        txtAttributes.setText("");  
+        txtShowWarning.setText("");
+        txtShowExpiry.setText("");   
+        txtWarning.setText(null);
+        txtExpiry.setText(null); 
+        txtWarningProperties.setText("");
+        txtExpiryProperties.setText("");
+        }
+        }        
+    }
+            
     
     private void init() {
         writeValueEOF(); 
@@ -795,6 +889,32 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
     public Component getComponent() {
         return this;
     }
+    
+    private void Leer() {
+        String aux = "";
+        String texto = "";
+        String resultado = "";
+        try {
+            JFileChooser file = new JFileChooser(System.getProperty("user.dir"));            
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("txt & bin","txt","bin");
+            file.setFileFilter(filtro); 
+            int seleccion=file.showOpenDialog(this);      //Esto es para saber si el usuario acepta o cancela           
+            if(seleccion==JFileChooser.APPROVE_OPTION){
+                File archivo = file.getSelectedFile();
+              if (archivo != null) {
+                FileReader archivos = new FileReader(archivo);
+                BufferedReader leer = new BufferedReader(archivos);
+                while ((aux = leer.readLine()) != null) {
+                    texto += aux + "\n";
+                }
+                leer.close();
+                txtAttributes.setText(texto); 
+              }
+            }                       
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error Importando - " + ex);
+        }
+    }
 
     private void setCode() {
         
@@ -1278,7 +1398,7 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAttributes = new javax.swing.JTextArea();
         btnVence = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        cmbScripts = new javax.swing.JComboBox<>();
 
         setLayout(null);
 
@@ -2243,18 +2363,18 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         jScrollPane1.setViewportView(txtAttributes);
 
         btnVence.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        btnVence.setText("Vencimiento");
+        btnVence.setText("Importar");
         btnVence.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVenceActionPerformed(evt);
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jButton1.setText("Reset");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        cmbScripts.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cmbScripts.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una Opción", "Todos", "Vencimiento", "Multiples Precios", "Precio por Mayor", "Hora Feliz", "Reset" }));
+        cmbScripts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                cmbScriptsActionPerformed(evt);
             }
         });
 
@@ -2263,12 +2383,12 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 725, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(btnVence)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(cmbScripts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnVence)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -2276,7 +2396,7 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVence)
-                    .addComponent(jButton1))
+                    .addComponent(cmbScripts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -2551,38 +2671,20 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
 
     private void btnVenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenceActionPerformed
         // TODO add your handling code here:
-        txtAttributes.setText("");
-        txtAttributes.setText("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
-"<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">\n" +
-"\n" +
-"<properties>\n" +
-"<!-- fecha de advertencia sobre vencimiento del producto -->\n" +
-"<entry key=\"WARNING_DATO\">02-08-2016</entry>\n" +
-"\n" +
-"<!-- fecha de vencimiento del producto -->\n" +
-"<entry key=\"EXPIRY_DATO\">03-08-2016</entry>\n" +
-"\n" +
-"</properties>");  
+        Leer();
     }//GEN-LAST:event_btnVenceActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void cmbScriptsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbScriptsActionPerformed
         // TODO add your handling code here:
-        txtAttributes.setText("");
-        txtShowWarning.setText("");
-        txtShowExpiry.setText("");   
-        txtWarning.setText(null);
-        txtExpiry.setText(null); 
-        txtWarningProperties.setText("");
-        txtExpiryProperties.setText("");
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_cmbScriptsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExpiry;
     private javax.swing.JButton btnVence;
     private javax.swing.JButton btnWarning;
+    private javax.swing.JComboBox<String> cmbScripts;
     private com.alee.extended.colorchooser.WebColorChooserField colourChooser;
     private javax.swing.JButton jBtnShowTrans;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonHTML;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

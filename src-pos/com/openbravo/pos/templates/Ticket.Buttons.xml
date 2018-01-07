@@ -88,7 +88,7 @@
 	<!--  <img-height value="48"/> -->
 
 	<!-- Medium Product button size in Sales screen (Default=ENABLED) -->
-   	<img-width value="128"/>
+   	<img-width value="120"/>
 	<img-height value="60"/>
     
 <!-- Large Product button size in Sales screen (Default=DISABLED)-->

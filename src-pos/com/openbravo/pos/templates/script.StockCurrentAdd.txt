@@ -25,7 +25,19 @@ import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.data.loader.Session;
 import java.util.Properties;
- 
+import com.openbravo.format.Formats;
+import java.lang.Math; 
+import java.util.*;
+import java.text.*;
+import java.util.Calendar;
+import com.openbravo.pos.ticket.TicketInfo;
+import com.openbravo.pos.ticket.ProductInfoExt; 
+import com.openbravo.pos.ticket.TicketLineInfo;
+import com.openbravo.pos.ticket.TicketProductInfo; 
+import java.lang.Double;
+import javax.swing.JOptionPane;
+
+//INICIO REVISION DE INVENTARIO 
 Session session = new Session(dbURL, dbUser, dbPassword);
 DataLogicSales logicsale = new DataLogicSales();
 logicsale.init(session);
@@ -39,7 +51,7 @@ units = logicsale.findProductStock(loc,product,null);
 multiply = 0;
  
 if (line.isProductService() == true) {
-    javax.swing.JOptionPane.showMessageDialog(null, "This is a Service and Stock Level is not checked", "Stock Check", JOptionPane.WARNING_MESSAGE);
+    javax.swing.JOptionPane.showMessageDialog(null, "Esto es un servicio y el stock de inventario no es revisado", "Revisión de Inventario", JOptionPane.WARNING_MESSAGE);
 } else {
     
     for (int i= 0; i < ticket.getLinesCount(); i++) {
@@ -50,9 +62,82 @@ if (line.isProductService() == true) {
     }
     diff = units - line.getMultiply() - multiply;
         if (diff < 0.0) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Not enough stock at this Location " + loc + " - Use Stock Diary to Add Stock to Inventory", "Stock Check", JOptionPane.WARNING_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(null, "No hay suficiente stock en el almacén " + loc + " - Use Movimiento de Existencias para agregar productos al Inventario", "Revisión de Inventario", JOptionPane.WARNING_MESSAGE);           
 	    return "Cancel";
 	 } else {
 	    return null;
 	 }
  }
+//FIN DE REVISION DE INVENTARIO
+
+// INICIO MULTIPLES PRECIOS
+if (line.getProductAttSetInstDesc().equals("Precio 1")) {
+    Price = line.getProperty("Precio 1");
+    Double newPrice = new Double(Price);
+    line.setPriceTax(newPrice);
+}
+else if (line.getProductAttSetInstDesc().equals("Precio 2")) {
+    Price = line.getProperty("Precio 2");
+    Double newPrice = new Double(Price);
+    line.setPriceTax(newPrice);
+}
+else if (line.getProductAttSetInstDesc().equals("Precio 3")) {
+    Price = line.getProperty("Precio 3");
+    Double newPrice = new Double(Price);
+    line.setPriceTax(newPrice);
+}
+// FIN MULTIPLES PRECIOS
+
+// INICIO PRECIO AL POR MAYOR
+int numlines = ticket.getLinesCount() ;
+
+        for (int i = 0; i < numlines; i++) {
+
+            if (ticket.getLine(i).getProperty("wsqty") !=null){
+                if (ticket.getLine(i).getProperty("origprice") == null) {
+                    ticket.getLine(i).setProperty("origprice", String.valueOf(ticket.getLine(i).getPrice()));
+                }
+                if ((ticket.getLine(i).getMultiply()) >= Double.parseDouble(ticket.getLine(i).getProperty("wsqty"))) {
+                    ticket.getLine(i).setPrice(Double.parseDouble(ticket.getLine(i).getProperty("wsprice")));
+                } else {
+                    ticket.getLine(i).setPrice(Double.parseDouble(ticket.getLine(i).getProperty("origprice")));
+                }
+            } 
+       } 
+//FIN PRECIO AL POR MAYOR
+
+//INICIO HORA FELIZ
+Calendar cal = Calendar.getInstance();
+int hour = cal.get(Calendar.HOUR_OF_DAY);
+int minut = cal.get(Calendar.MINUTE);
+
+//Happy hour times
+starth1 = 11;
+startm1 = 10;
+endh1 = 15; 
+endm1 = 20; 
+
+starth2 = 21;
+startm2 = 5;
+endh2 = 22;
+endm2 = 12;
+
+if (hour>=starth1 && hour<=endh1 && minut>=startm1 && minut<=endm1 || hour>=starth2 && hour<=endh2 && minut>=startm2 && minut<=endm2){
+        p = line.getPrice();
+        ln = line.getProperty("product.name");
+        hp = line.getProperty("hhprice");
+        if (hp == null){
+        line.setPrice(p);
+    } else {
+        Double newPrice = new Double(hp);
+        line.setPrice(newPrice);
+        line.setProperty("product.name", ln + " (Happy hour)");
+// Establecer la variable para marcar como Happy Hour y registrar el precio de venta
+        line.setProperty("hhapplied", "yes");
+        line.setProperty("discountedprice", hp.toString());
+// Establecer la variable para marcar como con descuento
+        line.setProperty("product.discounted", "yes");
+    }
+  
+}
+//FIN HORA FELIZ
