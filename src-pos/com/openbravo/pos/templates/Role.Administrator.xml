@@ -65,6 +65,8 @@
     <class name="button.totaldiscount"/>
     <class name="button.print"/>
     <class name="button.opendrawer"/>
+	<class name="button.cashdrawer"/>
+	
 <!--<class name="button.open"/>   -->          <!-- Agregado por Carlos Marín  -->
     
 <!-- Additional button scripts -->

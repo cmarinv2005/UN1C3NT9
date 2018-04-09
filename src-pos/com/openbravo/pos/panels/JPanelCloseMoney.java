@@ -578,7 +578,7 @@ public class JPanelCloseMoney extends javax.swing.JPanel implements JPanelView, 
         m_jSalesTotal.setPreferredSize(new java.awt.Dimension(150, 30));
 
         jLabel7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel7.setText(AppLocal.getIntString("label.total")); // NOI18N
+        jLabel7.setText(AppLocal.getIntString("label.totalcash"));
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 30));
 
         jLabel12.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N

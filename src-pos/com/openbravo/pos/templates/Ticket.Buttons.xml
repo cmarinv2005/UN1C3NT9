@@ -36,7 +36,7 @@
                 
 	<!-- SET Line or Total Discount (Default=TotalDiscount= ENABLED) -->
 	<button key="button.totaldiscount" image="img.discount" code="script.totaldiscount"/>
-	<!-- <button key="button.linediscount" image="img.discount_b" code="script.linediscount"/>  -->
+	<button key="button.linediscount" image="img.discount_b" code="script.linediscount"/>
 
 	<!-- SET Waiter's name (Default=DISABLED) -->
 	<!-- <button key="button.setperson" image="img.user" code="script.SetPerson"/>  -->
@@ -48,7 +48,8 @@
     	<button key="button.print" image="img.ticket_print" template="Printer.TicketPreview"/>
 
 	<!-- SET Open Cashdrawer (Default=ENABLED) -->
-	<button key="button.opendrawer" image="img.cashdrawer" template="Printer.OpenDrawer"/>
+	<!-- <button key="button.opendrawer" image="img.cashdrawer" template="Printer.OpenDrawer"/> -->
+        <button key="button.cashdrawer" image="img.cashdrawer" template="Printer.CashDrawer"/>        
     <!--	<button key="button.open" image="img.cashdrawer" code="abrir.cajon"/>  -->
 
 
@@ -109,8 +110,8 @@
     <!-- SET Stock Level Checking (Default=DISABLED) --> 
         <!-- <event key="ticket.addline" code="script.StockCurrentAdd"/> -->
         <!-- <event key="ticket.setline" code="script.StockCurrentSet"/> -->
-        <event key="ticket.addline" code="script.expiry"/>                       <!-- Activar vencimiento de productos  -->
-        <!--<event key="ticket.addline" code="script.happyhour"/> -->		 <!-- Activar hora feliz  -->
+        <!-- <event key="ticket.addline" code="script.expiry"/>    -->	         <!-- Activar vencimiento de productos  -->
+        <!-- <event key="ticket.addline" code="script.happyhour"/> -->		 <!-- Activar hora feliz  -->
          
         <!-- <event key="ticket.change" code="event.change"/> -->
         <!-- <event key="ticket.addline" code="event.addline"/> -->

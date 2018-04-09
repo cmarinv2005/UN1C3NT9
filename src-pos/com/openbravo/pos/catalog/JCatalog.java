@@ -84,7 +84,8 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
     /** Creates new form JCatalog
      * @param dlSales */
     public JCatalog(DataLogicSales dlSales) {
-        this(dlSales, false, false, 107, 60);
+          this(dlSales, false, false, 150, 60);
+       //  this(dlSales, false, false, 107, 60);
         //  this(dlSales, false, false, 64, 54);
          // this(dlSales, false, false, 32, 32);
     }
@@ -492,7 +493,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         m_jscrollcat.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         m_jscrollcat.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
 
-        m_jListCategories.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        m_jListCategories.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jListCategories.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         m_jListCategories.setFocusable(false);
         m_jListCategories.addListSelectionListener(new javax.swing.event.ListSelectionListener() {

@@ -23,36 +23,36 @@
 <output>
     <display>
         <line>
-            <text align="left" length="10">Order sent to P1</text>
+            <text align="left" length="10">Orden enviada a impresora 1</text>
             <text align="right" length="10">${ticket.printTotal()}</text>
         </line>
         <line>
-            <text align="center" length="20">Thank you.</text>
+            <text align="center" length="20">Gracias</text>
         </line>
     </display>
 
     <ticket printer="1">
         <line></line>
         <line></line>
-        <line size = "1"><text bold = "true" align="center" length="42">Printer 1</text></line>
+        <line size = "1"><text bold = "true" align="center" length="42">Impresora 1</text></line>
         <line></line>
-        <line size = "1"><text>Order : </text><text bold = "true">${ticket.getPickupId()}</text></line>
+        <line size = "1"><text>Orden : </text><text bold = "true">${ticket.getPickupId()}</text></line>
 
-        <line><text align="left" length="15">Date:</text><text>${ticket.printDate()}</text></line>
-        <line><text align="left" length="15">Sent from: </text><text>${ticket.getHost()}</text></line> 
-        <line><text align="left" length="15">Server:</text><text>${ticket.printUser()}</text></line>
+        <line><text align="left" length="15">Fecha:</text><text>${ticket.printDate()}</text></line>
+        <line><text align="left" length="15">Enviado desde: </text><text>${ticket.getHost()}</text></line> 
+        <line><text align="left" length="15">Atendido por:</text><text>${ticket.printUser()}</text></line>
 
     #if ($ticket.getCustomer())
-        <line><text align="left" length="15">Customer:</text><text>${ticket.getCustomer().getName()}</text></line>
-        <line><text align="left" length="15">Account #:</text><text>${ticket.getCustomer().getTaxid()}</text></line>
+        <line><text align="left" length="15">Cliente:</text><text>${ticket.getCustomer().getName()}</text></line>
+        <line><text align="left" length="15">Cuenta #:</text><text>${ticket.getCustomer().getTaxid()}</text></line>
     #end
 
         #if (${tickettext.place} != ${place})
-            <line><text align="left" length="15">Table:</text><text>${place}</text></line>
+            <line><text align="left" length="15">Mesa:</text><text>${place}</text></line>
         #end
         
         <line></line>
-        <line><text align ="left" length="17">Item</text><text align ="right" length="5"></text></line>
+        <line><text align ="left" length="17">Artículo</text><text align ="right" length="5"></text></line>
         <line><text>------------------------------------------</text></line>
 
     #foreach ($ticketline in $ticket.getLines())

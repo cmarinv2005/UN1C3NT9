@@ -175,6 +175,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private TicketInfo m_ticketCopy;
     private AppConfig m_config;
    
+    private int itemp;
+    private boolean showminimo=false;
     
     /** Creates new form JTicketView */
     public JPanelTicket() {
@@ -203,6 +205,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         dlCustomers = (DataLogicCustomers) m_App.getBean("com.openbravo.pos.customers.DataLogicCustomers");
         dlReceipts = (DataLogicReceipts) app.getBean("com.openbravo.pos.sales.DataLogicReceipts");
 
+        if ("true".equals(m_App.getProperties().getProperty("till.minimo"))) { 
+           showminimo=true; 
+        }
+        
         if (!m_App.getDeviceScale().existsScale()) {
             m_jbtnScale.setVisible(false);
         }
@@ -433,9 +439,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                         if (sProduct != null) {
                             ProductInfoExt prod = JPanelTicket.this.dlSales.getProductInfo(sProduct);
                             if (prod.getImage() != null) {
-                                m_jImage.setImage(prod.getImage());   //Coloco la imagen en el cuadro de ventas                                
+                                m_jImage.setImage(prod.getImage());   //Coloco la imagen en el cuadro de ventas 
+                                if(showminimo ==  true){
+                                  Botonstock();                         // OJO CAMBIAR                                  
+                                }                                       
                             } else {
-                                m_jImage.setImage(null);              // producto sin imagen			
+                                m_jImage.setImage(null);                                  
+                                if(showminimo ==  true){
+                                  Botonstock();                         // OJO CAMBIAR                                  
+                                }                         
                             }
                         }
                     } catch (BasicException ex) {
@@ -625,9 +637,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         if (i < 0){
             Toolkit.getDefaultToolkit().beep();
-        } else {               
+        } else {                  
             removeTicketLine(i);
-            jCheckStock.setText("");
+            if(showminimo ==  true){
+               Botonstock();           // OJO CAMBIAR                
+            }
         }     
      }
      
@@ -683,93 +697,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         if (listener  != null){           
             listener.restart(); 
         }
-    }
-    
-    private void consultaInventario(){        
-        if (listener  != null) {
-                listener.stop();
-            } 
-           
-            int i = m_ticketlines.getSelectedIndex();
-            if (i < 0) {
-                Toolkit.getDefaultToolkit().beep();
-            } else {
-                try {
-                    TicketLineInfo line = m_oTicket.getLine(i);
-
-                    String pId = line.getProductID();
-                    ProductStock checkProduct;
-
-                    checkProduct = dlSales.getProductStockState(pId);
-                    double dUnits = checkProduct.getUnits();
-                    int iUnits;
-                    iUnits = (int) dUnits;  
-                    
-                    Double pMin;
-                    Double pMax;
-                    Double pBuy;
-                    Double pSell;
-                    pBuy = checkProduct.getPriceBuy();
-                    pSell = checkProduct.getPriceSell(); 
-                    
-                    if (checkProduct.getMinimum() != null) { 
-                        pMin = checkProduct.getMinimum();
-                    } else {
-                        pMin = 0.; 
-                    }
-                    if (checkProduct.getMaximum() != null) { 
-                        pMax = checkProduct.getMaximum();
-                    } else {
-                        pMax = 0.; 
-                    }                    
-
-                    String content;
-                    
-                    content = "<html>"+
-                            
-           "<table border='3 px'>" +
-            "<caption><font color='red'>Resumen del Producto</font></caption></br>" +                
-            "<tr>" +
-                "<td><b>" + AppLocal.getIntString("label.locale") +"</b></td>" +
-                "<td><b><font color='blue'>" + checkProduct.getLocation() + "</font></td>" +                
-            "</tr>" +
-            "<tr>" +
-                "<td><b>" + AppLocal.getIntString("label.units2") + "</b></td>" +
-                "<td><b<font color='blue'>" + iUnits + "</font></td>" +                
-            "</tr>" +
-            "<tr>" +
-               "<td><b>" + AppLocal.getIntString("label.minimum") + "</b></td>" +
-                "<td><b<font color='blue'>" + pMin + "</font></td>" +                
-            "</tr>" +
-            "<tr>" +
-                "<td><b>" + AppLocal.getIntString("label.maximum") + "</b></td>" +   
-                "<td><b<font color='blue'>" + pMax + "</font></td>" +                
-            "</tr>" +
-            "<tr>" +
-                "<td><b>" + AppLocal.getIntString("label.prodvaluebuy") + "</b></td>" +
-                "<td><b<font color='blue'>" + " $ " + pBuy + "</font></td>" +                 
-            "</tr>" +
-            "<tr>" +
-                "<td><b>" + AppLocal.getIntString("label.prodvaluesell") + "</b></td>" +
-                "<td><b<font color='blue'>" + " $ " + pSell + "</font></td>" +                 
-            "</tr>"  +            
-        "</table>";  
-                                                  
-                      JFrame frame = new JFrame();                  
-                                        
-                      JOptionPane.showMessageDialog(frame, 
-                       content,                             
-                      "Info", 
-                      JOptionPane.INFORMATION_MESSAGE);    
-                        
-                } catch (BasicException ex) {
-                    Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }       
-       
-            if (listener  != null){           
-                listener.restart(); 
-            }       
     }
     
     private void impresionRemota(){
@@ -982,8 +909,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             m_jTotalEuros.setText(null); 
             jCheckStock.setText(null);
             lblShowTotal.setText(null);
-
-            checkStock();
+            
+            if(showminimo ==  true){
+               checkStock();           // OJO CAMBIAR                 
+            }  
+            
             countArticles();        
             stateToZero();
             repaint();
@@ -1212,8 +1142,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
             visorTicketLine(oLine);
             printPartialTotals();   
-            stateToZero();  
-            checkStock();
+            stateToZero(); 
+            if(showminimo ==  true){
+              checkStock();       // OJO CAMBIAR            
+            }             
             countArticles();
             
             executeEvent(m_oTicket, m_oTicketExt, "ticket.change");             
@@ -1254,7 +1186,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                         if (input == 0) {
                             m_oTicket.removeLine(i);
                             m_ticketlines.removeTicketLine(i);
-                            m_jImage.setImage(null);
+                            m_jImage.setImage(null);                            
+                            jCheckStock.setText("");
                         }    
                     } else {                            
                         JOptionPane.showMessageDialog(this, 
@@ -1277,8 +1210,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
            
             visorTicketLine(null);
             printPartialTotals();
-            stateToZero();
-            checkStock();
+            stateToZero();            
+            if(showminimo ==  true){
+              checkStock();       // OJO CAMBIAR       
+            }  
             countArticles();
             
             executeEventAndRefresh("ticket.change");
@@ -1336,6 +1271,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jPor.setText("");
         m_jPrice.setText("");
         m_sBarcode = new StringBuffer();
+        jCheckStock.setText("");
             
         m_iNumberStatus = NUMBER_INPUTZERO;
         m_iNumberStatusInput = NUMBERZERO;
@@ -1467,8 +1403,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 sCodetype = "EAN";                                              // Ensure not null   
             }   
             
+        if ("true".equals(m_App.getProperties().getProperty("till.customer"))) {      
             if (sCode.startsWith("C")                 
-                    || sCode.startsWith("c")) {    
+                    || sCode.startsWith("c")) {  
                 try {
                     String card = sCode;
                     CustomerInfoExt newcustomer = dlSales.findCustomerExt(card);
@@ -1494,8 +1431,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                         .getIntString("message.nocustomer"), e).show(this);           
                 }
                     stateToZero();
-
-            } else if (sCode.startsWith(";")) {
+              }
+            } else if (sCode.startsWith(";")) {  
                     stateToZero();
 
 
@@ -1821,7 +1758,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
             
             if ((cTrans == '\u0054') || (cTrans == '\u0074')) {                         //T Nueva Venta
-                stateToZero();                
+                stateToZero();   
             }
             
             if ((cTrans == '\u0059') || (cTrans == '\u0079')) {                         //Y Borrar Venta Actual
@@ -1834,7 +1771,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             
             if ((cTrans == '\u0049') || (cTrans == '\u0069')) {                          //I Consultar Inventario
                 stateToZero(); 
-                consultaInventario();
+                checkStock();
+                consultarInventario();                
             }            
                         
             if ((cTrans == '\u004F') || (cTrans == '\u006F')) {                          //O Impresora Remota
@@ -2644,18 +2582,23 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     ProductStock checkProduct;
                     checkProduct = dlSales.getProductStockState(pId);
                     
-                    if (checkProduct != null) {
+                    double dUnits = checkProduct.getUnits();                                                             
+                    jCheckStock.setText(Double.toString(dUnits));
+                    jCheckStock.setForeground(Color.darkGray);
+                    
+                    double dMinimum = checkProduct.getMinimum();
+                    double dMaximum = checkProduct.getMaximum();
+                    
+                    if (checkProduct != null) {                      
 
-                        if (checkProduct.getUnits() <=0) {
-                            jCheckStock.setForeground(Color.magenta);
-                        } else {
+                        if (dUnits <= dMinimum  || dUnits <=0.00){                            
+                           jCheckStock.setForeground(Color.magenta); 
+                           JOptionPane.showMessageDialog(null, "Tiene "+dUnits+ " Unidades y lo mínimo en existencias debería ser "+dMinimum);
+                       }                               
+                        else {
                             jCheckStock.setForeground(Color.darkGray);
                         }
-
-                        double dUnits = checkProduct.getUnits();
-                        int iUnits;
-                        iUnits = (int) dUnits;
-                        jCheckStock.setText(Integer.toString(iUnits));
+                        
                     } else {
                         jCheckStock.setText(null);
                     }                    
@@ -3458,7 +3401,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             Toolkit.getDefaultToolkit().beep();
         } else {         
             removeTicketLine(i);
-            jCheckStock.setText("");
+            if(showminimo ==  true){
+               Botonstock();           // OJO CAMBIAR              
+            }                 
         }     
     }//GEN-LAST:event_m_jDeleteActionPerformed
 
@@ -3477,7 +3422,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         } 
         int i = m_ticketlines.getSelectedIndex();
         if (i < 0) {
-			m_jImage.setImage(null);  
+	    m_jImage.setImage(null);  
             Toolkit.getDefaultToolkit().beep(); // no line selected
         } else {
             try {
@@ -3652,9 +3597,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             stateToZero();
             m_jKeyFactory.requestFocus();    
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jCheckStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckStockActionPerformed
-
+    
+    private void Botonstock(){
         if (listener  != null) {
             listener.stop();
         }
@@ -3669,35 +3613,41 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
                 ProductStock checkProduct;
                 checkProduct = dlSales.getProductStockState(pId);
+                
+                double dUnits = checkProduct.getUnits();    
+                double dMinimum = checkProduct.getMinimum();
+                double dMaximum = checkProduct.getMaximum();
+                
+                jCheckStock.setText(Double.toString(dUnits));
+                jCheckStock.setForeground(Color.darkGray);
 
                 if (checkProduct != null) {
 
-                    if (checkProduct.getUnits() <=0) {
+                    if (dUnits <= dMinimum  || dUnits <=0.00){                    
                         jCheckStock.setForeground(Color.magenta);
                     } else {
                         jCheckStock.setForeground(Color.darkGray);
                     }
-
-                    double dUnits = checkProduct.getUnits();
-                    int iUnits;
-                    iUnits = (int) dUnits;
-                    jCheckStock.setText(Integer.toString(iUnits));
+                    
                 } else {
-                    jCheckStock.setText(null);
+                    jCheckStock.setText("");
                 }
             } catch (BasicException ex) {
                 Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        }  
+        
+            if (listener  != null){
+                listener.restart();
             }
-        }
-
-        if (listener  != null){
-            listener.restart();
-        }
+    }
+    
+    private void jCheckStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckStockActionPerformed
+             Botonstock();    
     }//GEN-LAST:event_jCheckStockActionPerformed
 
-    private void jCheckStockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckStockMouseClicked
-        if (evt.getClickCount()==2) {
-            if (listener  != null) {
+    private void consultarInventario(){
+        if (listener  != null) {
                 listener.stop();
             }
 
@@ -3706,16 +3656,31 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 Toolkit.getDefaultToolkit().beep();
             } else {
                 try {
-                    TicketLineInfo line = m_oTicket.getLine(i);
-
+                    TicketLineInfo line = m_oTicket.getLine(i);         
+                    
                     String pId = line.getProductID();
                     ProductStock checkProduct;
 
                     checkProduct = dlSales.getProductStockState(pId);
                     double dUnits = checkProduct.getUnits();
-                    int iUnits;
-                    iUnits = (int) dUnits;
+                    double dMinimum = checkProduct.getMinimum();
+                    double dMaximum = checkProduct.getMaximum();
+        
+                    jCheckStock.setText(Double.toString(dUnits));
+                    jCheckStock.setForeground(Color.darkGray);
 
+                    if (checkProduct != null) {
+
+                    if (dUnits <= dMinimum  || dUnits <=0.00){                    
+                        jCheckStock.setForeground(Color.magenta);
+                    } else {
+                        jCheckStock.setForeground(Color.darkGray);
+                    }
+                    
+                    } else {
+                    jCheckStock.setText("");
+                    }
+        
                     Double pMin;
                     Double pMax;
                     Double pBuy;
@@ -3746,7 +3711,110 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     "</tr>" +
                     "<tr>" +
                     "<td><b>" + AppLocal.getIntString("label.units2") + "</b></td>" +
-                    "<td><b<font color='blue'>" + iUnits + "</font></td>" +
+                    "<td><b<font color='blue'>" + dUnits + "</font></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.minimum") + "</b></td>" +
+                    "<td><b<font color='blue'>" + pMin + "</font></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.maximum") + "</b></td>" +
+                    "<td><b<font color='blue'>" + pMax + "</font></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.prodvaluebuy") + "</b></td>" +
+                    "<td><b<font color='blue'>" + " $ " + pBuy + "</font></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.prodvaluesell") + "</b></td>" +
+                    "<td><b<font color='blue'>" + " $ " + pSell + "</font></td>" +
+                    "</tr>"  +
+                    "</table>";
+
+                    JFrame frame = new JFrame();
+
+                    JOptionPane.showMessageDialog(frame,
+                        content,
+                        "Info",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (BasicException ex) {
+                    Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (listener  != null){
+                listener.restart();
+            }
+    }
+    
+    private void jCheckStockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckStockMouseClicked
+         if (evt.getClickCount()==2) {
+            if (listener  != null) {
+                listener.stop();
+            }
+
+            int i = m_ticketlines.getSelectedIndex();
+            if (i < 0) {
+                Toolkit.getDefaultToolkit().beep();
+            } else {
+                try {
+                    TicketLineInfo line = m_oTicket.getLine(i);         
+                    
+                    String pId = line.getProductID();
+                    ProductStock checkProduct;
+
+                    checkProduct = dlSales.getProductStockState(pId);
+                    double dUnits = checkProduct.getUnits();
+                    double dMinimum = checkProduct.getMinimum();
+                    double dMaximum = checkProduct.getMaximum();
+        
+                    jCheckStock.setText(Double.toString(dUnits));
+                    jCheckStock.setForeground(Color.darkGray);
+
+                    if (checkProduct != null) {
+
+                    if (dUnits <= dMinimum  || dUnits <=0.00){                    
+                        jCheckStock.setForeground(Color.magenta);
+                    } else {
+                        jCheckStock.setForeground(Color.darkGray);
+                    }
+                    
+                    } else {
+                    jCheckStock.setText("");
+                    }
+        
+                    Double pMin;
+                    Double pMax;
+                    Double pBuy;
+                    Double pSell;
+                    pBuy = checkProduct.getPriceBuy();
+                    pSell = checkProduct.getPriceSell();
+
+                    if (checkProduct.getMinimum() != null) {
+                        pMin = checkProduct.getMinimum();
+                    } else {
+                        pMin = 0.;
+                    }
+                    if (checkProduct.getMaximum() != null) {
+                        pMax = checkProduct.getMaximum();
+                    } else {
+                        pMax = 0.;
+                    }
+
+                    String content;
+
+                    content = "<html>"+
+
+                    "<table border='3 px'>" +
+                    "<caption><font color='red'>Resumen del Producto</font></caption></br>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.locale") +"</b></td>" +
+                    "<td><b><font color='blue'>" + checkProduct.getLocation() + "</font></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td><b>" + AppLocal.getIntString("label.units2") + "</b></td>" +
+                    "<td><b<font color='blue'>" + dUnits + "</font></td>" +
                     "</tr>" +
                     "<tr>" +
                     "<td><b>" + AppLocal.getIntString("label.minimum") + "</b></td>" +

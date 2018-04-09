@@ -880,7 +880,6 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
        
     }
     
-
     /**
      *
      * @return this
@@ -1045,13 +1044,16 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
                     , m_jDisplay.getCaretPosition());
                 break;
             case 7:
-                m_jDisplay.insert("<img src=Image URL>"
+                m_jDisplay.insert("<img src=Image URL>"                  
                     , m_jDisplay.getCaretPosition());
                 break;                
             case 8: htmlString = ohtmlString;
-                m_jDisplay.setText(htmlString);                
-            default: htmlString +="";
-                m_jDisplay.setText(htmlString);                            
+                m_jDisplay.setText(htmlString);  
+            case 9: htmlString = ohtmlString;
+                m_jDisplay.setText(htmlString);    
+                break; 
+            default: htmlString = ohtmlString;
+                m_jDisplay.setText(htmlString);     
         }
     }
 
@@ -2427,6 +2429,7 @@ public final class ProductsEditor extends javax.swing.JPanel implements EditorRe
     }//GEN-LAST:event_none
 
     private void m_jNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_m_jNameFocusLost
+        btn=9;
         setDisplay(btn);
     }//GEN-LAST:event_m_jNameFocusLost
 

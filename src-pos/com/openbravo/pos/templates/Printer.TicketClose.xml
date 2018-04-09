@@ -26,11 +26,11 @@
     <display>
     #foreach ($paymentline in $ticket.payments)
             <line>
-              <text align="left" length="8">Given:</text>
+              <text align="left" length="8">Entregado:</text>
               <text align ="right" length="12">${paymentline.printPaid()}</text>
             </line>
             <line>
-              <text align="left" length="8">Change:</text>
+              <text align="left" length="8">Cambio:</text>
               <text align ="right" length="12">${paymentline.printChange()}</text>
             </line>
     #end

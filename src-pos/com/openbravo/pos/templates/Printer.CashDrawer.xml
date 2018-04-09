@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<output>
+
+<opendrawer/>
+
+<ticket>	       
+<line>
+ <text align="left" length="20">Fecha de Apertura:</text><text>${ticket.printDate()}</text>              
+</line>       
+</ticket>
+
+</output>

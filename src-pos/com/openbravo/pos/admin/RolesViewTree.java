@@ -93,7 +93,7 @@ public final class RolesViewTree extends javax.swing.JPanel implements EditorRec
      */
     public RolesViewTree(DataLogicAdmin dlAdmin, DirtyManager dirty, AppView app) {
         initComponents();
-
+    
         passedDirty = dirty;
         jRightsLevel.addChangeListener(dirty);
 
@@ -112,7 +112,7 @@ public final class RolesViewTree extends javax.swing.JPanel implements EditorRec
         root.setUserObject("All Permissions");
         uTree.getCheckingModel().setCheckingMode(TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_CHECK);
         uTree.clearSelection();
-
+ 
         DefaultCheckboxTreeCellRenderer renderer = (DefaultCheckboxTreeCellRenderer) uTree.getCellRenderer();
         renderer.setLeafIcon(null);
         renderer.setClosedIcon(null);
@@ -478,10 +478,10 @@ public final class RolesViewTree extends javax.swing.JPanel implements EditorRec
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel1.setText(bundle.getString("label.rightslevel")); // NOI18N
 
-        jRightsLevel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jRightsLevel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jRightsLevel.setModel(new javax.swing.SpinnerNumberModel(3, 0, 9, 1));
         jRightsLevel.setMinimumSize(new java.awt.Dimension(35, 28));
         jRightsLevel.setPreferredSize(new java.awt.Dimension(35, 28));
@@ -505,10 +505,10 @@ public final class RolesViewTree extends javax.swing.JPanel implements EditorRec
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jDeleteEntry)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRightsLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jRightsLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 45, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane2))

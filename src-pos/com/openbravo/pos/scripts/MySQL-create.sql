@@ -975,7 +975,8 @@ INSERT INTO `dbpermissions` (`CLASSNAME`, `SECTION`, `DISPLAYNAME`, `DESCRIPTION
 ('/com/openbravo/reports/inventoryc.bs', '##label.sectionstock', '##label.displayname204', '##label.description204', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('/com/openbravo/reports/inventoryd.bs', '##label.sectionstock', '##label.displayname205', '##label.description205', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('/com/openbravo/reports/sales_productsalesprofit_summary.bs', '##label.sectionsales', '##label.displayname206', '##label.description206', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
-('/com/openbravo/reports/itemsremovalreport.bs', '##label.sectionsales', '##label.displayname207', '##label.description207', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
+('/com/openbravo/reports/itemsremovalreport.bs', '##label.sectionsales', '##label.displayname207', '##label.description207', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
+('button.cashdrawer', '##label.sectionbuttons', '##label.displayname208', '##label.description208', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
 
 -- ADD resources --
 -- MENU
@@ -1088,7 +1089,7 @@ INSERT INTO resources(id, name, restype, content) VALUES('124', 'Printer.Ticket_
 INSERT INTO resources(id, name, restype, content) VALUES('125', 'Ticket.LineDisplay', 0, $FILE{/com/openbravo/pos/templates/Ticket.LineDisplay.xml});
 INSERT INTO resources(id, name, restype, content) VALUES('126', 'Ticket.CloseTimer', 0, $FILE{/com/openbravo/pos/templates/Ticket.CloseTimer.xml});
 INSERT INTO resources(id, name, restype, content) VALUES('127', 'Display.Message', 0, $FILE{/com/openbravo/pos/templates/Display.Message.xml});
-
+INSERT INTO resources(id, name, restype, content) VALUES('128', 'Printer.CashDrawer', 0, $FILE{/com/openbravo/pos/templates/Printer.CashDrawer.xml});
 
 -- ADD CATEGORIES
 INSERT INTO categories(id, name) VALUES ('000', 'Category Standard');

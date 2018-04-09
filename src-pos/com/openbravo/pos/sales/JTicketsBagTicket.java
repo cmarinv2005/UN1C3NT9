@@ -49,10 +49,13 @@ import com.openbravo.pos.util.ReportUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.print.PrintService;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -61,6 +64,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 /**
@@ -325,6 +329,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jRefund = new javax.swing.JButton();
         m_jPrint = new javax.swing.JButton();
         m_jPrint1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         m_jPanelTicket = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -433,6 +438,15 @@ public class JTicketsBagTicket extends JTicketsBag {
             }
         });
         m_jButtons.add(m_jPrint1);
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/img.ticket_print.png"))); // NOI18N
+        jButton3.setPreferredSize(new java.awt.Dimension(60, 45));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        m_jButtons.add(jButton3);
 
         m_jOptions.add(m_jButtons);
 
@@ -615,6 +629,25 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             }
         }
     }//GEN-LAST:event_m_jPrint1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String[] options = {"Media Carta", "Carta Completa", "Cancelar"};
+        int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el tamaño del papel", "Imprimir Factura", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        if (seleccion == 0){
+            if (m_ticket != null) {
+                printReport("/com/openbravo/reports/invoicehalfletter1",m_ticket);
+            }
+        }
+
+        if (seleccion == 1){
+            if (m_ticket != null) {
+                printReport("/com/openbravo/reports/invoice1",m_ticket);
+            }
+        }
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
     
     private void printReport(String resourcefile, TicketInfo ticket) {
         try {     
@@ -663,6 +696,7 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

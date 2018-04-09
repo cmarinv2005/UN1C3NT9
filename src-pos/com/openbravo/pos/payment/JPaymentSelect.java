@@ -760,9 +760,9 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
 
     private void m_jButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonPrintActionPerformed
         if (!m_jButtonPrint.isSelected()) {
-            jlblPrinterStatus.setText("Printer OFF");            
+            jlblPrinterStatus.setText("Impresora OFF");            
         } else {
-            jlblPrinterStatus.setText("Printer ON");
+            jlblPrinterStatus.setText("Impresora ON");
         }
     }//GEN-LAST:event_m_jButtonPrintActionPerformed
 

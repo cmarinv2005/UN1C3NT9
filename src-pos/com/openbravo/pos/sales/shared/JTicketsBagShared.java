@@ -203,7 +203,7 @@ public class JTicketsBagShared extends JTicketsBag {
         }    
     }    
     
-    private void newTicket() {      
+    private void newTicket() { 
         
         saveCurrentTicket();
 

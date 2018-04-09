@@ -122,7 +122,7 @@ public class ScaleSamsungEsp implements Scale, SerialPortEventListener {
                 m_CommPortPrinter.addEventListener(this);
                 m_CommPortPrinter.notifyOnDataAvailable(true);
                 
-                m_CommPortPrinter.setSerialPortParams(4800,  
+                m_CommPortPrinter.setSerialPortParams(4800,          
                         SerialPort.DATABITS_8, 
                         SerialPort.STOPBITS_1, 
                         SerialPort.PARITY_ODD); // Configuramos el puerto
