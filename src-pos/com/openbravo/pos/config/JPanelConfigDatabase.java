@@ -320,7 +320,7 @@ public class JPanelConfigDatabase extends javax.swing.JPanel implements PanelCon
                 jButtonTestActionPerformed(evt);
             }
         });
-        add(jButtonTest, new org.netbeans.lib.awtextra.AbsoluteConstraints(139, 455, -1, -1));
+        add(jButtonTest, new org.netbeans.lib.awtextra.AbsoluteConstraints(139, 455, 150, -1));
         add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 137, 880, -1));
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
@@ -344,7 +344,7 @@ public class JPanelConfigDatabase extends javax.swing.JPanel implements PanelCon
                 jButtonTest1ActionPerformed(evt);
             }
         });
-        add(jButtonTest1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 455, -1, -1));
+        add(jButtonTest1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 455, 150, -1));
 
         jtxtDbPassword1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jtxtDbPassword1.setEnabled(false);
