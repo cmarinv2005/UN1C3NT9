@@ -1090,6 +1090,7 @@ INSERT INTO resources(id, name, restype, content) VALUES('125', 'Ticket.LineDisp
 INSERT INTO resources(id, name, restype, content) VALUES('126', 'Ticket.CloseTimer', 0, $FILE{/com/openbravo/pos/templates/Ticket.CloseTimer.xml});
 INSERT INTO resources(id, name, restype, content) VALUES('127', 'Display.Message', 0, $FILE{/com/openbravo/pos/templates/Display.Message.xml});
 INSERT INTO resources(id, name, restype, content) VALUES('128', 'Printer.CashDrawer', 0, $FILE{/com/openbravo/pos/templates/Printer.CashDrawer.xml});
+INSERT INTO resources(id, name, restype, content) VALUES('129', 'script.pricesellbuy', 0, $FILE{/com/openbravo/pos/templates/script.pricesellbuy.txt});
 
 -- ADD CATEGORIES
 INSERT INTO categories(id, name) VALUES ('000', 'Category Standard');

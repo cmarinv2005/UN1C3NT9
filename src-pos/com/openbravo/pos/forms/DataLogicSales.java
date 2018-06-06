@@ -225,7 +225,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                     Datas.BOOLEAN})
         ); 
     }
-    
+     
 // Import Creates
     public final void createCategory(Object[] category) throws BasicException {
         m_createCat.exec(category);
@@ -2414,6 +2414,34 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                     , new SerializerWriteBasic(Datas.STRING, Datas.STRING, Datas.STRING)
                     , SerializerReadDouble.INSTANCE);
 
+        Double d = (Double) p.find(warehouse, id, attsetinstid);
+        return d == null ? 0.0 : d;
+    }
+    
+    //PriceBuy - logicsale.findProductPriceBuy(loc,product,null);
+public final double findProductPriceBuy(String warehouse, String id, String attsetinstid) throws BasicException {
+        PreparedSentence p = attsetinstid == null
+                ? new PreparedSentence(s, "SELECT products.pricebuy FROM products,stockcurrent "
+                    + "WHERE stockcurrent.LOCATION = ? AND stockcurrent.PRODUCT = ? AND stockcurrent.ATTRIBUTESETINSTANCE_ID IS NULL"
+                    , new SerializerWriteBasic(Datas.STRING, Datas.STRING)
+                    , SerializerReadDouble.INSTANCE)
+                : new PreparedSentence(s, "SELECT products.pricebuy FROM products,stockcurrent "
+                    + "WHERE stockcurrent.LOCATION = ? AND stockcurrent.PRODUCT = ? AND stockcurrent.ATTRIBUTESETINSTANCE_ID = ?"
+                    , new SerializerWriteBasic(Datas.STRING, Datas.STRING, Datas.STRING)
+                    , SerializerReadDouble.INSTANCE);
+        Double d = (Double) p.find(warehouse, id, attsetinstid);
+        return d == null ? 0.0 : d;
+    }
+
+//PriceSell - logicsale.findProductPriceBuy(loc,product,null);
+    public final double findProductPriceSell(String warehouse, String id, String attsetinstid) throws BasicException {
+        PreparedSentence p = attsetinstid == null
+                ? new PreparedSentence(s, "SELECT products.pricesell FROM products,stockcurrent WHERE stockcurrent.LOCATION = ? AND stockcurrent.PRODUCT = ? and products.id=stockcurrent.product AND stockcurrent.ATTRIBUTESETINSTANCE_ID IS NULL"
+                    , new SerializerWriteBasic(Datas.STRING, Datas.STRING)
+                    , SerializerReadDouble.INSTANCE)
+                : new PreparedSentence(s, "SELECT products.pricesell FROM products,stockcurrent WHERE stockcurrent.LOCATION = ? AND stockcurrent.PRODUCT = ? and products.id=stockcurrent.product AND stockcurrent.ATTRIBUTESETINSTANCE_ID = ?"
+                    , new SerializerWriteBasic(Datas.STRING, Datas.STRING, Datas.STRING)
+                    , SerializerReadDouble.INSTANCE);
         Double d = (Double) p.find(warehouse, id, attsetinstid);
         return d == null ? 0.0 : d;
     }

@@ -29,6 +29,9 @@
 		${ticketline.printName()} 
 	#end
 	&lt;br&gt;${ticketline.getProductAttSetInstDesc()}"/>
+	
+    <!-- <column name="label.prodpricebuy" width="50" align="right" value="${ticketline.getProperty('LineBuyPrice','0.0')}"/> -->
+    <!-- <column name="label.prodpricesell" width="50" align="right" value="${ticketline.getProperty('LineSellPrice','0.0')}"/> -->
 
     <column name="label.price" width="50" align="right" value="${ticketline.printPrice()}"/>
     <column name="label.units" width="50" align="right" value="x${ticketline.printMultiply()}"/>

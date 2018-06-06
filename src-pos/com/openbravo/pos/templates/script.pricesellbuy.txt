@@ -1,0 +1,27 @@
+import com.openbravo.data.loader.Session;
+import com.openbravo.pos.forms.DataLogicSales;
+import com.openbravo.pos.forms.DataLogicSystem;
+import java.text.NumberFormat;
+
+Session session = new Session(dbURL, dbUser, dbPassword);
+DataLogicSales logicsale = new DataLogicSales();
+logicsale.init(session);
+DataLogicSystem logicsystem = new DataLogicSystem();
+logicsystem.init(session);
+Properties p = logicsystem.getResourceAsProperties(hostname + "/properties");
+String loc = p.getProperty("location");
+
+  product = line.getProductID();
+
+  LineBuyPrice = logicsale.findProductPriceBuy(loc,product,null);  //REQUIRES SOURCE CODE CHANGE
+  LineSellPrice = logicsale.findProductPriceSell(loc,product,null);  //REQUIRES SOURCE CODE CHANGE
+
+   if(LineSellPrice <= LineBuyPrice) {
+           javax.swing.JOptionPane.showMessageDialog(null, "El precio de Venta $" + LineSellPrice +  " Es menor o igual al precio de Compra", "Revisión de Precios", JOptionPane.WARNING_MESSAGE);    
+    }
+
+  NumberFormat formatter = NumberFormat.getCurrencyInstance();
+  LineBuyPrice = (formatter.format(LineBuyPrice));
+  LineSellPrice = (formatter.format(LineSellPrice));
+  line.setProperty("LineBuyPrice",LineBuyPrice.toString());
+  line.setProperty("LineSellPrice",LineSellPrice.toString());
