@@ -91,6 +91,8 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     
     private SentenceList m_voucherlist;
     
+    private SentenceExec m_updatePlaces; 
+    
     /** Creates a new instance of DataLogicSystem */
     public DataLogicSystem() {            
     }
@@ -404,6 +406,12 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
                     Datas.STRING
                 }));        
         
+        m_updatePlaces = new StaticSentence(s, "UPDATE PLACES SET X = ?, Y = ? "
+                + "WHERE ID = ?   ", new SerializerWriteBasic(new Datas[]{
+            Datas.INT,
+            Datas.INT,
+            Datas.STRING
+        })); 
         
         resetResourcesCache();        
     }
@@ -839,7 +847,9 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
         return "new";
     } 
         
-        
+    public final void updatePlaces(int x, int y, String id) throws BasicException {
+        m_updatePlaces.exec(x, y, id);
+    }    
         
     public final SentenceList getVouchersActiveList() {
         return m_voucherlist;

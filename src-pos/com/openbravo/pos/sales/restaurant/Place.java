@@ -48,11 +48,14 @@ public class Place implements SerializableRead, java.io.Serializable {
     private String m_sName;
     private int m_ix;
     private int m_iy;
+    private int m_diffx;
+    private int m_diffy;
     private String m_sfloor;
     private String m_customer;
     private String m_waiter;
     private String m_ticketId;
     private Boolean m_tableMoved;
+    private Boolean m_changed = false; 
     
     private boolean m_bPeople;
     private JButton m_btn;
@@ -101,6 +104,8 @@ public class Place implements SerializableRead, java.io.Serializable {
         m_btn.setText(m_sName);
         m_btn.setMargin(new Insets(2,5,2,5));
         
+        m_diffx=0;
+        m_diffy=0;
 
 /**
  * Requested feature - set transparency 
@@ -139,6 +144,38 @@ public class Place implements SerializableRead, java.io.Serializable {
      * @return
      */
     public int getY() { return m_iy; }
+    
+    public void setX(int x) {
+        this.m_ix = x;
+    }
+
+    public void setY(int y) {
+        this.m_iy = y;
+    }
+    
+    public int getDiffX() {
+        return m_diffx;
+    }
+
+    public int getDiffY() {
+        return m_diffy;
+    }
+
+    public void setDiffX(int x) {
+        this.m_diffx = x;
+    }
+    
+    public void setDiffY(int y) {
+        this.m_diffy = y;
+    }
+    
+    public Boolean getChanged() {
+        return m_changed;
+    }
+
+    public void setChanged(Boolean changed) {
+        this.m_changed = changed;
+    } 
 
     /**
      *

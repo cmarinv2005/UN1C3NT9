@@ -61,6 +61,8 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
     private Place m_PlaceCurrent;
 
     private ServerCurrent m_ServerCurrent;
+    private Boolean actionEnabled = true; 
+    private DataLogicSystem dlSystem = null;
     
     private Place m_PlaceClipboard;  
     private CustomerInfo customer;
@@ -75,7 +77,10 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
     private String customerDetails;
     private String tableName;
     
-    private Boolean transBtns;    
+    private Boolean transBtns;
+
+    private int newX;
+    private int newY; 
     
     /** Creates new form JTicketsBagRestaurant
      * @param app
@@ -90,6 +95,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         
         dlReceipts = (DataLogicReceipts) app.getBean("com.openbravo.pos.sales.DataLogicReceipts");
         dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSales");
+        dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystem");
         
         m_restaurantmap = new JTicketsBagRestaurant(app, this);
         m_PlaceCurrent = null;
@@ -122,6 +128,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         
         initComponents(); 
 
+        m_jbtnSave.setVisible(false);
         
         if (m_afloors.size() > 1) {
             JTabbedPane jTabFloors = new JTabbedPane();
@@ -186,6 +193,25 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                 pl.getButton().setContentAreaFilled(false);
                 pl.getButton().setBorderPainted(false);
             }
+            
+            pl.getButton().addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent E) {
+                if (!actionEnabled) {
+                    if (pl.getDiffX() == 0) {
+                        pl.setDiffX(pl.getButton().getX() - pl.getX());
+                        pl.setDiffY(pl.getButton().getY() - pl.getY());
+                    }
+                    newX = E.getX() + pl.getButton().getX();
+                    newY = E.getY() + pl.getButton().getY();
+                    pl.getButton().setBounds(newX + pl.getDiffX(), newY + pl.getDiffY(),
+                        pl.getButton().getWidth(), pl.getButton().getHeight());
+                        pl.setX(newX);
+                        pl.setY(newY);
+                    }
+                }
+            }
+            );
             
             pl.getButton().addActionListener(new MyActionListener(pl));
         }
@@ -606,7 +632,11 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         @Override
         public void actionPerformed(ActionEvent evt) {    
         
-        m_App.getAppUserView().getUser();    
+        m_App.getAppUserView().getUser();   
+        
+        if (!actionEnabled) {
+            m_place.setDiffX(0);
+        } else {
 
         if (m_PlaceClipboard == null) {  
             TicketInfo ticket = getTicketInfo(m_place);
@@ -771,8 +801,9 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                 customer = null;
                 printState();
             }
-        }
-        }
+           }
+         }
+      }
     }
 
     /**
@@ -799,6 +830,8 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         m_jbtnReservations = new javax.swing.JButton();
         m_jbtnRefresh = new javax.swing.JButton();
         m_jText = new javax.swing.JLabel();
+        m_jbtnLayout = new javax.swing.JButton();
+        m_jbtnSave = new javax.swing.JButton();
         webLblautoRefresh = new com.alee.laf.label.WebLabel();
 
         setLayout(new java.awt.CardLayout());
@@ -819,7 +852,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         m_jbtnReservations.setMargin(new java.awt.Insets(8, 14, 8, 14));
         m_jbtnReservations.setMaximumSize(new java.awt.Dimension(133, 40));
         m_jbtnReservations.setMinimumSize(new java.awt.Dimension(133, 40));
-        m_jbtnReservations.setPreferredSize(new java.awt.Dimension(133, 45));
+        m_jbtnReservations.setPreferredSize(new java.awt.Dimension(163, 45));
         m_jbtnReservations.setRequestFocusEnabled(false);
         m_jbtnReservations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -837,7 +870,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         m_jbtnRefresh.setMargin(new java.awt.Insets(8, 14, 8, 14));
         m_jbtnRefresh.setMaximumSize(new java.awt.Dimension(100, 40));
         m_jbtnRefresh.setMinimumSize(new java.awt.Dimension(100, 40));
-        m_jbtnRefresh.setPreferredSize(new java.awt.Dimension(100, 45));
+        m_jbtnRefresh.setPreferredSize(new java.awt.Dimension(163, 45));
         m_jbtnRefresh.setRequestFocusEnabled(false);
         m_jbtnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -848,6 +881,42 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
 
         m_jText.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jPanel2.add(m_jText);
+
+        m_jbtnLayout.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        m_jbtnLayout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/movetable.png"))); // NOI18N
+        m_jbtnLayout.setText(AppLocal.getIntString("button.layout")); // NOI18N
+        m_jbtnLayout.setToolTipText("");
+        m_jbtnLayout.setFocusPainted(false);
+        m_jbtnLayout.setFocusable(false);
+        m_jbtnLayout.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jbtnLayout.setMaximumSize(new java.awt.Dimension(100, 40));
+        m_jbtnLayout.setMinimumSize(new java.awt.Dimension(100, 40));
+        m_jbtnLayout.setPreferredSize(new java.awt.Dimension(163, 45));
+        m_jbtnLayout.setRequestFocusEnabled(false);
+        m_jbtnLayout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jbtnLayoutActionPerformed(evt);
+            }
+        });
+        jPanel2.add(m_jbtnLayout);
+
+        m_jbtnSave.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        m_jbtnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/filesave.png"))); // NOI18N
+        m_jbtnSave.setText(AppLocal.getIntString("button.save")); // NOI18N
+        m_jbtnSave.setToolTipText("");
+        m_jbtnSave.setFocusPainted(false);
+        m_jbtnSave.setFocusable(false);
+        m_jbtnSave.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jbtnSave.setMaximumSize(new java.awt.Dimension(100, 40));
+        m_jbtnSave.setMinimumSize(new java.awt.Dimension(100, 40));
+        m_jbtnSave.setPreferredSize(new java.awt.Dimension(163, 45));
+        m_jbtnSave.setRequestFocusEnabled(false);
+        m_jbtnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jbtnSaveActionPerformed(evt);
+            }
+        });
+        jPanel2.add(m_jbtnSave);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_START);
 
@@ -877,6 +946,47 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         m_jreservations.activate();
         
     }//GEN-LAST:event_m_jbtnReservationsActionPerformed
+
+    private void m_jbtnLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jbtnLayoutActionPerformed
+        if (java.util.ResourceBundle.getBundle("pos_messages")
+            .getString("button.layout").equals(m_jbtnLayout.getText())) {
+            actionEnabled = false;
+            m_jbtnSave.setVisible(true);
+            m_jbtnLayout.setText(java.util.ResourceBundle
+                .getBundle("pos_messages").getString("button.disablelayout"));
+
+            for (Place pl : m_aplaces) {
+                if (transBtns) {
+                    pl.getButton().setOpaque(true);
+                    pl.getButton().setContentAreaFilled(true);
+                    pl.getButton().setBorderPainted(true);
+                }
+            }
+        } else {
+            actionEnabled = true;
+            m_jbtnSave.setVisible(false);
+            m_jbtnLayout.setText(java.util.ResourceBundle
+                .getBundle("pos_messages").getString("button.layout"));
+
+            for (Place pl : m_aplaces) {
+                if (transBtns) {
+                    pl.getButton().setOpaque(false);
+                    pl.getButton().setContentAreaFilled(false);
+                    pl.getButton().setBorderPainted(false);
+                }
+            }
+        }
+    }//GEN-LAST:event_m_jbtnLayoutActionPerformed
+
+    private void m_jbtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jbtnSaveActionPerformed
+        for (Place pl : m_aplaces) {
+            try {
+                dlSystem.updatePlaces(pl.getX(), pl.getY(), pl.getId());
+            } catch (BasicException ex) {
+                Logger.getLogger(JTicketsBagRestaurantMap.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_m_jbtnSaveActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -884,8 +994,10 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel m_jPanelMap;
     private javax.swing.JLabel m_jText;
+    private javax.swing.JButton m_jbtnLayout;
     private javax.swing.JButton m_jbtnRefresh;
     private javax.swing.JButton m_jbtnReservations;
+    private javax.swing.JButton m_jbtnSave;
     private com.alee.laf.label.WebLabel webLblautoRefresh;
     // End of variables declaration//GEN-END:variables
     
