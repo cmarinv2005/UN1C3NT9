@@ -21,14 +21,15 @@
  -->
 
 <!-- This sales transaction screen is great for Retailers! -->
-<line>
-    <column name="label.item" width="185" align="left" value="&lt;html&gt;
+<line>			
+	<column name="label.item" width="185" align="left" value="&lt;html&gt;
 	#if ($ticketline.isProductCom()) &lt;i&gt;*&amp;nbsp;&amp;nbsp;
-		${ticketline.printName()}&lt;/i&gt; 
+	${ticketline.printName()}&lt;/i&gt; 
 	#else 
-		${ticketline.printName()} 
-	#end
-	&lt;br&gt;${ticketline.getProductAttSetInstDesc()}"/>
+	${ticketline.printName()} 
+	#end 
+    #if ($ticketline.getProperty('notes', '') != '') &lt;br&gt;*$ticketline.getProperty('notes', '')* #end 
+    &lt;br&gt;${ticketline.getProductAttSetInstDesc()}"/>
 	
     <!-- <column name="label.prodpricebuy" width="50" align="right" value="${ticketline.getProperty('LineBuyPrice','0.0')}"/> -->
     <!-- <column name="label.prodpricesell" width="50" align="right" value="${ticketline.getProperty('LineSellPrice','0.0')}"/> -->

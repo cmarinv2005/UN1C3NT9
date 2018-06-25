@@ -144,7 +144,15 @@
             <!-- <line><text align ="left" length="42">${ticketline.getProperty("ingredients", "")}</text> </line> -->
 
             <!-- un-comment line below if you want to add a user input sales line's Note -->
-            <!-- <line><text align ="left" length="42">${ticketline.getProperty("notes", "")}</text> </line> -->              
+            <!-- <line><text align ="left" length="42">${ticketline.getProperty("notes", "")}</text> </line> -->      
+
+    //	Agregar Nota    
+    
+    #if($ticketline.getProperty("notes", "") != "")    
+    <line>
+    <text align ="left" length="42">  $ticketline.getProperty("notes", "")</text>
+    </line>
+    #end			
 
 	#if ($ticketline.productAttSetInstId)
 		<line><text align ="left" length="42">${ticketline.productAttSetInstDesc}</text></line>

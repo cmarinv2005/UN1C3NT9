@@ -74,6 +74,7 @@
     <class name="button.sendorder"/>
     <class name="button.refundit"/>
     <class name="button.scharge"/>
+    <class name="button.note"/>
 
 <class name="com.openbravo.pos.forms.MenuCustomers"/>
     <class name="com.openbravo.pos.customers.CustomersPanel"/>

@@ -976,7 +976,8 @@ INSERT INTO `dbpermissions` (`CLASSNAME`, `SECTION`, `DISPLAYNAME`, `DESCRIPTION
 ('/com/openbravo/reports/inventoryd.bs', '##label.sectionstock', '##label.displayname205', '##label.description205', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('/com/openbravo/reports/sales_productsalesprofit_summary.bs', '##label.sectionsales', '##label.displayname206', '##label.description206', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('/com/openbravo/reports/itemsremovalreport.bs', '##label.sectionsales', '##label.displayname207', '##label.description207', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
-('button.cashdrawer', '##label.sectionbuttons', '##label.displayname208', '##label.description208', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
+('button.cashdrawer', '##label.sectionbuttons', '##label.displayname208', '##label.description208', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
+('button.note', '##label.sectionbuttons', '##label.displayname209', '##label.description209', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
 
 -- ADD resources --
 -- MENU
@@ -1079,6 +1080,7 @@ INSERT INTO resources(id, name, restype, content) VALUES('108', 'banknote.10000p
 INSERT INTO resources(id, name, restype, content) VALUES('109', 'banknote.20000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.20000pesos.png});
 INSERT INTO resources(id, name, restype, content) VALUES('110', 'banknote.50000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.50000pesos.png});
 INSERT INTO resources(id, name, restype, content) VALUES('111', 'banknote.100000pesos', 1, $FILE{/com/openbravo/pos/templates/banknote.100000pesos.png});
+INSERT INTO resources(id, name, restype, content) VALUES('112', 'img.note', 1, $FILE{/com/openbravo/pos/templates/img.note.png});
 
 -- SCRIPTS
 INSERT INTO resources(id, name, restype, content) VALUES('120', 'script.expiry', 0, $FILE{/com/openbravo/pos/templates/script.expiry.txt});

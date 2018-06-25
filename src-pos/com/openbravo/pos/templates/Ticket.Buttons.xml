@@ -32,7 +32,7 @@
 	<!-- <button key="button.scharge" image="img.heart" code="script.ServiceCharge"/> -->
         
 	<!-- SET Sales line Note (Default=DISABLED) -->
-	<!-- <button key="button.note" image="img.refundit" code="script.addlinenote"/> -->        
+        <button key="button.note" image="img.note" code="script.addlinenote"/>         
                 
 	<!-- SET Line or Total Discount (Default=TotalDiscount= ENABLED) -->
 	<button key="button.totaldiscount" image="img.discount" code="script.totaldiscount"/>
