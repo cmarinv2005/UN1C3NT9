@@ -24,6 +24,7 @@ import com.openbravo.data.loader.*;
 import com.openbravo.data.model.Field;
 import com.openbravo.data.model.Row;
 import com.openbravo.format.Formats;
+import com.openbravo.pos.catalog.CategoryStock;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.customers.CustomerTransaction;
 import com.openbravo.pos.inventory.*;
@@ -685,6 +686,27 @@ public class DataLogicSales extends BeanFactoryDataSingle {
         , CategoryInfo.getSerializerRead()).find(id);
     }
   
+    /**
+     * JG Dec 2017
+     * @param pId
+     * @return
+     * @throws BasicException
+     */
+        @SuppressWarnings("unchecked")
+    public final List<CategoryStock> getCategorysProductList(String pId) throws BasicException {
+        return new PreparedSentence(s,               
+                "SELECT products.ID, " +
+                    "products.NAME AS Name, " +
+                    "products.CODE AS Barcode, " +
+                    "categories.ID AS Category " +                        
+                "FROM products products " +
+                    "INNER JOIN categories categories ON (products.CATEGORY = categories.ID) " +
+                "WHERE products.category = ? " +
+                "ORDER BY products.NAME ASC",
+                    SerializerWriteString.INSTANCE,                
+                        CategoryStock.getSerializerRead()).list(pId);
+    }
+    
     /**
      *
      * @return

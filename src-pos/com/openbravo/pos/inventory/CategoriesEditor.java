@@ -36,6 +36,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 import javax.swing.JPanel;
 import com.alee.extended.time.ClockType;
 import com.alee.extended.time.WebClock;
@@ -44,6 +45,14 @@ import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.notification.WebNotification;
 import com.openbravo.pos.forms.AppConfig;
 import java.awt.Color;
+import java.awt.Font;
+import javax.swing.JOptionPane;
+import javax.swing.table.AbstractTableModel;
+import com.openbravo.pos.catalog.CategoryStock;
+import java.awt.Dimension;
+import java.util.logging.Logger;
+import javax.swing.JScrollPane;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -51,12 +60,18 @@ import java.awt.Color;
  */
 public final class CategoriesEditor extends JPanel implements EditorRecord {
        
+    private Object m_oId;    
+    public String cId;
+    
     private final SentenceList m_sentcat;
     private ComboBoxValModel m_CategoryModel;
     
     private final SentenceExec m_sentadd;
     private final SentenceExec m_sentdel;
     
+    private List<CategoryStock> categoryStockList;
+    private CategoriesEditor.StockTableModel stockModel;
+    private final DataLogicSales dlSales;
     private Object m_id;
     
     /** Creates new form JPanelCategories
@@ -64,10 +79,11 @@ public final class CategoriesEditor extends JPanel implements EditorRecord {
      * @param dirty */
     public CategoriesEditor(AppView app, DirtyManager dirty) {
         
-        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
-             
+    //  DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
+        dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
         initComponents();
-             
+        jTableCategoryStock.setPreferredSize(null); 
+        
         // El modelo de categorias        
         m_sentcat = dlSales.getCategoriesList();
         m_CategoryModel = new ComboBoxValModel();
@@ -84,6 +100,63 @@ public final class CategoriesEditor extends JPanel implements EditorRecord {
         
         writeValueEOF();
     }
+    
+    public void resetTranxTable() {
+
+    jTableCategoryStock.getColumnModel().getColumn(0).setPreferredWidth(250);
+    
+    // set font for headers
+    Font f = new Font("Arial", Font.BOLD, 14);
+    JTableHeader header = jTableCategoryStock.getTableHeader();
+    header.setFont(f);
+      
+    jTableCategoryStock.getTableHeader().setReorderingAllowed(true); 
+    jTableCategoryStock.setAutoCreateRowSorter(true);    
+    jTableCategoryStock.repaint();    
+}
+    
+    class StockTableModel extends AbstractTableModel {
+        String nam = AppLocal.getIntString("label.prodname");
+        String cod = AppLocal.getIntString("label.prodbarcode");
+
+        List<CategoryStock> stockList;
+        String[] columnNames = {nam, cod};
+
+        public StockTableModel(List<CategoryStock> list) {
+            stockList = list;
+        }
+
+        @Override
+        public int getColumnCount() {
+            return 2;
+        }
+
+        @Override
+        public int getRowCount() {
+            return stockList.size();
+        }
+
+        @Override
+        public Object getValueAt(int row, int column) {
+            CategoryStock categoryStock = stockList.get(row);
+        
+            switch (column) {
+                case 0:
+                    return categoryStock.getProductName();                                        
+                case 1:
+                    return categoryStock.getProductCode();
+                case 2:
+                    return categoryStock.getProductId();
+                default:
+                    return "";
+            }
+        }
+
+        @Override
+        public String getColumnName(int col) {
+            return columnNames[col];
+        }
+    } 
     
     /**
      *
@@ -168,7 +241,9 @@ public final class CategoriesEditor extends JPanel implements EditorRecord {
         m_jImage.setEnabled(false);
         m_jTextTip.setEnabled(false);     
         webSwtchCatNameShow.setEnabled(false);
-        m_jCatOrder.setEnabled(false);        
+        m_jCatOrder.setEnabled(false);    
+        
+        stockModel = new CategoriesEditor.StockTableModel(getProductOfName((String) m_oId)); 
         
     }
 
@@ -268,9 +343,12 @@ public final class CategoriesEditor extends JPanel implements EditorRecord {
         jLblCatShowName = new javax.swing.JLabel();
         jLblCatOrder = new javax.swing.JLabel();
         m_jCatOrder = new javax.swing.JTextField();
-        jLblImage = new javax.swing.JLabel();
         m_jImage = new com.openbravo.data.gui.JImageEditor();
         webSwtchCatNameShow = new com.alee.extended.button.WebSwitch();
+        jBtnShowTrans = new javax.swing.JButton();
+        jLblProdCount = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableCategoryStock = new com.alee.laf.table.WebTable();
 
         jInternalFrame1.setVisible(true);
 
@@ -310,10 +388,6 @@ public final class CategoriesEditor extends JPanel implements EditorRecord {
         m_jCatOrder.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jCatOrder.setPreferredSize(new java.awt.Dimension(60, 30));
 
-        jLblImage.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLblImage.setText(AppLocal.getIntString("label.image")); // NOI18N
-        jLblImage.setPreferredSize(new java.awt.Dimension(150, 30));
-
         m_jImage.setPreferredSize(new java.awt.Dimension(300, 250));
 
         webSwtchCatNameShow.setToolTipText("");
@@ -325,82 +399,141 @@ public final class CategoriesEditor extends JPanel implements EditorRecord {
             }
         });
 
+        jBtnShowTrans.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jBtnShowTrans.setText(bundle.getString("button.CatProds")); // NOI18N
+        jBtnShowTrans.setToolTipText("");
+        jBtnShowTrans.setPreferredSize(new java.awt.Dimension(140, 30));
+        jBtnShowTrans.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnShowTransActionPerformed(evt);
+            }
+        });
+
+        jLblProdCount.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLblProdCount.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLblProdCount.setOpaque(true);
+        jLblProdCount.setPreferredSize(new java.awt.Dimension(237, 30));
+
+        jScrollPane2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(650, 300));
+
+        jTableCategoryStock.setAutoCreateRowSorter(true);
+        jTableCategoryStock.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Name", "Barcode"
+            }
+        ));
+        jTableCategoryStock.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jTableCategoryStock.setGridColor(new java.awt.Color(102, 204, 255));
+        jTableCategoryStock.setPreferredSize(new java.awt.Dimension(310, 500));
+        jTableCategoryStock.setRowHeight(25);
+        jTableCategoryStock.setSelectionBackground(new java.awt.Color(0, 120, 215));
+        jTableCategoryStock.setShowVerticalLines(false);
+        jScrollPane2.setViewportView(jTableCategoryStock);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLblCatShowName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLblTextTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLblCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLblTextTip, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jLblName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLblName, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLblCategory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLblCatShowName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(m_jTextTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(m_jCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(webSwtchCatNameShow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(m_jTextTip, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(webSwtchCatNameShow, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(m_jCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLblCatOrder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jBtnShowTrans, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLblImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLblCatOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(m_jCatOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(m_jImage, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(12, 12, 12))
+                            .addComponent(jLblProdCount, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jCatOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addComponent(m_jImage, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(m_jImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(m_jCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(m_jTextTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(webSwtchCatNameShow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLblCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLblName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(43, 43, 43)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLblTextTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLblCatShowName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                                .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(m_jCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(m_jTextTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(webSwtchCatNameShow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLblCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLblName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(43, 43, 43)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLblTextTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLblCatShowName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(20, 20, 20)
-                        .addComponent(jLblCatOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(m_jCatOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(m_jImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addComponent(jLblImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLblCatOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jCatOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLblProdCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jBtnShowTrans, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -413,16 +546,62 @@ public final class CategoriesEditor extends JPanel implements EditorRecord {
             jLblCatShowName.setText(AppLocal.getIntString("label.subcategorytitleno"));             
         }
     }//GEN-LAST:event_webSwtchCatNameShowActionPerformed
+
+    private List<CategoryStock> getProductOfName(String pId) {
+
+        try {
+            categoryStockList = dlSales.getCategorysProductList(pId);
+
+        } catch (BasicException ex) {
+            Logger.getLogger(CategoriesEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        List<CategoryStock> categoryList = new ArrayList<>();
+
+        for (CategoryStock categoryStock : categoryStockList) {
+            String categoryId = categoryStock.getCategoryId();
+            if (categoryId.equals(pId)) {
+                categoryList.add(categoryStock);
+            }
+        }
+        
+        repaint();
+        refresh();
+
+        return categoryList;
+    }
+    
+    private void jBtnShowTransActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnShowTransActionPerformed
+        String pId = m_id.toString();
+        if (pId != null) {
+            stockModel = new CategoriesEditor.StockTableModel(getProductOfName(pId));
+            jTableCategoryStock.setModel(stockModel);
+
+            if (stockModel.getRowCount()> 0){
+                jTableCategoryStock.setVisible(true);
+                String ProdCount = String.valueOf(stockModel.getRowCount());
+                jLblProdCount.setText(ProdCount + " para " + m_jName.getText());
+            }else{
+                jTableCategoryStock.setVisible(false);
+                JOptionPane.showMessageDialog(null,
+                    "Esta categoria no tiene productos", "Productos", JOptionPane.INFORMATION_MESSAGE);
+            }
+            resetTranxTable();
+        }
+    }//GEN-LAST:event_jBtnShowTransActionPerformed
  
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBtnShowTrans;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLblCatOrder;
     private javax.swing.JLabel jLblCatShowName;
     private javax.swing.JLabel jLblCategory;
-    private javax.swing.JLabel jLblImage;
     private javax.swing.JLabel jLblName;
+    private javax.swing.JLabel jLblProdCount;
     private javax.swing.JLabel jLblTextTip;
+    private javax.swing.JScrollPane jScrollPane2;
+    private com.alee.laf.table.WebTable jTableCategoryStock;
     private javax.swing.JTextField m_jCatOrder;
     private javax.swing.JComboBox m_jCategory;
     private com.openbravo.data.gui.JImageEditor m_jImage;
