@@ -977,7 +977,8 @@ INSERT INTO `dbpermissions` (`CLASSNAME`, `SECTION`, `DISPLAYNAME`, `DESCRIPTION
 ('/com/openbravo/reports/sales_productsalesprofit_summary.bs', '##label.sectionsales', '##label.displayname206', '##label.description206', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('/com/openbravo/reports/itemsremovalreport.bs', '##label.sectionsales', '##label.displayname207', '##label.description207', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
 ('button.cashdrawer', '##label.sectionbuttons', '##label.displayname208', '##label.description208', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
-('button.note', '##label.sectionbuttons', '##label.displayname209', '##label.description209', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
+('button.note', '##label.sectionbuttons', '##label.displayname209', '##label.description209', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1),
+('/com/openbravo/reports/comisionsalesporcent.bs', '##label.sectionpresence', '##label.displayname210', '##label.description210', '97708bbd-cd5b-40f3-bbc5-852e364d8ac2', 1);
 
 -- ADD resources --
 -- MENU
