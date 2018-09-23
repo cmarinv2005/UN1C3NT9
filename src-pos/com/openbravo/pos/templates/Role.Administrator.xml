@@ -133,6 +133,7 @@
             <class name="/com/openbravo/reports/productlabels.bs"/>
 			<class name="/com/openbravo/reports/vencimiento.bs"/>
             <class name="/com/openbravo/reports/salecatalog.bs"/>
+			<class name="/com/openbravo/reports/products_bundle.bs"/>
 
 <class name="com.openbravo.pos.forms.MenuSalesManagement"/>
             <class name="/com/openbravo/reports/sales_cashflow.bs"/>            
