@@ -92,7 +92,9 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         chkUsedItem.addActionListener(dirty);        
         chkTransfer.addActionListener(dirty);   
         chbMinimo.addActionListener(dirty); 
-        chbCustomer.addActionListener(dirty);       
+        chbCustomer.addActionListener(dirty);  
+        optEliminar.addActionListener(dirty);        
+        txtClave.getDocument().addDocumentListener(dirty);
     }
         
     /**
@@ -169,6 +171,9 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         chkTransfer.setSelected(Boolean.parseBoolean(config.getProperty("till.traspaso")));  
         chbMinimo.setSelected(Boolean.parseBoolean(config.getProperty("till.minimo")));
         chbCustomer.setSelected(Boolean.parseBoolean(config.getProperty("till.customer")));
+        optEliminar.setSelected(Boolean.parseBoolean(config.getProperty("till.clavedelete")));
+        txtClave.setText(config.getProperty("till.claveset")); 
+        
         
 /** Added: JG 23 July 13 */      
         String SCCheck =(config.getProperty("till.SCRate"));
@@ -284,6 +289,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         config.setProperty("till.traspaso", Boolean.toString(chkTransfer.isSelected()));   
         config.setProperty("till.minimo", Boolean.toString(chbMinimo.isSelected()));
         config.setProperty("till.customer", Boolean.toString(chbCustomer.isSelected()));
+        config.setProperty("till.clavedelete", Boolean.toString(optEliminar.isSelected()));
+        config.setProperty("till.claveset", txtClave.getText()); 
         dirty.setDirty(false);
     }
     
@@ -341,6 +348,9 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jLabel13 = new javax.swing.JLabel();
         jchkBarcodetype = new com.alee.extended.button.WebSwitch();
         jLabel14 = new javax.swing.JLabel();
+        optEliminar = new com.alee.extended.button.WebSwitch();
+        txtClave = new javax.swing.JPasswordField();
+        jLabel33 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         BigTotal = new com.alee.extended.button.WebSwitch();
         jLabel1 = new javax.swing.JLabel();
@@ -809,21 +819,39 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
         jLabel14.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel14.setText("Cambiar a codigo de barras UPC");
 
+        optEliminar.setOpaque(true);
+        optEliminar.setPreferredSize(new java.awt.Dimension(80, 30));
+        optEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                optEliminarActionPerformed(evt);
+            }
+        });
+
+        txtClave.setEditable(false);
+        txtClave.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+
+        jLabel33.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel33.setText("Campo de entrada por encima del teclado");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jCheckPrice00, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jMoveAMountBoxToTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jMoveAMountBoxToTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(optEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -831,10 +859,13 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jCloseCashbtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtClave, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jCloseCashbtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 40, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -854,7 +885,12 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jCloseCashbtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(optEliminar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel33, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtClave))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(bundle.getString("label.configOptionKeypad"), jPanel3);
@@ -1721,6 +1757,16 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
             jLabel32.setText(AppLocal.getIntString("label.customerno"));             
         }
     }//GEN-LAST:event_chbCustomerActionPerformed
+
+    private void optEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optEliminarActionPerformed
+        // TODO add your handling code here:
+         if (optEliminar.isSelected()) {      
+            txtClave.setEditable(true);
+            jLabel33.setText("Clave para eliminar línea Activada");              
+        } else {      
+            jLabel33.setText("Clave para eliminar línea Desactivada");             
+        }
+    }//GEN-LAST:event_optEliminarActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1773,6 +1819,7 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1812,6 +1859,8 @@ public class JPanelConfigSystem extends javax.swing.JPanel implements PanelConfi
     private com.alee.extended.button.WebSwitch jchkTextOverlay;
     private javax.swing.JCheckBox jchkTransBtn;
     private javax.swing.JCheckBox jchkautoRefreshTableMap;
+    private com.alee.extended.button.WebSwitch optEliminar;
+    private javax.swing.JPasswordField txtClave;
     // End of variables declaration//GEN-END:variables
     
 }

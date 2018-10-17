@@ -93,6 +93,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import net.sf.jasperreports.engine.*;
@@ -3395,8 +3396,23 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     private void m_jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jDeleteActionPerformed
 
-        int i = m_ticketlines.getSelectedIndex();
+      if ("true".equals(m_App.getProperties().getProperty("till.clavedelete"))) {  
+          
+        String password = null;
+        JPasswordField passwordField = new JPasswordField();
+        Object[] obj = {"Por favor ingrese la Contraseña:\n\n", passwordField};
+        Object stringArray[] = {"OK","Cancelar"};
         
+        if (JOptionPane.showOptionDialog(null, obj, "Verificación",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION)
+            
+        password = new String(passwordField.getPassword());
+        
+      if(password != null){
+            
+        if(password.equals(m_App.getProperties().getProperty("till.claveset"))){
+                  
+        int i = m_ticketlines.getSelectedIndex();        
         if (i < 0){
             Toolkit.getDefaultToolkit().beep();
         } else {         
@@ -3404,7 +3420,24 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             if(showminimo ==  true){
                Botonstock();           // OJO CAMBIAR              
             }                 
-        }     
+        }
+       } else{
+            JOptionPane.showMessageDialog(null, "Contraseña Incorrecta"); 
+             }
+        
+      }        
+
+      }else{
+        int i = m_ticketlines.getSelectedIndex();        
+        if (i < 0){
+            Toolkit.getDefaultToolkit().beep();
+        } else {         
+            removeTicketLine(i);
+            if(showminimo ==  true){
+               Botonstock();           // OJO CAMBIAR              
+            }                 
+        }  
+      }
     }//GEN-LAST:event_m_jDeleteActionPerformed
 
     private void m_jListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jListActionPerformed

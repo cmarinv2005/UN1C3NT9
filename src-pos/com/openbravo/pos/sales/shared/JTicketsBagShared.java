@@ -31,11 +31,13 @@ import com.openbravo.pos.sales.ReprintTicketInfo;
 import com.openbravo.pos.sales.SharedTicketInfo;
 import com.openbravo.pos.sales.TicketsEditor;
 import com.openbravo.pos.ticket.TicketInfo;
+import java.awt.Toolkit;
 import java.util.List;
 import java.util.UUID;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.SwingUtilities;
 
 /**
@@ -382,6 +384,39 @@ public class JTicketsBagShared extends JTicketsBag {
 
     private void m_jDelTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jDelTicketActionPerformed
         
+        if ("true".equals(m_App.getProperties().getProperty("till.clavedelete"))) {  
+          
+        String password = null;
+        JPasswordField passwordField = new JPasswordField();
+        Object[] obj = {"Por favor ingrese la Contraseña:\n\n", passwordField};
+        Object stringArray[] = {"OK","Cancelar"};
+        
+        if (JOptionPane.showOptionDialog(null, obj, "Verificación",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION)
+            
+        password = new String(passwordField.getPassword());
+        
+      if(password != null){
+            
+        if(password.equals(m_App.getProperties().getProperty("till.claveset"))){
+                  
+        int res = JOptionPane.showConfirmDialog(this
+                , AppLocal.getIntString("message.wannadelete")
+                , AppLocal.getIntString("title.editor")
+                , JOptionPane.YES_NO_OPTION
+                , JOptionPane.QUESTION_MESSAGE);
+        
+        if (res == JOptionPane.YES_OPTION) {
+            deleteTicket();
+        }
+            
+       } else{
+            JOptionPane.showMessageDialog(null, "Contraseña Incorrecta"); 
+             } 
+      }        
+
+      }else{
+        
         int res = JOptionPane.showConfirmDialog(this
                 , AppLocal.getIntString("message.wannadelete")
                 , AppLocal.getIntString("title.editor")
@@ -393,7 +428,7 @@ public class JTicketsBagShared extends JTicketsBag {
         }
         
     }//GEN-LAST:event_m_jDelTicketActionPerformed
-
+    }
     private void m_jNewTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jNewTicketActionPerformed
 
         newTicket();
