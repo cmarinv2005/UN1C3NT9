@@ -3352,6 +3352,44 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     private void m_jEditLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jEditLineActionPerformed
 
+        if ("true".equals(m_App.getProperties().getProperty("till.clavedelete"))) {  
+          
+        String password = null;
+        JPasswordField passwordField = new JPasswordField();
+        Object[] obj = {"Por favor ingrese la Contraseña:\n\n", passwordField};
+        Object stringArray[] = {"OK","Cancelar"};
+        
+        if (JOptionPane.showOptionDialog(null, obj, "Verificación",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION)
+            
+        password = new String(passwordField.getPassword());
+        
+      if(password != null){
+            
+        if(password.equals(m_App.getProperties().getProperty("till.claveset"))){
+         int i = m_ticketlines.getSelectedIndex();
+        
+         if (i < 0){
+			m_jImage.setImage(null);
+            Toolkit.getDefaultToolkit().beep(); // no line selected
+        } else {
+            try {
+                TicketLineInfo newline = JProductLineEdit.showMessage(this, m_App, m_oTicket.getLine(i));
+                if (newline != null) {
+                    paintTicketLine(i, newline);
+                }
+                    
+            } catch (BasicException e) {
+                new MessageInf(e).show(this);
+            }
+        } 
+    
+       } else{
+            JOptionPane.showMessageDialog(null, "Contraseña Incorrecta"); 
+             }    
+      }        
+
+      }else{
         int i = m_ticketlines.getSelectedIndex();
         
         if (i < 0){
@@ -3367,7 +3405,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             } catch (BasicException e) {
                 new MessageInf(e).show(this);
             }
-        }
+        } 
+      }
 
     }//GEN-LAST:event_m_jEditLineActionPerformed
 
