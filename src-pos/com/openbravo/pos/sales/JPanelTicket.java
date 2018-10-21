@@ -2046,13 +2046,45 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             paintTicketLine(i, newline);
                         }
                     } else {
-
+                        
+                      if ("true".equals(m_App.getProperties().getProperty("till.clavedelete"))) {
+                           
+                        String password = null;
+                        JPasswordField passwordField = new JPasswordField();
+                        Object[] obj = {"Por favor ingrese la Contraseña:\n\n", passwordField};
+                        Object stringArray[] = {"OK","Cancelar"};
+        
+                        if (JOptionPane.showOptionDialog(null, obj, "Verificación",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION)
+            
+                        password = new String(passwordField.getPassword());
+        
+                if(password != null){
+            
+                    if(password.equals(m_App.getProperties().getProperty("till.claveset"))){
+              
                         newline.setMultiply(newline.getMultiply() - 1.0);
                         if (newline.getMultiply() <= 0.0) {                   
                             removeTicketLine(i);
                         } else {
                             paintTicketLine(i, newline);                   
                         }
+        
+                } else{
+                    JOptionPane.showMessageDialog(null, "Contraseña Incorrecta"); 
+                      }
+     
+      } 
+                                        
+                }else{
+                          newline.setMultiply(newline.getMultiply() - 1.0);
+                        if (newline.getMultiply() <= 0.0) {                   
+                            removeTicketLine(i);
+                        } else {
+                            paintTicketLine(i, newline);                   
+                        }
+                      }  
+                                                                        
                     }
                 }
 
