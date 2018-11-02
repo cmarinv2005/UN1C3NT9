@@ -116,12 +116,44 @@ public class JTicketsBagSimple extends JTicketsBag {
     }// </editor-fold>//GEN-END:initComponents
 
     private void m_jDelTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jDelTicketActionPerformed
+    if ("true".equals(m_App.getProperties().getProperty("till.clavedelete"))) {    
         
-        int res = JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.wannadelete"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        String password = null;
+        JPasswordField passwordField = new JPasswordField();
+        Object[] obj = {"Por favor ingrese la Contraseña:\n\n", passwordField};
+        Object stringArray[] = {"OK","Cancelar"};
+        
+        if (JOptionPane.showOptionDialog(null, obj, "Verificación",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION)
+            
+        password = new String(passwordField.getPassword());
+        
+      if(password != null){
+            
+        if(password.equals(m_App.getProperties().getProperty("till.claveset"))){
+                  
+        int res = JOptionPane.showConfirmDialog(this
+                , AppLocal.getIntString("message.wannadelete")
+                , AppLocal.getIntString("title.editor")
+                , JOptionPane.YES_NO_OPTION
+                , JOptionPane.QUESTION_MESSAGE);
+        
         if (res == JOptionPane.YES_OPTION) {
             deleteTicket();
         }
+            
+       } else{
+            JOptionPane.showMessageDialog(null, "Contraseña Incorrecta"); 
+             } 
+      }        
         
+      }    
+    else{
+        int res = JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.wannadelete"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (res == JOptionPane.YES_OPTION) {
+            deleteTicket();
+        } 
+    }
     }//GEN-LAST:event_m_jDelTicketActionPerformed
     
     
