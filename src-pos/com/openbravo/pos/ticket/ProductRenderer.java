@@ -20,6 +20,7 @@
 package com.openbravo.pos.ticket;
 
 import com.openbravo.format.Formats;
+import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.util.ThumbNailBuilder;
 import java.awt.*;
 import javax.swing.*;
@@ -47,7 +48,10 @@ public class ProductRenderer extends DefaultListCellRenderer {
         
         ProductInfoExt prod = (ProductInfoExt) value;
         if (prod != null) {
-            setText("<html><center>" + prod.getReference() + " - " + prod.getName() + "<br>&nbsp;&nbsp;&nbsp;&nbsp;" + Formats.CURRENCY.formatValue(prod.getPriceSell()));
+            setText("<html>" + prod.getReference() + " - " + prod.getName() + "<br> " +
+                    "<b>" + AppLocal.getIntString("label.stockunits") +    ":</b> " + Formats.DOUBLE.formatValue(prod.getStockUnits()) + "<br /> " +
+                    "<b>" + AppLocal.getIntString("label.prodpricesell") + ":</b> " + 
+                    Formats.CURRENCY.formatValue(prod.getPriceSell()));
             Image img = tnbprod.getThumbNail(prod.getImage());
             setIcon(img == null ? null :new ImageIcon(img));
         }

@@ -740,23 +740,25 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "ISVPRICE, "
                 + "ISVERPATRIB, "
                 + "TEXTTIP, "
-                + "WARRANTY, "
-                + "STOCKUNITS, "
+                + "WARRANTY, "            
+//              + "STOCKUNITS, "
+                + "STOCKCURRENT.UNITS, "
                 + "PRINTTO, "				
 		+ "WARNING, "	                //28	
 		+ "EXPIRY, "		        //29		
                 + "SUPPLIER, "            
                 + "UOM "
-                + "FROM products "
+                + "FROM STOCKCURRENT RIGHT OUTER JOIN PRODUCTS ON (STOCKCURRENT.PRODUCT = PRODUCTS.ID) "                      
                 + "WHERE ?(QBF_FILTER) "
                 + "ORDER BY REFERENCE", 
-                new String[] {"NAME", "PRICEBUY", "PRICESELL", "CATEGORY", "CODE"})
+                new String[] {"NAME", "PRICEBUY", "PRICESELL", "CATEGORY", "CODE", "UNITS"})
 		, new SerializerWriteBasic(new Datas[] {
                     Datas.OBJECT, Datas.STRING, 
                     Datas.OBJECT, Datas.DOUBLE, 
                     Datas.OBJECT, Datas.DOUBLE, 
                     Datas.OBJECT, Datas.STRING, 
-                    Datas.OBJECT, Datas.STRING})
+                    Datas.OBJECT, Datas.STRING,
+                    Datas.OBJECT, Datas.DOUBLE,})
 		, ProductInfoExt.getSerializerRead());
     }
     
@@ -793,21 +795,23 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "ISVERPATRIB, "
                 + "TEXTTIP, "
                 + "WARRANTY, "
-                + "STOCKUNITS, "
+//                + "STOCKUNITS, "
+                + "STOCKCURRENT.UNITS, "
                 + "PRINTTO, "				
 		+ "WARNING, "	                     //28
 		+ "EXPIRY, "	                     //29		
                 + "SUPPLIER, "           
                 + "UOM "
-		+ "FROM products "
-                + "WHERE ISCOM = " + s.DB.FALSE() + " AND ?(QBF_FILTER) ORDER BY REFERENCE",
-                new String[] {"NAME", "PRICEBUY", "PRICESELL", "CATEGORY", "CODE"})
+		+ "FROM STOCKCURRENT RIGHT OUTER JOIN PRODUCTS ON (STOCKCURRENT.PRODUCT = PRODUCTS.ID) "
+                + "WHERE ISCOM = " + s.DB.FALSE() + " AND ?(QBF_FILTER) ORDER BY REFERENCE, NAME",
+                new String[] {"NAME", "PRICEBUY", "PRICESELL", "CATEGORY", "CODE", "UNITS"})
 		, new SerializerWriteBasic(new Datas[] {
                     Datas.OBJECT, Datas.STRING, 
                     Datas.OBJECT, Datas.DOUBLE, 
                     Datas.OBJECT, Datas.DOUBLE, 
                     Datas.OBJECT, Datas.STRING, 
-                    Datas.OBJECT, Datas.STRING})
+                    Datas.OBJECT, Datas.STRING,
+                    Datas.OBJECT, Datas.DOUBLE})
 		, ProductInfoExt.getSerializerRead());
     }
 
@@ -888,13 +892,14 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "ISVERPATRIB, "
                 + "TEXTTIP, "
                 + "WARRANTY, "
-                + "STOCKUNITS, "
+//              + "STOCKUNITS, "
+                + "STOCKCURRENT.UNITS, "           
                 + "PRINTTO, "				
 		+ "WARNING, "			    //28	
                 + "EXPIRY, "                        //29		
                 + "SUPPLIER, "            
                 + "UOM "
-		+ "FROM products "
+		+ "FROM STOCKCURRENT RIGHT OUTER JOIN PRODUCTS ON (STOCKCURRENT.PRODUCT = PRODUCTS.ID) "
                 + "WHERE ISCOM = " + s.DB.TRUE() + " AND ?(QBF_FILTER) "
                 + "ORDER BY REFERENCE", new String[] {"NAME", "PRICEBUY", "PRICESELL", "CATEGORY", "CODE"})
 		, new SerializerWriteBasic(new Datas[] {
