@@ -1096,6 +1096,15 @@ INSERT INTO resources(id, name, restype, content) VALUES('127', 'Display.Message
 INSERT INTO resources(id, name, restype, content) VALUES('128', 'Printer.CashDrawer', 0, $FILE{/com/openbravo/pos/templates/Printer.CashDrawer.xml});
 INSERT INTO resources(id, name, restype, content) VALUES('129', 'script.pricesellbuy', 0, $FILE{/com/openbravo/pos/templates/script.pricesellbuy.txt});
 
+INSERT INTO resources(id, name, restype, content) VALUES('130', 'Printer.Ticket58mm', 0, $FILE{/com/openbravo/pos/templates/Printer.Ticket58mm.xml});
+INSERT INTO resources(id, name, restype, content) VALUES('131', 'Printer.CloseCash.Preview58mm', 0, $FILE{/com/openbravo/pos/templates/Printer.CloseCash.Preview58mm.xml});
+INSERT INTO resources(id, name, restype, content) VALUES('132', 'Printer.CloseCash58mm', 0, $FILE{/com/openbravo/pos/templates/Printer.CloseCash58mm.xml});
+INSERT INTO resources(id, name, restype, content) VALUES('133', 'Printer.PartialCash58mm', 0, $FILE{/com/openbravo/pos/templates/Printer.PartialCash58mm.xml});
+INSERT INTO resources(id, name, restype, content) VALUES('134', 'Printer.PrintLastTicket58mm', 0, $FILE{/com/openbravo/pos/templates/Printer.PrintLastTicket58mm.xml});
+INSERT INTO resources(id, name, restype, content) VALUES('135', 'Printer.ReprintTicket58mm', 0, $FILE{/com/openbravo/pos/templates/Printer.ReprintTicket58mm.xml});
+INSERT INTO resources(id, name, restype, content) VALUES('136', 'Printer.TicketPreview58mm', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketPreview58mm.xml});
+
+
 -- ADD CATEGORIES
 INSERT INTO categories(id, name) VALUES ('000', 'Category Standard');
 
