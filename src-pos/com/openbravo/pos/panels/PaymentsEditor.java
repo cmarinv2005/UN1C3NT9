@@ -28,6 +28,7 @@ import com.openbravo.data.user.EditorRecord;
 import com.openbravo.pos.config.JPanelConfigCompany;
 import com.openbravo.pos.forms.AppConfig;
 import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.forms.AppUser;
 import com.openbravo.pos.forms.AppView;
 import com.sun.java.accessibility.util.AWTEventMonitor;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
@@ -36,13 +37,20 @@ import java.awt.Component;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -65,6 +73,10 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
     private final AppView m_App;
     private String m_sNotes;
     
+    private String usuario;    
+    private AppUser m_User;  
+    private int consecutivo; 
+    private int imp_consecutivo; 
     private String fecha;
     private String tipo;
     private String valor;
@@ -78,6 +90,7 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         m_App = oApp;
                
         initComponents();
+        leerArchivo();
         
         m_ReasonModel = new ComboBoxValModel();
         m_ReasonModel.add(new PaymentReasonPositive("cashin", AppLocal.getIntString("transpayment.cashin")));
@@ -94,6 +107,53 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         writeValueEOF();
     }
    
+  /**
+  * Lee un archivo de propiedades desde una ruta especifica
+  */
+ private void leerArchivo() {   
+    try {
+    /**Creamos un Objeto de tipo Properties*/  
+    Properties p = new Properties();
+    
+    /**Cargamos el archivo desde la ruta especificada*/
+    p.load(new FileReader("properties/secuencia.properties"));
+    
+    /**Obtenemos los parametros definidos en el archivo*/  
+    String secuencia = p.getProperty("secuencia");    
+    consecutivo = Integer.parseInt(secuencia);
+    consecutivo++;
+    txtSecuencia.setText(String.valueOf(consecutivo));
+    
+  } catch (FileNotFoundException e) {
+   System.out.println("Error, El archivo secuencia.properties no existe");
+  } catch (IOException e) {
+   System.out.println("Error, No se puede leer el archivo secuencia.properties");
+  }
+ }
+ 
+ /**
+  * Guarda un archivo de propiedades en una ruta especifica
+  */
+  private void GuardarArchivo() { 
+ /**Creamos un Objeto de tipo Properties*/
+        Properties p = new Properties();
+        
+        /**Escribimos en el archivo de tipo Properties*/  
+        p.setProperty("secuencia", String.valueOf(consecutivo));
+        consecutivo++;
+        imp_consecutivo=consecutivo;
+        imp_consecutivo--;
+        txtSecuencia.setText(String.valueOf(consecutivo));
+        try {
+            p.store(new FileWriter("properties/secuencia.properties"),"configuracion secuencia de movimientos de caja");
+             JOptionPane.showMessageDialog(null, "La secuencia de este movimiento se há guardado correctamente");            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PaymentsEditor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PaymentsEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+  }
+  
     /**
      *
      */
@@ -192,12 +252,14 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date datenew = new Date();
         String fechaCadena = sdf.format(datenew); 
+        usuario = m_App.getAppUserView().getUser().getName();
         fecha = fechaCadena;
         tipo = reason.toString();
         valor = dtotal.toString();
-        nota = m_sNotes;
-        
+        nota = m_sNotes;    
+            
         if(m_jButtonPrint.isSelected()){
+           GuardarArchivo();  
            consultarDatosBDImpresora();  
         }       
         
@@ -209,29 +271,31 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
                         //DATOS QUEMADOS EN LA FACTURA  
                         Impresora imp;                    		                                                                                                                             
                         String textoBlanco = "\n";		       
-                        imp = new Impresora();                        
-                        String dato1 = "\nFecha:  "+fecha;
-                        String dato2 = "\nPago:    "+tipo;
-                        String dato3 = "\nValor:   "+"$"+valor;
-                        String dato4 = "\nNota:    "+nota; 
+                        imp = new Impresora();   
+                        String dato1 = "\nSecuencia: "+imp_consecutivo; 
+                        String dato2 = "\nUsuario: "+usuario; 
+                        String dato3 = "\nFecha:  "+fecha;
+                        String dato4 = "\nPago:    "+tipo;
+                        String dato5 = "\nValor:   "+"$"+valor;
+                        String dato6 = "\nNota:    "+nota;                        
                         
                         if(chb80.isSelected()){
                           String tituloFacturaVenta1 = "********** MOVIMIENTOS DE CAJA ***********\n";                        
                           String separadores1 = "******************************************"; 
                           imp.imprimir(tituloFacturaVenta1 + " " + dato1 + "  " + dato2 + " " + dato3 + " " 
-                        + dato4 + " " + textoBlanco);//IMPRIMIR LO QUE ESCRIBE EL USUARIO 
+                        + dato4 + " " + dato5 + " " + dato6 + textoBlanco);//IMPRIMIR LO QUE ESCRIBE EL USUARIO 
                         }      
                         if(chb76.isSelected()){
                           String tituloFacturaVenta2 = "*** MOVIMIENTOS DE CAJA ***\n";                        
                           String separadores2 = "****************************";  
                           imp.imprimir(tituloFacturaVenta2 + " " + dato1 + "  " + dato2 + " " + dato3 + " " 
-                        + dato4 + " " + textoBlanco);//IMPRIMIR LO QUE ESCRIBE EL USUARIO 
+                        + dato4 + " " + dato5 + " " + dato6 + textoBlanco);//IMPRIMIR LO QUE ESCRIBE EL USUARIO 
                         }
                         if(chb58.isSelected()){
                           String tituloFacturaVenta3 = "* MOVIMIENTOS DE CAJA *\n";                        
                           String separadores3 = "**********************";  
                           imp.imprimir(tituloFacturaVenta3 + " " + dato1 + "  " + dato2 + " " + dato3 + " " 
-                        + dato4 + " " + textoBlanco);//IMPRIMIR LO QUE ESCRIBE EL USUARIO 
+                        + dato4 + " " + dato5 + " " + dato6 + textoBlanco);//IMPRIMIR LO QUE ESCRIBE EL USUARIO 
                         }                                                                                         
     }
     
@@ -346,6 +410,8 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         txt80 = new javax.swing.JLabel();
         txt76 = new javax.swing.JLabel();
         txt58 = new javax.swing.JLabel();
+        txtSecuencia = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         m_jKeys = new com.openbravo.editor.JEditorKeys();
 
@@ -436,6 +502,14 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
         txt58.setText("Impresora 58 mm");
         txt58.setOpaque(true);
 
+        txtSecuencia.setEditable(false);
+        txtSecuencia.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txtSecuencia.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        jLabel6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel6.setText("Secuencia");
+        jLabel6.setPreferredSize(new java.awt.Dimension(110, 30));
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -443,35 +517,45 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(m_jButtonPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(m_jNotes, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                        .addComponent(m_jreason, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(chb58, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txt58, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(chb76, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txt76, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                            .addComponent(chb80, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txt80, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(jlblPrinterStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(m_jButtonPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(m_jNotes, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                                .addComponent(m_jreason, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(chb58, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txt58, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(chb76, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txt76, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                    .addComponent(chb80, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txt80, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jlblPrinterStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSecuencia, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(17, 17, 17)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtSecuencia, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(m_jreason, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -481,10 +565,10 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(m_jNotes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(m_jButtonPrint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jlblPrinterStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jlblPrinterStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chb80, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -497,7 +581,7 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chb58, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt58, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -594,6 +678,7 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
     private com.alee.extended.button.WebSwitch chb80;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private com.openbravo.editor.JEditorCurrency jTotal;
@@ -605,6 +690,7 @@ public final class PaymentsEditor extends javax.swing.JPanel implements EditorRe
     private javax.swing.JLabel txt58;
     private javax.swing.JLabel txt76;
     private javax.swing.JLabel txt80;
+    private javax.swing.JTextField txtSecuencia;
     // End of variables declaration//GEN-END:variables
     
 }
