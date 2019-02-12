@@ -431,8 +431,51 @@ public class JTicketsBagShared extends JTicketsBag {
     }
     private void m_jNewTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jNewTicketActionPerformed
 
-        newTicket();
+          if ("true".equals(m_App.getProperties().getProperty("till.clavedelete"))) {  
+          
+        String password = null;
+        JPasswordField passwordField = new JPasswordField();
+        Object[] obj = {"Por favor ingrese la Contraseña:\n\n", passwordField};
+        Object stringArray[] = {"OK","Cancelar"};
         
+        if (JOptionPane.showOptionDialog(null, obj, "Verificación",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION)
+            
+        password = new String(passwordField.getPassword());
+        
+      if(password != null){
+            
+        if(password.equals(m_App.getProperties().getProperty("till.claveset"))){
+                  
+        int res = JOptionPane.showConfirmDialog(this
+                , AppLocal.getIntString("message.newticket")
+                , AppLocal.getIntString("title.editor")
+                , JOptionPane.YES_NO_OPTION
+                , JOptionPane.QUESTION_MESSAGE);
+        
+        if (res == JOptionPane.YES_OPTION) {
+            newTicket();
+        }
+            
+       } else{
+            JOptionPane.showMessageDialog(null, "Contraseña Incorrecta"); 
+             } 
+      }        
+
+      }else{
+        
+        int res = JOptionPane.showConfirmDialog(this
+                , AppLocal.getIntString("message.wannadelete")
+                , AppLocal.getIntString("title.editor")
+                , JOptionPane.YES_NO_OPTION
+                , JOptionPane.QUESTION_MESSAGE);
+        
+        if (res == JOptionPane.YES_OPTION) {
+            newTicket();
+        }     
+        
+    } 
+          
     }//GEN-LAST:event_m_jNewTicketActionPerformed
 
     private void m_jHoldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jHoldActionPerformed
