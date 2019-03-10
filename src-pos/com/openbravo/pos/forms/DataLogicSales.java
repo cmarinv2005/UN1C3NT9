@@ -40,6 +40,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -525,7 +526,18 @@ public class DataLogicSales extends BeanFactoryDataSingle {
      * @throws BasicException
      */
     public List<ProductInfoExt> getProductCatalog(String category) throws BasicException  {
-	return new PreparedSentence(s
+//     estos es para ver en cual almacen esta la maquina 
+        DataLogicSystem logicsystem = new DataLogicSystem();
+ 	logicsystem.init(s);
+        String[] args = new String[0];
+        AppConfig config = new AppConfig(args);
+        config.load();
+        String host = config.getProperty("machine.hostname");
+        Properties p = logicsystem.getResourceAsProperties(host + "/properties");
+        String loc = p.getProperty("location");
+//     hasta aqui , se guarda en la variable loc
+
+        return new PreparedSentence(s
 		, "SELECT "
                 + "P.ID, "
                 + "P.REFERENCE, "
@@ -560,6 +572,11 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 + "P.UOM "
 		+ "FROM products P, products_cat O "
                 + "WHERE P.ID = O.PRODUCT AND P.CATEGORY = ? " 
+                // y aqui se le agrega la condicion en p.id in ... es decir en la tabla products en el campo id este dentro de stockcurrent
+		// por que en stockcurrent tienes la existencia por almacen 
+          //    + "AND P.ID in ( SELECT product FROM stockcurrent where location = '" + loc + "' and units > 0 ) "    
+                + "AND P.ID in ( SELECT product FROM stockcurrent where location = '" + loc + "' ) "        
+                        
                 + "ORDER BY O.CATORDER, P.NAME "                
 		, SerializerWriteString.INSTANCE
 		, ProductInfoExt.getSerializerRead()).list(category);
@@ -956,7 +973,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             "ORDER BY locations.id"                    // locations.name
 		, SerializerWriteString.INSTANCE
 		, ProductStock.getSerializerRead()).find(pId);
-    }     
+    }    
     
     /**
      * JG May 2015
@@ -1766,7 +1783,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 //                        getVoucherNonActive().exec(p.getVoucher());
 //                    }
         
-                    if ("debt".equals(pName) || "debtpaid".equals(pName)) {                                     
+                    if ("debt".equals(pName) || "debtpaid".equals(pName) || "cashrefund".equals(pName)) {                                     
                         ticket.getCustomer().updateCurDebt(getTotal, ticket.getDate());                        
                         getDebtUpdate().exec(new DataParams() {
 

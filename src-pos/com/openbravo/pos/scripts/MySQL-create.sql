@@ -1129,6 +1129,10 @@ INSERT INTO products_cat(product) VALUES ('xxx998_998xxx_x8x8x8');
 -- ADD LOCATION
 INSERT INTO locations(id, name, address) VALUES ('0','Location 1','Local');
 
+-- ADD STOCKCURRENT
+INSERT INTO stockcurrent(location,product,units) VALUES ('0','xxx999_999xxx_x9x9x9',0);
+INSERT INTO stockcurrent(location,product,units) VALUES ('0','xxx998_998xxx_x8x8x8',0);
+
 -- ADD SUPPLIERS
 INSERT INTO suppliers(id, searchkey, name) VALUES ('0','executerpos','Executer Pos');
 
