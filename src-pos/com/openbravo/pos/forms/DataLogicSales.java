@@ -1783,7 +1783,8 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 //                        getVoucherNonActive().exec(p.getVoucher());
 //                    }
         
-                    if ("debt".equals(pName) || "debtpaid".equals(pName) || "cashrefund".equals(pName)) {                                     
+             //       if ("debt".equals(pName) || "debtpaid".equals(pName) || "cashrefund".equals(pName)) {  
+                    if ("debt".equals(pName) || "debtpaid".equals(pName)) {
                         ticket.getCustomer().updateCurDebt(getTotal, ticket.getDate());                        
                         getDebtUpdate().exec(new DataParams() {
 

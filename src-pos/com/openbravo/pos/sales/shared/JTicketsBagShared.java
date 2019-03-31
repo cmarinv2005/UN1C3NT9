@@ -430,7 +430,7 @@ public class JTicketsBagShared extends JTicketsBag {
     }//GEN-LAST:event_m_jDelTicketActionPerformed
     }
     private void m_jNewTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jNewTicketActionPerformed
-
+    
       if ("true".equals(m_App.getProperties().getProperty("till.savesale"))) {  
           
         String password = null;
@@ -462,22 +462,12 @@ public class JTicketsBagShared extends JTicketsBag {
              } 
       }        
 
-      }else{
-        
-        int res = JOptionPane.showConfirmDialog(this
-                , AppLocal.getIntString("message.newticket")
-                , AppLocal.getIntString("title.editor")
-                , JOptionPane.YES_NO_OPTION
-                , JOptionPane.QUESTION_MESSAGE);
-        
-        if (res == JOptionPane.YES_OPTION) {
+      } else{
             newTicket();
-        }     
-        
     } 
-          
+      
     }//GEN-LAST:event_m_jNewTicketActionPerformed
-
+      
     private void m_jHoldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jHoldActionPerformed
         deactivate();
         ((JRootApp)m_App).closeAppView();
