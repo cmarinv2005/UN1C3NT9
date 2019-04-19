@@ -527,6 +527,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
      */
     public List<ProductInfoExt> getProductCatalog(String category) throws BasicException  {
 //     estos es para ver en cual almacen esta la maquina 
+/*
         DataLogicSystem logicsystem = new DataLogicSystem();
  	logicsystem.init(s);
         String[] args = new String[0];
@@ -535,6 +536,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
         String host = config.getProperty("machine.hostname");
         Properties p = logicsystem.getResourceAsProperties(host + "/properties");
         String loc = p.getProperty("location");
+*/        
 //     hasta aqui , se guarda en la variable loc
 
         return new PreparedSentence(s
@@ -575,11 +577,123 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 // y aqui se le agrega la condicion en p.id in ... es decir en la tabla products en el campo id este dentro de stockcurrent
 		// por que en stockcurrent tienes la existencia por almacen 
           //    + "AND P.ID in ( SELECT product FROM stockcurrent where location = '" + loc + "' and units > 0 ) "    
-                + "AND P.ID in ( SELECT product FROM stockcurrent where location = '" + loc + "' ) "        
+//                + "AND P.ID in ( SELECT product FROM stockcurrent where location = '" + loc + "' ) "        
                         
                 + "ORDER BY O.CATORDER, P.NAME "                
 		, SerializerWriteString.INSTANCE
 		, ProductInfoExt.getSerializerRead()).list(category);
+    }
+    
+    /**
+     *
+     * @param id
+     * @return
+     * @throws BasicException
+     */
+    public final Object getCategoryColour(String id) throws BasicException {
+
+        return new PreparedSentence(s,
+                "SELECT COLOUR FROM CATEGORIES WHERE ID = ?",
+                SerializerWriteString.INSTANCE,
+                SerializerReadString.INSTANCE).find(id); 
+    }    
+    
+    /**   Esta consulta la ejecuta el abrir el panel de Ventas
+     *
+     * @param category
+     * @return
+     * @throws BasicException
+     */
+    public List<ProductInfoExt> getAllProductCatalog() throws BasicException  {
+	return new PreparedSentence(s
+		, "SELECT "
+                + "P.ID, "
+                + "P.REFERENCE, "
+                + "P.CODE, "
+                + "P.CODETYPE, "
+                + "P.NAME, "
+                + "P.PRICEBUY, "
+                + "P.PRICESELL, "
+                + "P.CATEGORY, "
+                + "P.TAXCAT, "
+                + "P.ATTRIBUTESET_ID, "
+                + "P.STOCKCOST, "
+                + "P.STOCKVOLUME, "                        
+                + "P.IMAGE, "
+                + "P.ISCOM, "
+                + "P.ISSCALE, "
+                + "P.ISCONSTANT, "
+                + "P.PRINTKB, "
+                + "P.SENDSTATUS, "
+                + "P.ISSERVICE, "
+                + "P.ATTRIBUTES, "
+                + "P.DISPLAY, "
+                + "P.ISVPRICE, "
+                + "P.ISVERPATRIB, "
+                + "P.TEXTTIP, "
+                + "P.WARRANTY, "
+                + "P.STOCKUNITS, " 
+                + "P.PRINTTO, "				
+		+ "P.WARNING, "                       
+		+ "P.EXPIRY, "  		
+                + "P.SUPPLIER, "        
+                + "P.UOM "
+//		+ "P.RENTABILIDAD "                             			
+                + "FROM PRODUCTS P, PRODUCTS_CAT O "
+                + "WHERE P.ID = O.PRODUCT AND P.CATEGORY = ? "                      
+                 + "ORDER BY O.CATORDER, P.NAME "  
+		, SerializerWriteString.INSTANCE
+		, ProductInfoExt.getSerializerRead()).list();  
+    }    
+    
+    
+    // JG uniCenta June 2014 includes StockUnits  
+    /** llamado desde el panel de ventas, movimiento de existencias, gestion de inventario
+     *
+     * @param category
+     * @return
+     * @throws BasicException
+     */
+    public List<ProductInfoExt> getProductCatalogAlways() throws BasicException {   
+        return new PreparedSentence(s
+                , "SELECT "
+                + "PRODUCTS.ID, "
+                + "PRODUCTS.REFERENCE, "
+                + "PRODUCTS.CODE, "
+                + "PRODUCTS.CODETYPE, "
+                + "PRODUCTS.NAME, "
+                + "PRODUCTS.PRICEBUY, "
+                + "PRODUCTS.PRICESELL, "
+                + "PRODUCTS.CATEGORY, "
+                + "PRODUCTS.TAXCAT, "
+                + "PRODUCTS.ATTRIBUTESET_ID, "
+                + "PRODUCTS.STOCKCOST, "
+                + "PRODUCTS.STOCKVOLUME, "                        
+                + "PRODUCTS.IMAGE, "
+                + "PRODUCTS.ISCOM, "
+                + "PRODUCTS.ISSCALE, "
+                + "PRODUCTS.ISCONSTANT, "
+                + "PRODUCTS.PRINTKB, "
+                + "PRODUCTS.SENDSTATUS, "
+                + "PRODUCTS.ISSERVICE, "
+                + "PRODUCTS.ATTRIBUTES, "
+                + "PRODUCTS.DISPLAY, "
+                + "PRODUCTS.ISVPRICE, "
+                + "PRODUCTS.ISVERPATRIB, "
+                + "PRODUCTS.TEXTTIP, "
+                + "PRODUCTS.WARRANTY, "
+                + "PRODUCTS.STOCKUNITS, " 
+                + "PRODUCTS.PRINTTO, "				
+		+ "PRODUCTS.WARNING, "                       
+		+ "PRODUCTS.EXPIRY, "  		
+                + "PRODUCTS.SUPPLIER, "        
+                + "PRODUCTS.UOM "
+ //             + "PRODUCTS.RENTABILIDAD "                         
+                + "FROM CATEGORIES INNER JOIN PRODUCTS ON (PRODUCTS.CATEGORY = CATEGORIES.ID) "
+                + "WHERE PRODUCTS.ISCONSTANT = " +s.DB.TRUE()+ " "
+                + "ORDER BY  CATEGORIES.NAME, PRODUCTS.NAME",               
+                null,
+                ProductInfoExt.getSerializerRead()).list();
     }
 
     /**
@@ -667,8 +781,8 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                     + "products.WARRANTY, "
                     + "products.STOCKUNITS, " 
                     + "products.PRINTTO, "
-					+ "WARNING, "                               //28  ojo
-		            + "EXPIRY, " 			            //29
+		    + "WARNING, "                               //28  ojo
+		    + "EXPIRY, " 			            //29
                     + "products.SUPPLIER, "
                     + "products.UOM "
                 + "FROM categories INNER JOIN products ON (products.CATEGORY = categories.ID) "

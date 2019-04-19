@@ -1,6 +1,6 @@
 //    uniCenta oPOS  - Touch Friendly Point Of Sale
-//    Copyright (c) 2009-2016 uniCenta & previous Openbravo POS works
-//    https://unicenta.com
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
 //    This file is part of uniCenta oPOS
 //
@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
@@ -34,7 +35,7 @@ import javax.swing.SwingConstants;
  */
 public class JProductsSelector extends javax.swing.JPanel {
     
-    private final JFlowPanel flowpanel;
+    private JFlowPanel flowpanel;
     
     /** Creates new form JProductsSelector */
     public JProductsSelector() {
@@ -45,7 +46,8 @@ public class JProductsSelector extends javax.swing.JPanel {
         add(flowpanel, BorderLayout.CENTER);
     }
     
-       
+    //public void addProduct(Image img, String name, ActionListener al) {
+        
     /**
      *
      * @param img
@@ -56,23 +58,23 @@ public class JProductsSelector extends javax.swing.JPanel {
         public void addProduct(Image img, String display, ActionListener al,String textTip) {        
         JButton btn = new JButton();
         btn.applyComponentOrientation(getComponentOrientation());
+// Added JG 13 Nov 12 - Render Display text
         btn.setText(display);
+//        btn.setText(name);
+        btn.setIcon(new ImageIcon(img));
         btn.setFocusPainted(false);
-
         if (textTip != null){
-            btn.setToolTipText(textTip);
+        btn.setToolTipText(textTip);
         }
-
         btn.setFocusable(false);
         btn.setRequestFocusEnabled(false);
         btn.setHorizontalTextPosition(SwingConstants.CENTER);
-        btn.setVerticalTextPosition(SwingConstants.TOP);        
-        btn.setMargin(new Insets(0, 0, 0, 0));        
+        btn.setVerticalTextPosition(SwingConstants.BOTTOM);
+        btn.setMargin(new Insets(2, 2, 2, 2));
         btn.setMaximumSize(new Dimension(80, 70));
-//        btn.setPreferredSize(new Dimension(20, 20));
-        btn.setMinimumSize(new Dimension(40, 30));
+        btn.setPreferredSize(new Dimension(80, 70));
+        btn.setMinimumSize(new Dimension(80, 70));
         btn.addActionListener(al);
-
         flowpanel.add(btn);        
     }
     
@@ -85,7 +87,7 @@ public class JProductsSelector extends javax.swing.JPanel {
     private void initComponents() {
 
         setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        setLayout(new org.jdesktop.swingx.VerticalLayout());
+        setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
     
     
