@@ -75,7 +75,10 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -84,6 +87,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.print.PrintService;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -100,6 +105,8 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 /**
  *
@@ -178,6 +185,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
    
     private int itemp;
     private boolean showminimo=false;
+    
+    public static Clip sonido;
     
     /** Creates new form JTicketView */
     public JPanelTicket() {
@@ -428,6 +437,34 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         }        
     }
     
+    public void sonidoError(){                   
+    try {
+         Clip sonido = AudioSystem.getClip();
+         File a = new File("error.wav");
+         sonido.open(AudioSystem.getAudioInputStream(a));
+         sonido.start();
+      //   System.out.println("Reproduciendo 10s. de sonido...");
+      //   Thread.sleep(10000); // 10000 milisegundos (10 segundos)
+      //   sonido.close();
+      } catch (Exception tipoError) {
+         System.out.println("" + tipoError);
+      }  
+    }
+  
+    public void sonidoPlay(){
+    try {          
+         Clip sonido = AudioSystem.getClip();
+         File a = new File("beep.wav");
+         sonido.open(AudioSystem.getAudioInputStream(a));
+         sonido.start();
+      //   System.out.println("Reproduciendo 10s. de sonido...");
+      //   Thread.sleep(10000); // 10000 milisegundos (10 segundos)
+      //   sonido.close();
+      } catch (Exception tipoError) {
+         System.out.println("" + tipoError);
+      }
+    }
+   
     public void Consultarimagen() {      
         m_ticketlines.addListSelectionListener(new ListSelectionListener() {    // 22 lineas agregadas por Carlos Marin
         public void valueChanged(ListSelectionEvent e) {
@@ -1296,7 +1333,13 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                    sCode + " - " + AppLocal.getIntString("message.noproduct"),
                    "Check", JOptionPane.WARNING_MESSAGE);                
                 stateToZero();
+                if ("true".equals(m_App.getProperties().getProperty("till.sonido")))  {
+                    sonidoError();              // No existe el producto 
+                }          
             } else {
+                if ("true".equals(m_App.getProperties().getProperty("till.sonido")))  {
+                    sonidoPlay();              // Si existe el producto
+                }                
                 if ("true".equals(m_App.getProperties().getProperty("till.pesobalanza"))) {
                  incProduct(oProduct);        // Llamo este método para obtener peso desde código de barras 
                 }
@@ -1319,7 +1362,13 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 new MessageInf(MessageInf.SGN_WARNING, AppLocal
                     .getIntString("message.noproduct")).show(this);           
                 stateToZero();
+                if ("true".equals(m_App.getProperties().getProperty("till.sonido")))  {
+                    sonidoError();              // No existe el producto 
+                }                
             } else {
+                if ("true".equals(m_App.getProperties().getProperty("till.sonido")))  {
+                    sonidoPlay();              // Si existe el producto
+                }                 
                 if (m_jaddtax.isSelected()) {
                     TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryID(), m_oTicket.getCustomer());
                     addTicketLine(oProduct, 1.0, dPriceSell / (1.0 + tax.getRate()));
@@ -1477,8 +1526,13 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             + AppLocal.getIntString("message.noproduct"),
                             "Check", JOptionPane.WARNING_MESSAGE);  
                         stateToZero();                                          // clear the user input
-
+                        if ("true".equals(m_App.getProperties().getProperty("till.sonido")))  {
+                         sonidoError();              // No existe el producto 
+                        }
                     } else if("EAN-13".equals(oProduct.getCodetype())) {        // have a valid barcode
+                        if ("true".equals(m_App.getProperties().getProperty("till.sonido")))  {
+                         sonidoPlay();              // Si existe el producto 
+                        }
                         oProduct.setProperty("product.barcode", sCode);         // set the screen's barcode from input
                         double dPriceSell = oProduct.getPriceSell();            // default price for product
                         double weight = 0;                                      // used if barcode includes weight of product
@@ -1668,7 +1722,13 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             + AppLocal.getIntString("message.noproduct"),
                             "Check", JOptionPane.WARNING_MESSAGE);  
                         stateToZero();
+                        if ("true".equals(m_App.getProperties().getProperty("till.sonido")))  {
+                         sonidoError();              // No existe el producto 
+                        }
                     } else if("Upc-A".equals(oProduct.getCodetype())) {
+                        if ("true".equals(m_App.getProperties().getProperty("till.sonido")))  {
+                         sonidoPlay();              // Si existe el producto
+                        }
                         oProduct.setProperty("product.barcode", sCode); 
                         double dPriceSell = oProduct.getPriceSell();            // default price for product
                         double weight = 0;                                      // used if barcode includes weight of product
